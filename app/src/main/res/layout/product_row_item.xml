@@ -62,18 +62,45 @@
                         android:layout_toRightOf="@id/thumbnail"
                         android:layout_weight="1"
                         android:fontFamily="@font/sans"
-                        android:text="Brand &amp; Model"
+                        android:text="Brand"
                         android:textColor="@color/textColor"
                         android:textSize="16dp" />
 
                     <TextView
-                        android:id="@+id/name"
+                        android:id="@+id/brand"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toRightOf="@id/thumbnail"
                         android:layout_weight="1"
                         android:fontFamily="@font/sans"
-                        android:text="Name"
+                        android:text="Brand"
+                        android:textColor="@color/contact_name"
+                        android:textSize="16dp" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/thumbnail"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/sans"
+                        android:text="Model"
+                        android:textColor="@color/textColor"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/model"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/thumbnail"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/sans"
+                        android:text="Model"
                         android:textColor="@color/contact_name"
                         android:textSize="16dp" />
                 </LinearLayout>
@@ -128,35 +155,6 @@
                         android:id="@+id/stock_update_row"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@id/ram"
-                        android:layout_toRightOf="@id/thumbnail"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/sans"
-                        android:text="In Stock"
-                        android:textColor="@color/contact_name"
-                        android:textSize="16dp" />
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_toRightOf="@id/thumbnail"
-                        android:layout_weight="1"
-                        android:fontFamily="@font/sans"
-                        android:text="Quantity"
-                        android:textColor="@color/textColor"
-                        android:textSize="16dp" />
-
-                    <TextView
-                        android:id="@+id/rqty"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/ram"
                         android:layout_toRightOf="@id/thumbnail"
                         android:layout_weight="1"
                         android:fontFamily="@font/sans"

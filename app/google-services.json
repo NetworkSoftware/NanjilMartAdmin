@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "49969864695",
-    "project_id": "jsbroilersadmin",
-    "storage_bucket": "jsbroilersadmin.appspot.com"
+    "project_number": "444082449407",
+    "project_id": "nanjilmartadmin",
+    "storage_bucket": "nanjilmartadmin.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:49969864695:android:33f71dae8f9583658758f2",
+        "mobilesdk_app_id": "1:444082449407:android:941edf3c70cddd86e615ca",
         "android_client_info": {
-          "package_name": "pro.network.jsbroilersadmin"
+          "package_name": "pro.network.nanjilmartadmin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "49969864695-6ehpqm4irf9aj5kr1oeq2r8t319olecm.apps.googleusercontent.com",
+          "client_id": "444082449407-4e0dlmfj4schs0mtavu3c6dsgvh8tbf0.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyB10nH5tiOfhhqOkz2yPVS7KulQrp2Qkec"
+          "current_key": "AIzaSyAd5McKiFQ0zHAS7tdAEPMB2XuX7PtlEic"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "49969864695-6ehpqm4irf9aj5kr1oeq2r8t319olecm.apps.googleusercontent.com",
+              "client_id": "444082449407-4e0dlmfj4schs0mtavu3c6dsgvh8tbf0.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

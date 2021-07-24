@@ -73,7 +73,7 @@
                         android:layout_margin="5dp"
                         android:layout_marginLeft="10dp"
                         android:layout_marginRight="10dp"
-                        android:hint="வகையை தேர்ந்தெடுக்க"
+                        android:hint="Select the Category"
                         android:textColor="@color/black"
                         android:textColorHint="#c6c6c6"
                         android:textSize="15dp"
@@ -92,7 +92,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/gray"
-                            android:hint="உள்வகை"
+                            android:hint="Sub category"
                             android:inputType="text"
                             android:textColorHint="#c6c6c6"
                             android:textSize="@dimen/textsize" />
@@ -115,94 +115,13 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/gray"
-                            android:hint="பெயர்"
+                            android:hint="product Name"
                             android:inputType="text"
                             android:textColorHint="#c6c6c6"
                             android:textSize="@dimen/textsize" />
 
                     </com.google.android.material.textfield.TextInputLayout>
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
 
-                        <com.google.android.material.textfield.TextInputLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:layout_margin="5dp"
-                            android:layout_weight="1">
-
-                            <EditText
-                                android:id="@+id/rqty"
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                android:backgroundTint="@color/gray"
-                                android:hint="அளவு"
-                                android:inputType="numberDecimal"
-                                android:textColorHint="#c6c6c6"
-                                android:textSize="@dimen/textsize" />
-
-                        </com.google.android.material.textfield.TextInputLayout>
-
-                        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                            android:id="@+id/rqtyType"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_margin="5dp"
-                            android:layout_marginLeft="10dp"
-                            android:layout_marginRight="10dp"
-                            android:hint="Select Type"
-                            android:textColor="@color/black"
-                            android:textColorHint="#c6c6c6"
-                            android:textSize="15dp"
-                            app:met_floatingLabel="normal" />
-
-
-                    </LinearLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:visibility="gone"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1">
-
-                        <EditText
-                            android:id="@+id/ram"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:backgroundTint="@color/gray"
-                            android:hint="RAM"
-                            android:inputType="number"
-                            android:textColorHint="#c6c6c6"
-                            android:textSize="@dimen/textsize" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
-
-                    <com.google.android.material.textfield.TextInputLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:visibility="gone"
-                        android:layout_margin="5dp"
-                        android:layout_weight="1">
-
-                        <EditText
-                            android:id="@+id/rom"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:backgroundTint="@color/gray"
-                            android:hint="ROM"
-                            android:inputType="number"
-                            android:textColorHint="#c6c6c6"
-                            android:textSize="@dimen/textsize" />
-
-                    </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:layout_width="match_parent"
@@ -217,7 +136,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/gray"
-                            android:hint="விலை"
+                            android:hint="Price"
                             android:inputType="number"
                             android:textColorHint="#c6c6c6"
                             android:textSize="@dimen/textsize" />
@@ -237,7 +156,7 @@
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
                             android:backgroundTint="@color/gray"
-                            android:hint="பொருள் விளக்கம்"
+                            android:hint="Description"
                             android:inputType="textMultiLine"
                             android:textColorHint="#c6c6c6"
                             android:textSize="@dimen/textsize" />

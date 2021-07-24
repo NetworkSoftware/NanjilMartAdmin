@@ -39,7 +39,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="3dp"
                     android:fontFamily="@font/sans_bold"
-                    android:text="இருப்பு விபரங்கள்"
+                    android:text="Stock"
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -74,7 +74,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="3dp"
                     android:fontFamily="@font/sans_bold"
-                    android:text="விளம்பரங்கள்"
+                    android:text="Banner"
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -116,14 +116,15 @@
                     android:layout_gravity="center"
                     android:layout_margin="3dp"
                     android:fontFamily="@font/sans_bold"
-                    android:text="வகைகள்"
+                    android:text="Categories"
                     android:textColor="@color/black" />
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
         <androidx.cardview.widget.CardView
-            android:id="@+id/news"
+            android:id="@+id/delivered"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -142,7 +143,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/news" />
+                    android:src="@drawable/stock" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -150,12 +151,22 @@
                     android:layout_gravity="center"
                     android:layout_margin="3dp"
                     android:fontFamily="@font/sans_bold"
-                    android:text="அறிவிப்பு"
+                    android:text="Order Complete"
                     android:textColor="@color/black" />
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:orientation="horizontal">
+
+
         <androidx.cardview.widget.CardView
             android:id="@+id/orders"
             android:layout_width="match_parent"
@@ -184,61 +195,16 @@
                     android:layout_gravity="center"
                     android:layout_margin="3dp"
                     android:fontFamily="@font/sans_bold"
-                    android:text="புதிய ஆர்டர்"
+                    android:text="New Order"
                     android:textColor="@color/black" />
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/delivered"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:layout_weight="1"
-            app:cardCornerRadius="5dp"
-            app:cardElevation="5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_margin="5dp"
-                android:orientation="vertical">
-
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center"
-                    android:src="@drawable/stock" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_margin="3dp"
-                    android:gravity="center"
-                    android:fontFamily="@font/sans_bold"
-                    android:minLines="3"
-                    android:text="முடித்த ஆர்டர்கள்"
-                    android:textColor="@color/black" />
-
-            </LinearLayout>
-
-        </androidx.cardview.widget.CardView>
-
         <androidx.cardview.widget.CardView
             android:id="@+id/returned"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="120dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
             app:cardCornerRadius="5dp"
@@ -265,20 +231,29 @@
                     android:fontFamily="@font/sans_bold"
                     android:minLines="3"
                     android:gravity="center"
-                    android:text="திரும்பிய ஆர்டர்கள்"
+                    android:text="Return Order"
                     android:textColor="@color/black" />
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
 
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:orientation="vertical">
         <androidx.cardview.widget.CardView
             android:id="@+id/canceled"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="120dp"
             android:layout_margin="5dp"
             android:layout_weight="1"
-            app:cardCornerRadius="5dp"
+            app:cardCornerRadius="8dp"
             app:cardElevation="5dp">
 
             <LinearLayout
@@ -302,13 +277,12 @@
                     android:fontFamily="@font/sans_bold"
                     android:minLines="3"
                     android:gravity="center"
-                    android:text="கழிக்கப்பட்ட ஆர்டர்கள்"
+                    android:text="Order cancel"
                     android:textColor="@color/black" />
 
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
-
     </LinearLayout>
 
 

@@ -50,7 +50,7 @@
                             android:layout_height="70dp"
                             android:scaleType="centerCrop"
                             android:layout_gravity="center"
-                            android:src="@drawable/jsbroilers" />
+                            android:src="@drawable/nanjilmart" />
 
 
                     </LinearLayout>
