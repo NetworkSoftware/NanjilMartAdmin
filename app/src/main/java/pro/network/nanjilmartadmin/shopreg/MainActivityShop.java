@@ -208,7 +208,7 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
         showDialog();
         // showDialog();
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                Appconfig.CATEGORIES_DELETE, new Response.Listener<String>() {
+                Appconfig.DELETE_SHOP, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("Register Response: ", response);
