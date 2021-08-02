@@ -130,15 +130,15 @@
         <activity
             android:name="pro.network.nanjilmartadmin.order.Order_TimelineActivity"
             android:label="categories Register"
-            android:theme="@style/AppThemeWhite" />
+            android:theme="@style/AppThemewhite" />
         <activity
             android:name="pro.network.nanjilmartadmin.deliveryboy.CreateDeliveryBoy"
             android:label="categories Register"
-            android:theme="@style/AppThemeWhite" />
+            android:theme="@style/AppThemewhite" />
         <activity
             android:name="pro.network.nanjilmartadmin.deliveryboy.MainActivityDelivery"
             android:label="categories Register"
-            android:theme="@style/AppThemeWhite" />
+            android:theme="@style/AppThemewhite" />
         <activity
             android:name="pro.network.nanjilmartadmin.shopreg.ShopRegister"
             android:label="categories Register"

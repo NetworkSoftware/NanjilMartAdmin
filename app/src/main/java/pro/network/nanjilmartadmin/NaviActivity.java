@@ -2,13 +2,15 @@ package pro.network.nanjilmartadmin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import android.view.View;
 
 import pro.network.nanjilmartadmin.banner.MainActivityBanner;
 import pro.network.nanjilmartadmin.categories.MainActivityCategories;
+import pro.network.nanjilmartadmin.deliveryboy.MainActivityDelivery;
 import pro.network.nanjilmartadmin.order.MainActivityOrder;
 import pro.network.nanjilmartadmin.product.MainActivityProduct;
 import pro.network.nanjilmartadmin.shopreg.MainActivityShop;
@@ -28,6 +30,14 @@ NaviActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent io = new Intent(NaviActivity.this, MainActivityCategories.class);
+                startActivity(io);
+            }
+        });
+        CardView dboy = (CardView) findViewById(R.id.dboy);
+        dboy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, MainActivityDelivery.class);
                 startActivity(io);
             }
         });
