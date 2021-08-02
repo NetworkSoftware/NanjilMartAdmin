@@ -7,5 +7,9 @@ public interface StatusListener {
     void onWhatsAppClick(String phone);
     void onCallClick(String phone);
     void onCancelClick(String id);
+    void onAssignDboy(Order order);
+    void onTrackOrder(String id);
+    void onCourier(String id);
+    void InProgress(Order order );
 
 }

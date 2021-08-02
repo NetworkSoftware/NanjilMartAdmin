@@ -65,6 +65,7 @@ import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
 import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORY;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_DELETE;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_UPDATE;
+import static pro.network.nanjilmartadmin.app.Appconfig.SHOPNAME;
 
 /**
  * Created by user_1 on 11-07-2018.
@@ -85,10 +86,14 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     AddImageAdapter maddImageAdapter;
 
     MaterialBetterSpinner category;
-
+    MaterialBetterSpinner shopname;
+    MaterialBetterSpinner sub_category;
     MaterialBetterSpinner stock_update;
 
     private String[] STOCKUPDATE = new String[]{
+            "In Stock", "Currently Unavailable",
+    };
+    private String[] SUBCATRGORIES = new String[]{
             "In Stock", "Currently Unavailable",
     };
     String studentId = null;
@@ -131,7 +136,29 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         description = findViewById(R.id.description);
 
 
+        sub_category = (MaterialBetterSpinner) findViewById(R.id.sub_category);
+        ArrayAdapter<String> subcatAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, STOCKUPDATE);
+        sub_category.setAdapter(subcatAdapter);
+        sub_category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            }
+        });
 
+        shopname = (MaterialBetterSpinner) findViewById(R.id.shopname);
+        ArrayAdapter<String> shopAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, SHOPNAME);
+        shopname.setAdapter(shopAdapter);
+        shopname.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(ProductUpdate.this,
+                        android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(SHOPNAME[position]));
+                shopname.setAdapter(brandAdapter);
+                shopname.setThreshold(1);
+            }
+        });
 
         stock_update = (MaterialBetterSpinner) findViewById(R.id.stock_update);
 
@@ -188,6 +215,8 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             Product contact = (Product) getIntent().getSerializableExtra("data");
             category.setText(contact.category);
             brand.setText(contact.brand);
+            sub_category.setText(contact.sub_category);
+            shopname.setText(contact.shopname);
             model.setText(contact.model);
             price.setText(contact.price);
             description.setText(contact.description);
@@ -245,6 +274,8 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("category", category.getText().toString());
+                localHashMap.put("sub_category", sub_category.getText().toString());
+                localHashMap.put("shopname", shopname.getText().toString());
                 localHashMap.put("brand", brand.getText().toString());
                 localHashMap.put("model", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());

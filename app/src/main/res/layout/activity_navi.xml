@@ -124,7 +124,7 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            android:id="@+id/delivered"
+            android:id="@+id/shop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
@@ -140,10 +140,10 @@
                 android:orientation="vertical">
 
                 <ImageView
-                    android:layout_width="match_parent"
+                    android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:layout_gravity="center"
-                    android:src="@drawable/stock" />
+                    android:src="@drawable/shopname" />
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -151,7 +151,7 @@
                     android:layout_gravity="center"
                     android:layout_margin="3dp"
                     android:fontFamily="@font/sans_bold"
-                    android:text="Order Complete"
+                    android:text="Shop"
                     android:textColor="@color/black" />
 
             </LinearLayout>
@@ -246,10 +246,44 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center"
-        android:orientation="vertical">
+        android:orientation="horizontal">
+        <androidx.cardview.widget.CardView
+            android:id="@+id/delivered"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            app:cardCornerRadius="5dp"
+            app:cardElevation="5dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|center_vertical"
+                android:layout_margin="5dp"
+                android:orientation="vertical">
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:src="@drawable/stock" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="3dp"
+                    android:fontFamily="@font/sans_bold"
+                    android:text="Order Complete"
+                    android:textColor="@color/black" />
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
         <androidx.cardview.widget.CardView
             android:id="@+id/canceled"
-            android:layout_width="200dp"
+            android:layout_width="match_parent"
             android:layout_height="120dp"
             android:layout_margin="5dp"
             android:layout_weight="1"

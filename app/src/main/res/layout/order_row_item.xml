@@ -37,9 +37,8 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="Product Name "
-                    android:textColor="@android:color/black"
-                    android:visibility="gone" />
+                    android:text="Order Id "
+                    android:textColor="@android:color/black" />
 
 
                 <TextView
@@ -49,7 +48,7 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="அளவு"
+                    android:text="Quantity"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -59,7 +58,7 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="தொகை"
+                    android:text="Amount"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -69,8 +68,7 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:textSize="13dp"
-                    android:text="ஆர்டர் நிலை"
+                    android:text="Status"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -80,7 +78,7 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="விளக்கம்"
+                    android:text="Description"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -90,18 +88,7 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="பெயர்"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginRight="10dp"
-                    android:textSize="12dp"
-                    android:fontFamily="@font/sans_bold"
-                    android:gravity="left"
-                    android:text="தொலைபேசி"
+                    android:text="Name"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -111,7 +98,7 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="முகவரி"
+                    android:text="Phone"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -121,7 +108,17 @@
                     android:layout_marginRight="10dp"
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
-                    android:text="தேதி/நேரம்"
+                    android:text="Address"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/sans_bold"
+                    android:gravity="left"
+                    android:text="Ordered On"
                     android:textColor="@android:color/black" />
 
             </LinearLayout>
@@ -134,7 +131,15 @@
                 android:layout_weight="1"
                 android:orientation="vertical">
 
-
+                <TextView
+                    android:id="@+id/order_id"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="15dp"
+                    android:fontFamily="@font/sans_bold"
+                    android:gravity="left"
+                    android:text="Rs.5000" />
                 <TextView
                     android:id="@+id/quantity"
                     android:layout_width="match_parent"
@@ -216,50 +221,114 @@
 
             </LinearLayout>
 
+
+        </LinearLayout>
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scrollbars="none">
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="top"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="10dp"
-                android:layout_weight="1.5"
                 android:backgroundTint="@color/soft_grey"
-                android:orientation="vertical">
+                android:orientation="horizontal">
 
-                <ImageView
-                    android:id="@+id/call"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/assignDboy"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
-                    android:src="@drawable/telephone" />
+                    android:text="ASSIGN D-Boy"
+                    android:textColor="@color/colorPrimary"
+                    app:strokeColor="@color/colorPrimary" />
 
-                <ImageView
-                    android:id="@+id/whatsapp"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/inprogress"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
-                    android:src="@drawable/whatsapp" />
+                    android:text="In progress"
+                    android:textColor="@color/colorPrimary"
+                    app:strokeColor="@color/colorPrimary" />
 
-                <ImageView
-                    android:id="@+id/cancalOrder"
-                    android:layout_width="25dp"
-                    android:layout_height="25dp"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/completed"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_margin="5dp"
-                    android:src="@drawable/cancel" />
+                    android:text="Completed"
+                    android:textColor="@color/colorPrimary"
+                    app:strokeColor="@color/colorPrimary" />
 
 
-                <ImageView
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/deliveredBtn"
-                    android:layout_width="35dp"
-                    android:layout_height="35dp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:src="@drawable/delivery" />
+                    android:layout_margin="5dp"
+                    android:text="Delivered"
+                    android:textColor="@color/colorPrimary"
+                    app:strokeColor="@color/colorPrimary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/cancalOrder"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:text="Cancel"
+                    android:textColor="@color/colorPrimary"
+                    app:strokeColor="@color/colorPrimary" />
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/trackOrder"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:text="Track"
+                    android:textColor="@color/colorPrimary"
+                    app:strokeColor="@color/colorPrimary" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/call"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:text="Call"
+                    android:textColor="@color/colorPrimary"
+                    app:strokeColor="@color/colorPrimary" />
+
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/whatsapp"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:text="Whatsapp"
+                    android:textColor="@color/colorPrimary"
+                    app:strokeColor="@color/colorPrimary" />
+
+
 
             </LinearLayout>
-        </LinearLayout>
+
+        </HorizontalScrollView>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/cart_sub_list"

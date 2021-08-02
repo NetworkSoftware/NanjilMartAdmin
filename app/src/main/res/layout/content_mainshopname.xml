@@ -30,7 +30,7 @@
             android:layout_marginRight="10dp"
             android:backgroundTint="@color/colorPrimary"
             android:elevation="50dp"
-            app:srcCompat="@drawable/ic_add_box_black"
+            android:src="@drawable/ic_add_box_black"
             android:tint="#fff"
             app:borderWidth="0dp"
             app:fabSize="normal" />

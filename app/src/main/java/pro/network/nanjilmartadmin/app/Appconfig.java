@@ -52,6 +52,7 @@ public class Appconfig {
     public static final String CATEGORIES_UPDATE = ip + "/update_category.php";
     public static final String CATEGORIES_DELETE = ip + "/delete_category.php";
     public static final String CATEGORIES_GET_ALL = ip + "/get_all_category.php";
+    public static final String SUBCATEGORIES_GET_ALL = ip + "/get_all_category.php";
 
 
     public static final String NEWS_CREATE = ip + "/create_news.php";
@@ -65,7 +66,21 @@ public class Appconfig {
     //Order
     public static final String ORDER_GET_ALL = ip + "/dataFetchAll_order.php";
     public static final String ORDER_CHANGE_STATUS = ip + "/order_change_status.php";
-
+    public static final String TRACK_PRODUCT_ORDER_ID = ip + "/track_order_id.php";
+    public static final String ASSIGN_DBOY = ip + "/assign_dboy.php";
+    //public static final String TRACK_PRODUCT_ORDER_ID = ip + "/com_track_order_id.php";
+    public static final String ORDER_ASSIGN_DBOY = ip + "/order_assign_dboy.php";
+    //Shop
+    public static final String CREATE_SHOP = ip + "/create_shop.php";
+    public static final String DELETE_SHOP = ip + "/delete_shop.php";
+    public static final String UPDATE_SHOP = ip + "/update_shop.php";
+    public static final String DATAFETCHALL_SHOP = ip + "/dataFetchAll_shop.php";
+    //DeliveryBoy
+    public static final String DELIVERY_GET_ALL = ip + "/get_all_delivery.php";
+    public static final String CREATE_DELIVERYBOY = ip + "/delivery_register.php";
+    public static final String UPDATE_DELIVERYBOY = ip + "/update_deliveryboy.php";
+    public static final String DELETE_DELIVERYBOY = ip + "/delete_deliveryboy.php";
+    public static final String DELIVERY_BOY_CHANGE_STATUS = ip + "/delivery_boy_change_status.php";
 
     public static final String IMAGE_URL = ip + "/images/";
     public static Glide locationMap;
@@ -280,6 +295,13 @@ public class Appconfig {
 
     public static String[] CATEGORY = new String[]{
             "Fashion", "Mobiles and Tablets","Consumer Electronics","Books","Baby Products",
+    };
+
+    public static String[] COSMETICS = new String[]{
+            "Eye Liner", "Lipstic","All Makeup Kits",
+    };
+    public static String[] SHOPNAME = new String[]{
+           "Eye Liner", "Lipstic","All Makeup Kits",
     };
 
     public static DefaultRetryPolicy getPolicy() {

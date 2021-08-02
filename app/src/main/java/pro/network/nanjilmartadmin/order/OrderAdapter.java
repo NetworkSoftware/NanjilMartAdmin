@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
@@ -50,6 +51,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final Order order = orderListFiltered.get(position);
+        holder.order_id.setText("#"+ order.getId());
         holder.price.setText(order.getPrice());
         holder.quantity.setText(order.getQuantity());
         holder.status.setText(order.getStatus());
@@ -58,18 +60,51 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.address.setText(order.getAddress());
         holder.reason.setText(order.getReson());
         holder.orderedOn.setText(Appconfig.convertTimeToLocal(order.createdOn));
-        if (order.getStatus().equalsIgnoreCase("ordered")) {
-            holder.deliveredBtn.setVisibility(View.VISIBLE);
-        } else {
-            holder.deliveredBtn.setVisibility(View.GONE);
-        }
 
-        if (!order.getStatus().equalsIgnoreCase("canceled")
+        if (order.getStatus().equalsIgnoreCase("ordered")) {
+            holder.assignDboy.setVisibility(View.VISIBLE);
+            holder.cancalOrder.setVisibility(View.VISIBLE);
+            holder.inprogress.setVisibility(View.GONE);
+            holder.deliveredBtn.setVisibility(View.GONE);
+            holder.completed.setVisibility(View.GONE);
+
+        } else if (order.getStatus().equalsIgnoreCase("Delivery Boy Assigned") ||
+                order.getStatus().equalsIgnoreCase("Delivery Boy Picked")) {
+            holder.assignDboy.setVisibility(View.GONE);
+            holder.inprogress.setVisibility(View.VISIBLE);
+            holder.cancalOrder.setVisibility(View.VISIBLE);
+            holder.deliveredBtn.setVisibility(View.GONE);
+            holder.completed.setVisibility(View.GONE);
+
+        } else if (order.getStatus().equalsIgnoreCase("InProgress")) {
+            holder.assignDboy.setVisibility(View.GONE);
+            holder.inprogress.setVisibility(View.GONE);
+            holder.cancalOrder.setVisibility(View.GONE);
+            holder.deliveredBtn.setVisibility(View.VISIBLE);
+            holder.completed.setVisibility(View.GONE);
+
+        } else if (order.getStatus().equalsIgnoreCase("Delivered")) {
+            holder.assignDboy.setVisibility(View.GONE);
+            holder.inprogress.setVisibility(View.GONE);
+            holder.deliveredBtn.setVisibility(View.GONE);
+            holder.cancalOrder.setVisibility(View.GONE);
+            holder.completed.setVisibility(View.GONE);
+
+
+        } else if (!order.getStatus().equalsIgnoreCase("canceled")
                 && order.getStatus().equalsIgnoreCase("ordered")) {
             holder.cancalOrder.setVisibility(View.VISIBLE);
+            holder.assignDboy.setVisibility(View.GONE);
+            holder.inprogress.setVisibility(View.GONE);
+            holder.deliveredBtn.setVisibility(View.GONE);
         } else {
+            holder.assignDboy.setVisibility(View.GONE);
+            holder.inprogress.setVisibility(View.VISIBLE);
+            holder.deliveredBtn.setVisibility(View.VISIBLE);
             holder.cancalOrder.setVisibility(View.GONE);
+            holder.completed.setVisibility(View.GONE);
         }
+
 
         OrderListSubAdapter OrderListAdapter = new OrderListSubAdapter(context, order.productBeans);
         final LinearLayoutManager addManager1 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
@@ -100,6 +135,25 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                 statusListener.onCancelClick(order.id);
             }
         });
+        holder.inprogress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                statusListener.InProgress(order);
+            }
+        });
+        holder.trackOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                statusListener.onTrackOrder(order.id);
+            }
+        });
+        holder.assignDboy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                statusListener.onAssignDboy(order);
+            }
+        });
+
     }
 
     @Override
@@ -126,7 +180,6 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                             filteredList.add(row);
                         } else if (row.getPhone().contains(charString.toLowerCase())) {
                             filteredList.add(row);
-
                         }
                     }
 
@@ -157,10 +210,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, price, status, quantity, phone, orderedOn, address,reason;
+        public TextView name, price, status, quantity, phone, orderedOn, address, reason,order_id;
         public ImageView thumbnail;
         public RecyclerView cart_sub_list;
-        ImageView deliveredBtn, whatsapp, call, cancalOrder;
+        Button deliveredBtn, whatsapp, call, cancalOrder,
+                assignDboy, trackOrder, assignShop, inprogress, completed, bill;
 
         public MyViewHolder(View view) {
             super(view);
@@ -179,7 +233,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             cancalOrder = view.findViewById(R.id.cancalOrder);
             call = view.findViewById(R.id.call);
             address = view.findViewById(R.id.address);
-            reason=view.findViewById(R.id.reason);
+            reason = view.findViewById(R.id.reason);
+            assignDboy = view.findViewById(R.id.assignDboy);
+            inprogress = view.findViewById(R.id.inprogress);
+            completed = view.findViewById(R.id.completed);
+            trackOrder = view.findViewById(R.id.trackOrder);
+            order_id = view.findViewById(R.id.order_id);
+
         }
     }
 }

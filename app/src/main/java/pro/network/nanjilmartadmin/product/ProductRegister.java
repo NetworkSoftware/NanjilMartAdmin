@@ -59,7 +59,11 @@ import pro.network.nanjilmartadmin.app.Imageutils;
 
 import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
 import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORY;
+import static pro.network.nanjilmartadmin.app.Appconfig.COSMETICS;
+import static pro.network.nanjilmartadmin.app.Appconfig.DATAFETCHALL_SHOP;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_CREATE;
+import static pro.network.nanjilmartadmin.app.Appconfig.SHOPNAME;
+import static pro.network.nanjilmartadmin.app.Appconfig.SUBCATEGORIES_GET_ALL;
 
 /**
  * Created by user_1 on 11-07-2018.
@@ -79,6 +83,8 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
     private ProgressDialog pDialog;
     MaterialBetterSpinner category;
     MaterialBetterSpinner stock_update;
+    MaterialBetterSpinner shopname;
+    MaterialBetterSpinner sub_category;
 
     private String[] STOCKUPDATE = new String[]{
             "In Stock", "Currently Unavailable",
@@ -115,7 +121,6 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         imagelist.setLayoutManager(addManager1);
         imagelist.setAdapter(maddImageAdapter);
         category = (MaterialBetterSpinner) findViewById(R.id.category);
-
         ArrayAdapter<String> titleAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, CATEGORY);
         category.setAdapter(titleAdapter);
@@ -128,10 +133,33 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
                 category.setThreshold(1);
             }
         });
+        sub_category = (MaterialBetterSpinner) findViewById(R.id.sub_category);
+        ArrayAdapter<String> titlesubAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, COSMETICS);
+        sub_category.setAdapter(titlesubAdapter);
+        sub_category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(ProductRegister.this,
+                        android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(COSMETICS[position]));
+                sub_category.setAdapter(brandAdapter);
+                sub_category.setThreshold(1);
+            }
+        });
 
-
-
-
+        shopname = (MaterialBetterSpinner) findViewById(R.id.shopname);
+        ArrayAdapter<String> shopAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, SHOPNAME);
+        shopname.setAdapter(shopAdapter);
+        shopname.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(ProductRegister.this,
+                        android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(SHOPNAME[position]));
+                shopname.setAdapter(brandAdapter);
+                shopname.setThreshold(1);
+            }
+        });
 
         stock_update = (MaterialBetterSpinner) findViewById(R.id.stock_update);
 
@@ -161,6 +189,22 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
 
 
 
+        category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (category.getText().toString().equalsIgnoreCase(("COSMETICS"))) {
+                    sub_category.setVisibility(View.VISIBLE);
+                    shopname.setVisibility(View.GONE);
+                }else if(category.getText().toString().equalsIgnoreCase(("FOOD"))){
+                    shopname.setVisibility(View.VISIBLE);
+                    sub_category.setVisibility(View.GONE);
+                }else {
+                    shopname.setVisibility(View.GONE);
+                    sub_category.setVisibility(View.GONE);
+                }
+            }
+
+        });
 
         submit = (TextView) findViewById(R.id.submit);
 
@@ -170,7 +214,7 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
 
                 if (category.getText().toString().length() <= 0) {
                     category.setError("Select the Category");
-                } else if (brand.getText().toString().length() <= 0) {
+                }else if (brand.getText().toString().length() <= 0) {
                     brand.setError("Select the Brand");
                 } else if (model.getText().toString().length() <= 0) {
                     model.setError("Enter the Model");
@@ -189,6 +233,8 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
         });
 
         getAllCategories();
+        getAllSubCategories();
+        getAllShopname();
     }
 
     private void registerUser() {
@@ -230,6 +276,8 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("category", category.getText().toString());
                 localHashMap.put("brand", brand.getText().toString());
+                localHashMap.put("sub_category", sub_category.getText().toString());
+                localHashMap.put("shopname", shopname.getText().toString());
                 localHashMap.put("model", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
                 localHashMap.put("image", new Gson().toJson(samplesList));
@@ -279,6 +327,80 @@ public class ProductRegister extends AppCompatActivity implements Imageutils.Ima
                         ArrayAdapter<String> titleAdapter = new ArrayAdapter<String>(ProductRegister.this,
                                 android.R.layout.simple_dropdown_item_1line, CATEGORY);
                         category.setAdapter(titleAdapter);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
+                return localHashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+    private void getAllShopname() {
+        String tag_string_req = "req_register";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                DATAFETCHALL_SHOP, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int success = jObj.getInt("success");
+
+                    if (success == 1) {
+                        JSONArray jsonArray = jObj.getJSONArray("data");
+                        SHOPNAME = new String[jsonArray.length()];
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            SHOPNAME[i] = jsonArray.getJSONObject(i).getString("title");
+                        }
+                        ArrayAdapter<String> shopAdapter = new ArrayAdapter<String>(ProductRegister.this,
+                                android.R.layout.simple_dropdown_item_1line, SHOPNAME);
+                        shopname.setAdapter(shopAdapter);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
+                return localHashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+    private void getAllSubCategories() {
+        String tag_string_req = "req_register";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                SUBCATEGORIES_GET_ALL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int success = jObj.getInt("success");
+
+                    if (success == 1) {
+                        JSONArray jsonArray = jObj.getJSONArray("data");
+                        COSMETICS = new String[jsonArray.length()];
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            COSMETICS[i] = jsonArray.getJSONObject(i).getString("title");
+                        }
+                        ArrayAdapter<String> subcatAdapter = new ArrayAdapter<String>(ProductRegister.this,
+                                android.R.layout.simple_dropdown_item_1line, COSMETICS);
+                        sub_category.setAdapter(subcatAdapter);
                     }
                 } catch (JSONException e) {
                 }

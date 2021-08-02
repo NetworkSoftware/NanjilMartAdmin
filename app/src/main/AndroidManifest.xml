@@ -121,10 +121,7 @@
             android:name="pro.network.nanjilmartadmin.categories.CategoriesRegister"
             android:label="categories Register"
             android:theme="@style/AppThemeWhite" />
-        <activity
-            android:name="pro.network.nanjilmartadmin.news.NewsRegister"
-            android:label="அறிவிப்பு"
-            android:theme="@style/AppThemeWhite" />
+
 
         <activity
             android:name="pro.network.nanjilmartadmin.categories.CategoriesUpdate"
@@ -133,6 +130,30 @@
         <activity
             android:name="pro.network.nanjilmartadmin.categories.MainActivityCategories"
             android:label="categories Main"
+            android:theme="@style/AppThemeSe.NoActionBar" />
+        <activity
+            android:name="pro.network.nanjilmartadmin.order.Order_TimelineActivity"
+            android:label="categories Register"
+            android:theme="@style/AppThemeWhite" />
+        <activity
+            android:name="pro.network.nanjilmartadmin.deliveryboy.CreateDeliveryBoy"
+            android:label="categories Register"
+            android:theme="@style/AppThemeWhite" />
+        <activity
+            android:name="pro.network.nanjilmartadmin.deliveryboy.MainActivityDelivery"
+            android:label="categories Register"
+            android:theme="@style/AppThemeWhite" />
+        <activity
+            android:name="pro.network.nanjilmartadmin.shopreg.ShopRegister"
+            android:label="categories Register"
+            android:theme="@style/AppThemeWhite" />
+        <activity
+            android:name="pro.network.nanjilmartadmin.shopreg.ShopUpdate"
+            android:label="categories Register"
+            android:theme="@style/AppThemeWhite" />
+        <activity
+            android:name="pro.network.nanjilmartadmin.shopreg.MainActivityShop"
+            android:label="categories Register"
             android:theme="@style/AppThemeSe.NoActionBar" />
 
         <service

@@ -11,6 +11,7 @@ import pro.network.nanjilmartadmin.banner.MainActivityBanner;
 import pro.network.nanjilmartadmin.categories.MainActivityCategories;
 import pro.network.nanjilmartadmin.order.MainActivityOrder;
 import pro.network.nanjilmartadmin.product.MainActivityProduct;
+import pro.network.nanjilmartadmin.shopreg.MainActivityShop;
 
 public class
 
@@ -37,6 +38,16 @@ NaviActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent io = new Intent(NaviActivity.this, MainActivityProduct.class);
+                startActivity(io);
+
+            }
+        });
+
+        CardView shop = (CardView) findViewById(R.id.shop);
+        shop.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, MainActivityShop.class);
                 startActivity(io);
 
             }

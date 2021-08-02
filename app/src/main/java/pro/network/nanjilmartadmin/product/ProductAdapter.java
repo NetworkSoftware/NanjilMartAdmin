@@ -34,13 +34,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     private ContactsAdapterListener listener;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView model,price,brand,stock_update,description;
+        public TextView model,price,brand,stock_update,description,sub_category,shopname;
         public ImageView thumbnail;
 
         public MyViewHolder(View view) {
             super(view);
             model = view.findViewById(R.id.model);
-
+            sub_category = view.findViewById(R.id.sub_category);
+            shopname = view.findViewById(R.id.shopname);
             brand = view.findViewById(R.id.brand);
             price = view.findViewById(R.id.price);
             stock_update = view.findViewById(R.id.stock_update_row);
@@ -78,17 +79,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         holder.brand.setText(product.getBrand());
         holder.model.setText(product.getModel());
         holder.price.setText("₹ "+product.getPrice());
+        holder.shopname.setText(product.getShopname());
+        holder.sub_category.setText(product.getSub_category());
         holder.stock_update.setText(product.getStock_update());
 
-       /* ArrayList<String> images = new Gson().fromJson(product.image, (Type) List.class);
-
-        GlideApp.with(context)
-                .load(images.get(0))
-                .diskCacheStrategy(DiskCacheStrategy.ALL)
-                .skipMemoryCache(false)
-                .placeholder(R.drawable.mobile_phone)
-                .into(holder.thumbnail);
-*/
         ArrayList<String> urls = new Gson().fromJson(product.image, (Type) List.class);
         new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

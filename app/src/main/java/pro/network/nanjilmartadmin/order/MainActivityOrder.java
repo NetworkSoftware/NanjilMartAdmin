@@ -10,12 +10,17 @@ import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -32,9 +37,13 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -51,6 +60,8 @@ import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
 import pro.network.nanjilmartadmin.product.Product;
 
+import static pro.network.nanjilmartadmin.app.Appconfig.DELIVERY_GET_ALL;
+import static pro.network.nanjilmartadmin.app.Appconfig.ORDER_ASSIGN_DBOY;
 import static pro.network.nanjilmartadmin.app.Appconfig.ORDER_CHANGE_STATUS;
 import static pro.network.nanjilmartadmin.app.Appconfig.ORDER_GET_ALL;
 
@@ -59,6 +70,8 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     ProgressDialog progressDialog;
     Button loadMore;
     int offset = 0;
+    ArrayList<String> dboysName = new ArrayList<>();
+    Map<String, String> idNameMap = new HashMap<>();
     private RecyclerView recyclerView;
     private List<Order> orderList;
     private OrderAdapter mAdapter;
@@ -110,6 +123,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                 fetchContacts();
             }
         });
+        fetchDboys();
     }
 
     private void fetchContacts() {
@@ -286,7 +300,144 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         fetchContacts();
 
     }
+    private void showBottomDialog(Order order) {
+        final RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(MainActivityOrder.this);
+        LayoutInflater inflater = MainActivityOrder.this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.bottom_assign_dboy, null);
 
+        TextView title = dialogView.findViewById(R.id.title);
+        final AutoCompleteTextView dboyName = dialogView.findViewById(R.id.dboyName);
+        final TextInputLayout dboylayout = dialogView.findViewById(R.id.dboylayout);
+        final MaterialButton assignDboy = dialogView.findViewById(R.id.assignDboy);
+
+        title.setText("Assign Delivery boy");
+        dboylayout.setHint("Select Delivery boy");
+        ArrayAdapter adapter = new ArrayAdapter(MainActivityOrder.this,
+                android.R.layout.simple_list_item_1, dboysName);
+        dboyName.setThreshold(1);
+        dboyName.setAdapter(adapter);
+
+
+        assignDboy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (dboyName.getText().toString().length() <= 0) {
+                    Toast.makeText(getApplicationContext(), "Select Valid Entity", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    assignDboyService(order, idNameMap.get(dboyName.getText().toString()), mBottomSheetDialog);
+                }
+
+            }
+
+        });
+        mBottomSheetDialog.setContentView(dialogView);
+        mBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mBottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RoundedBottomSheetDialog d = (RoundedBottomSheetDialog) dialog;
+                        FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
+                        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }, 0);
+            }
+        });
+        mBottomSheetDialog.show();
+
+    }
+    private void fetchDboys() {
+        String tag_string_req = "req_register";
+        progressDialog.setMessage("Processing ...");
+        showDialog();
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                DELIVERY_GET_ALL, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int success = jObj.getInt("success");
+                    if (success == 1) {
+                        JSONArray jsonArray = jObj.getJSONArray("data");
+                        idNameMap = new HashMap<>();
+                        dboysName = new ArrayList<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            idNameMap.put(jsonObject.getString("name"), jsonObject.getString("id"));
+                            dboysName.add(jsonObject.getString("name"));
+                        }
+                    }
+                } catch (JSONException e) {
+                }
+                fetchContacts();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideDialog();
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
+                localHashMap.put("status", "active");
+                return localHashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+    private void assignDboyService(final Order order, final String dboyid,
+                                   final RoundedBottomSheetDialog mBottomSheetDialog) {
+        String tag_string_req = "req_register";
+        showDialog();
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                ORDER_ASSIGN_DBOY, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("Register Response: ", response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int success = jObj.getInt("success");
+                    Toast.makeText(getApplication(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
+                    if (success == 1) {
+                        fetchContacts();
+                        if (mBottomSheetDialog != null) {
+                            mBottomSheetDialog.cancel();
+                        }
+                    }
+
+                } catch (JSONException e) {
+                    Log.e("xxxxxxxxxxx", e.toString());
+                    Toast.makeText(getApplication(), "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideDialog();
+                Log.e("Registration Error: ", error.getMessage());
+                Toast.makeText(getApplication(),
+                        "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
+                localHashMap.put("id", order.getId());
+                localHashMap.put("dboyid", dboyid);
+                return localHashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
     @Override
     public void onDeliveredClick(String id) {
         statusChange(id, "Delivered", "Delivered by admin");
@@ -350,6 +501,29 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         final AlertDialog b = dialogBuilder.create();
         b.setCancelable(false);
         b.show();
+    }
+
+    @Override
+    public void onAssignDboy(Order order) {
+        showBottomDialog(order);
+    }
+
+    @Override
+    public void onTrackOrder(String id) {
+        Intent intent = new Intent(MainActivityOrder.this, Order_TimelineActivity.class);
+        intent.putExtra("id", id);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onCourier(String id) {
+
+    }
+
+    @Override
+    public void InProgress(Order order) {
+        statusChange(order.getId(), "InProgress", "InProgress By Admin");
+
     }
 
 
