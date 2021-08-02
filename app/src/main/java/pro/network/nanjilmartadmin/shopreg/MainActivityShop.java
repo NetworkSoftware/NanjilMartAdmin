@@ -43,7 +43,7 @@ import pro.network.nanjilmartadmin.categories.CategoriesUpdate;
 import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
 import static pro.network.nanjilmartadmin.app.Appconfig.DATAFETCHALL_SHOP;
 
-public class MainActivityShop extends AppCompatActivity implements CategoriesClick {
+public class MainActivityShop extends AppCompatActivity implements ShopClick {
     private static final String TAG = MainActivityShop.class.getSimpleName();
     ProgressDialog progressDialog;
     private RecyclerView recyclerView;

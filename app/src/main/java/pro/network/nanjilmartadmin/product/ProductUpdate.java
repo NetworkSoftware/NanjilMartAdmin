@@ -7,14 +7,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,6 +18,14 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -63,6 +63,8 @@ import pro.network.nanjilmartadmin.app.Imageutils;
 
 import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
 import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORY;
+import static pro.network.nanjilmartadmin.app.Appconfig.DATAFETCHALL_SHOP;
+import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_CREATE;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_DELETE;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_UPDATE;
 import static pro.network.nanjilmartadmin.app.Appconfig.SHOPNAME;
@@ -74,35 +76,30 @@ import static pro.network.nanjilmartadmin.app.Appconfig.SHOPNAME;
 public class ProductUpdate extends AppCompatActivity implements Imageutils.ImageAttachmentListener, ImageClick {
 
 
+    private final String[] STOCKUPDATE = new String[]{
+            "In Stock", "Currently Unavailable",
+    };
+    private final String[] SUBCATRGORIES = new String[]{
+            "In Stock", "Currently Unavailable",
+    };
     AutoCompleteTextView brand;
     EditText model;
     EditText price;
-    EditText  description;
-
-
-    private ProgressDialog pDialog;
-    private RecyclerView imagelist;
-    private ArrayList<String> samplesList = new ArrayList<>();
+    EditText description;
     AddImageAdapter maddImageAdapter;
-
     MaterialBetterSpinner category;
     MaterialBetterSpinner shopname;
-    MaterialBetterSpinner sub_category;
     MaterialBetterSpinner stock_update;
-
-    private String[] STOCKUPDATE = new String[]{
-            "In Stock", "Currently Unavailable",
-    };
-    private String[] SUBCATRGORIES = new String[]{
-            "In Stock", "Currently Unavailable",
-    };
     String studentId = null;
-
     TextView submit;
     Imageutils imageutils;
     ImageView image_placeholder, image_wallpaper;
     CardView itemsAdd;
+    private ProgressDialog pDialog;
+    private RecyclerView imagelist;
+    private ArrayList<String> samplesList = new ArrayList<>();
     private String imageUrl = "";
+    private Product contact = null;
 
 
     @Override
@@ -136,16 +133,6 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         description = findViewById(R.id.description);
 
 
-        sub_category = (MaterialBetterSpinner) findViewById(R.id.sub_category);
-        ArrayAdapter<String> subcatAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, STOCKUPDATE);
-        sub_category.setAdapter(subcatAdapter);
-        sub_category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            }
-        });
-
         shopname = (MaterialBetterSpinner) findViewById(R.id.shopname);
         ArrayAdapter<String> shopAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SHOPNAME);
@@ -176,15 +163,23 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         category.setAdapter(categoryAdapter);
         category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                shopname.setVisibility(View.GONE);
                 ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(ProductUpdate.this,
-                        android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(CATEGORY[position]));
+                        android.R.layout.simple_dropdown_item_1line, new String[0]);
+                if (category.getText().toString().equalsIgnoreCase(("COSMETICS"))) {
+                    brandAdapter = new ArrayAdapter<String>(ProductUpdate.this,
+                            android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(CATEGORY[i]));
+                } else if (category.getText().toString().equalsIgnoreCase(("FOOD"))) {
+                    shopname.setVisibility(View.VISIBLE);
+                }
                 brand.setAdapter(brandAdapter);
                 brand.setThreshold(1);
+                brand.setText("");
             }
         });
 
-         submit = (TextView) findViewById(R.id.submit);
+        submit = (TextView) findViewById(R.id.submit);
         submit.setText("UPDATE");
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -212,10 +207,9 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
 
         try {
 
-            Product contact = (Product) getIntent().getSerializableExtra("data");
+            contact = (Product) getIntent().getSerializableExtra("data");
             category.setText(contact.category);
             brand.setText(contact.brand);
-            sub_category.setText(contact.sub_category);
             shopname.setText(contact.shopname);
             model.setText(contact.model);
             price.setText(contact.price);
@@ -235,17 +229,23 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
 
         }
         getAllCategories();
+        getAllShopname();
+
     }
 
     private void registerUser() {
         String tag_string_req = "req_register";
         pDialog.setMessage("Updateing ...");
         showDialog();
+        String url = PRODUCT_CREATE;
+        if (contact != null) {
+            url = PRODUCT_UPDATE;
+        }
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                PRODUCT_UPDATE, new Response.Listener<String>() {
+                url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("Register Response: ", response.toString());
+                Log.d("Register Response: ", response);
                 hideDialog();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -274,13 +274,15 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("category", category.getText().toString());
-                localHashMap.put("sub_category", sub_category.getText().toString());
+                localHashMap.put("sub_category", "sub_category");
                 localHashMap.put("shopname", shopname.getText().toString());
                 localHashMap.put("brand", brand.getText().toString());
                 localHashMap.put("model", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
                 localHashMap.put("stock_update", stock_update.getText().toString());
-                localHashMap.put("id", studentId);
+                if (contact != null) {
+                    localHashMap.put("id", studentId);
+                }
                 localHashMap.put("image", new Gson().toJson(samplesList));
                 localHashMap.put("description", description.getText().toString());
                 return localHashMap;
@@ -289,6 +291,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         strReq.setRetryPolicy(Appconfig.getPolicy());
         AppController.getInstance().addToRequestQueue(strReq);
     }
+
     private void getAllCategories() {
         String tag_string_req = "req_register";
         StringRequest strReq = new StringRequest(Request.Method.POST,
@@ -326,6 +329,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         strReq.setRetryPolicy(Appconfig.getPolicy());
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
+
     private void deleteUser() {
         String tag_string_req = "req_register";
         pDialog.setMessage("Processing ...");
@@ -334,7 +338,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 PRODUCT_DELETE, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                Log.d("Register Response: ", response.toString());
+                Log.d("Register Response: ", response);
                 hideDialog();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
@@ -397,10 +401,10 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
         String path = getCacheDir().getPath() + File.separator + "ImageAttach" + File.separator;
         imageutils.createImage(file, filename, path, false);
-        String storedPath=imageutils.createImage(file, filename, path, false);
+        String storedPath = imageutils.createImage(file, filename, path, false);
         pDialog.setMessage("Uploading...");
         showDialog();
-        new UploadFileToServer().execute(Appconfig.compressImage(storedPath,ProductUpdate.this));
+        new UploadFileToServer().execute(Appconfig.compressImage(storedPath, ProductUpdate.this));
     }
 
     @Override
@@ -420,15 +424,109 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     }
 
 
-
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        imageutils.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu options from the res/menu/menu_editor.xml file.
+        // This adds menu items to the app bar.
+        getMenuInflater().inflate(R.menu.menu_delete, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // User clicked on a menu option in the app bar overflow menu
+        switch (item.getItemId()) {
+            case R.id.action_delete:
+                AlertDialog diaBox = AskOption();
+                diaBox.show();
+                return true;
+            case android.R.id.home:
+                finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private AlertDialog AskOption() {
+        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
+                // set message, title, and icon
+                .setTitle("Delete")
+                .setMessage("Do you want to Delete")
+                .setIcon(R.drawable.ic_delete_black_24dp)
+
+                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        //your deleting code
+                        dialog.dismiss();
+                        deleteUser();
+                    }
+
+                })
+                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+
+                    }
+                })
+                .create();
+
+        return myQuittingDialogBox;
+    }
+
+    private void getAllShopname() {
+        String tag_string_req = "req_register";
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                DATAFETCHALL_SHOP, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int success = jObj.getInt("success");
+
+                    if (success == 1) {
+                        JSONArray jsonArray = jObj.getJSONArray("data");
+                        SHOPNAME = new String[jsonArray.length()];
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            SHOPNAME[i] = jsonArray.getJSONObject(i).getString("shop_name");
+                        }
+                        ArrayAdapter<String> shopAdapter = new ArrayAdapter<String>(ProductUpdate.this,
+                                android.R.layout.simple_dropdown_item_1line, SHOPNAME);
+                        shopname.setAdapter(shopAdapter);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
+                return localHashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
     private class UploadFileToServer extends AsyncTask<String, Integer, String> {
-        String filepath;
         public long totalSize = 0;
+        String filepath;
 
         @Override
         protected void onPreExecute() {
@@ -440,7 +538,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
 
         @Override
         protected void onProgressUpdate(Integer... progress) {
-            pDialog.setMessage("Uploading..." + (String.valueOf(progress[0])));
+            pDialog.setMessage("Uploading..." + (progress[0]));
         }
 
         @Override
@@ -501,7 +599,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         protected void onPostExecute(String result) {
             Log.e("Response from server: ", result);
             try {
-                JSONObject jsonObject = new JSONObject(result.toString());
+                JSONObject jsonObject = new JSONObject(result);
                 if (!jsonObject.getBoolean("error")) {
                     imageUrl = Appconfig.ip + "/images/" + imageutils.getfilename_from_path(filepath);
                     samplesList.add(imageUrl);
@@ -524,63 +622,6 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
 
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        imageutils.onActivityResult(requestCode, resultCode, data);
-
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu options from the res/menu/menu_editor.xml file.
-        // This adds menu items to the app bar.
-        getMenuInflater().inflate(R.menu.menu_delete, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // User clicked on a menu option in the app bar overflow menu
-        switch (item.getItemId()) {
-            case R.id.action_delete:
-                AlertDialog diaBox = AskOption();
-                diaBox.show();
-                return true;
-            case android.R.id.home:
-                finish();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    private AlertDialog AskOption() {
-        AlertDialog myQuittingDialogBox = new AlertDialog.Builder(this)
-                // set message, title, and icon
-                .setTitle("Delete")
-                .setMessage("Do you want to Delete")
-                .setIcon(R.drawable.ic_delete_black_24dp)
-
-                .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
-
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        //your deleting code
-                        dialog.dismiss();
-                        deleteUser();
-                    }
-
-                })
-                .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        dialog.dismiss();
-
-                    }
-                })
-                .create();
-
-        return myQuittingDialogBox;
-    }
 }
 
 

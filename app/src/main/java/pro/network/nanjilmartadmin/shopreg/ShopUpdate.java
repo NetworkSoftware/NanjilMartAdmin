@@ -99,7 +99,7 @@ public class ShopUpdate extends AppCompatActivity {
 
         itemsAdd = (CardView) findViewById(R.id.itemsAdd);
 
-        shop_name = (EditText) findViewById(R.id.shopName);
+        shop_name = (EditText) findViewById(R.id.shop_name);
         phone = (EditText) findViewById(R.id.phone);
         stock_update = (MaterialBetterSpinner) findViewById(R.id.stock_update);
 

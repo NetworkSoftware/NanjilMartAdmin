@@ -81,9 +81,9 @@ public class ShopRegister extends AppCompatActivity{
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        shop_name=(EditText) findViewById(R.id.shop_name);
-        phone=(EditText) findViewById(R.id.phone);
-        stock_update = (MaterialBetterSpinner) findViewById(R.id.stock_update);
+        shop_name= findViewById(R.id.shop_name);
+        phone= findViewById(R.id.phone);
+        stock_update =  findViewById(R.id.stock_update);
         ArrayAdapter<String> stockAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, STOCKUPDATE);
         stock_update.setAdapter(stockAdapter);
@@ -92,7 +92,7 @@ public class ShopRegister extends AppCompatActivity{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             }
         });
-        submit = (TextView) findViewById(R.id.submit);
+        submit =  findViewById(R.id.submit);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

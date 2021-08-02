@@ -52,7 +52,6 @@ public class Appconfig {
     public static final String CATEGORIES_UPDATE = ip + "/update_category.php";
     public static final String CATEGORIES_DELETE = ip + "/delete_category.php";
     public static final String CATEGORIES_GET_ALL = ip + "/get_all_category.php";
-    public static final String SUBCATEGORIES_GET_ALL = ip + "/get_all_category.php";
 
 
     public static final String NEWS_CREATE = ip + "/create_news.php";
@@ -287,6 +286,7 @@ public class Appconfig {
 
     public static Map<String, String[]> stringMap = new HashMap<String, String[]>() {{
         put("Fashion",new String[]{});
+        put("COSMETICS",new String[]{"Eye Liner", "Lipstic","All Makeup Kits"});
         put("Mobiles and Tablets",new String[]{});
         put("Consumer Electronics",new String[]{});
         put("Books",new String[]{});

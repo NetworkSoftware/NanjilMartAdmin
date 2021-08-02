@@ -78,19 +78,7 @@
                         android:textColorHint="#c6c6c6"
                         android:textSize="15dp"
                         app:met_floatingLabel="normal" />
-                    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                        android:id="@+id/sub_category"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="5dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:visibility="gone"
-                        android:hint="Select the Sub Category"
-                        android:textColor="@color/black"
-                        android:textColorHint="#c6c6c6"
-                        android:textSize="15dp"
-                        app:met_floatingLabel="normal" />
+
                     <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                         android:id="@+id/shopname"
                         android:layout_width="match_parent"

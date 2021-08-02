@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,10 +16,11 @@ import pro.network.nanjilmartadmin.R;
 public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.MyViewHolder> {
     private Context context;
     private List<Shop> categoriesList;
-    private MainActivityShop bannerClick;
+    private ShopClick bannerClick;
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+        private final LinearLayout linear;
         public ImageView  cancel;
         public TextView shop_name,phone,stock_update;
 
@@ -31,12 +33,12 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.MyViewHolder> 
             shop_name = view.findViewById(R.id.shop_name);
             phone = view.findViewById(R.id.phone);
             stock_update = view.findViewById(R.id.stock_update);
-
+            linear=view.findViewById(R.id.linear);
         }
     }
 
 
-    public ShopAdapter(Context context, List<Shop> categoriesList, MainActivityShop bannerClick) {
+    public ShopAdapter(Context context, List<Shop> categoriesList, ShopClick bannerClick) {
         this.context = context;
         this.categoriesList = categoriesList;
         this.bannerClick =  bannerClick;
@@ -63,6 +65,14 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.MyViewHolder> 
                 bannerClick.onDeleteClick(position);
             }
         });
+
+        holder.linear.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bannerClick.onItemClick(position);
+            }
+        });
+
     }
 
     @Override

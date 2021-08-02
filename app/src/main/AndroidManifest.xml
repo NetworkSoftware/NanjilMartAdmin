@@ -93,7 +93,7 @@
         <activity
             android:name="pro.network.nanjilmartadmin.order.MainActivityOrder"
             android:label="@string/app_name"
-            android:theme="@style/AppThemeSe.NoActionBar">
+            android:theme="@style/AppThemeNowhite">
 
             <meta-data
                 android:name="android.app.searchable"
@@ -105,10 +105,6 @@
 
         </activity>
 
-        <activity
-            android:name="pro.network.nanjilmartadmin.product.ProductRegister"
-            android:label="Stock Register"
-            android:theme="@style/AppThemeWhite" />
         <activity
             android:name="pro.network.nanjilmartadmin.banner.BannerRegister"
             android:label="Banner Upload"

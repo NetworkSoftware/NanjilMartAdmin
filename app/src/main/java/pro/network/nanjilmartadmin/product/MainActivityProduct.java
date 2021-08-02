@@ -82,7 +82,7 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
         addStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivityProduct.this, ProductRegister.class);
+                Intent intent = new Intent(MainActivityProduct.this, ProductUpdate.class);
                 startActivity(intent);
             }
         });
