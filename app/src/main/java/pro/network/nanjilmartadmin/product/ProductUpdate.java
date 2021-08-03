@@ -27,9 +27,11 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -180,7 +182,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         });
 
         submit = (TextView) findViewById(R.id.submit);
-        submit.setText("UPDATE");
+        submit.setText("SUBMIT");
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -206,7 +208,8 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
 
 
         try {
-
+            //  submit.setText("UPDATE");
+            //   getSupportActionBar().setTitle("Stock Update");
             contact = (Product) getIntent().getSerializableExtra("data");
             category.setText(contact.category);
             brand.setText(contact.brand);
@@ -248,10 +251,15 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 Log.d("Register Response: ", response);
                 hideDialog();
                 try {
+
                     JSONObject jsonObject = new JSONObject(response);
                     boolean success = jsonObject.getBoolean("success");
                     String msg = jsonObject.getString("message");
                     if (success) {
+                        final String shopname = model.getText().toString();
+                        sendNotification(brand.getText().toString() + " " + price.getText().toString()
+                                , shopname.length() > 30 ? shopname.substring(0, 29) + "..." :
+                                        shopname, jsonObject.getString("key"));
                         finish();
                     }
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
@@ -374,6 +382,52 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         AppController.getInstance().addToRequestQueue(strReq);
     }
 
+    private void sendNotification(String s, String title, String description) {
+        String tag_string_req = "req_register";
+        showDialog();
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("to", "/topics/allDevices");
+            jsonObject.put("priority", "high");
+            JSONObject dataObject = new JSONObject();
+            dataObject.put("title", title);
+            dataObject.put("message", description);
+            jsonObject.put("data", dataObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest strReq = new JsonObjectRequest(Request.Method.POST,
+                "https://fcm.googleapis.com/fcm/send", jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Register Response: ", response.toString());
+                hideDialog();
+                finish();
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                finish();
+                hideDialog();
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
+                return localHashMap;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap hashMap = new HashMap();
+                hashMap.put("Content-Type", "application/json");
+                hashMap.put("Authorization", "key=AAAAbHOKlYE:APA91bHduvDJpa5uS6oEtFH5y4-1Q2CK_3O0w4sJpaTRV4ALn2EAOpcKublZMKY1Qq7e-8M1hfM5rT0pJRErmg5790bjS82WGdXS_5rtBHZCbwQ-YLvMRPBjqn6LTL168tTjx6skLII_");
+                return hashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
 
     private void showDialog() {
         if (!pDialog.isShowing())

@@ -80,6 +80,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         holder.model.setText(product.getModel());
         holder.price.setText("₹ "+product.getPrice());
         holder.shopname.setText(product.getShopname());
+        holder.shopname.setVisibility(View.VISIBLE);
+        if(product.getShopname().equalsIgnoreCase("NA")){
+            holder.shopname.setVisibility(View.GONE);
+        }
         holder.sub_category.setText(product.getSub_category());
         holder.stock_update.setText(product.getStock_update());
 
@@ -111,8 +115,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                     List<Product> filteredList = new ArrayList<>();
                     for (Product row : productList) {
 
-                        // name match condition. this might differ depending on your requirement
-                        // here we are looking for name or phone number match
                         String val=row.getBrand();
                         if (val.toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);

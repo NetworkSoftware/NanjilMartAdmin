@@ -65,7 +65,7 @@ public class ShopRegister extends AppCompatActivity{
     EditText shop_name,phone;
     MaterialBetterSpinner stock_update;
     private String[] STOCKUPDATE = new String[]{
-            "In Stock", "Currently Unavailable",
+            "Available", "Currently Unavailable",
     };
     String studentId = null;
 
