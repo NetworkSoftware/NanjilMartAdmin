@@ -1,11 +1,11 @@
 <resources>
-    <string name="app_name">NANJIL MART ADMIN</string>
+    <string name="app_name">NANJIL EVENING MART ADMIN</string>
 
     <string name="action_settings">Settings</string>
     <string name="toolbar_title">Stocks</string>
     <string name="action_search">Search</string>
     <string name="search_hint">Type name…</string>
-    <string name="hint_pet_name">NANJIL MART</string>
+    <string name="hint_pet_name">NANJIL EVENING MART</string>
     <string name="hint_imei_name">IMEI Number</string>
 
     <string name="hint_price">Price</string>

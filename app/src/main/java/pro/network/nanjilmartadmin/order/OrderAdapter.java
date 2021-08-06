@@ -153,6 +153,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
                 statusListener.onAssignDboy(order);
             }
         });
+        holder.bill.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                statusListener.bill(order);
+            }
+        });
 
     }
 
@@ -239,6 +245,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             completed = view.findViewById(R.id.completed);
             trackOrder = view.findViewById(R.id.trackOrder);
             order_id = view.findViewById(R.id.order_id);
+            bill = view.findViewById(R.id.bill);
 
         }
     }

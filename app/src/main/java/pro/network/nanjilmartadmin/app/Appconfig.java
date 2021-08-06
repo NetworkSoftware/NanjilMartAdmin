@@ -223,7 +223,11 @@ public class Appconfig {
         return filename;
 
     }
-
+    public static String intToString(int num, int digits) {
+        String output = Integer.toString(num);
+        while (output.length() < digits) output = "0" + output;
+        return output;
+    }
     public static String getFilename(Context context) {
         File file = new File(context.getCacheDir().getPath(), "MyFolder/Images");
         if (!file.exists()) {

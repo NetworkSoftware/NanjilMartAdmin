@@ -11,5 +11,6 @@ public interface StatusListener {
     void onTrackOrder(String id);
     void onCourier(String id);
     void InProgress(Order order );
+    void bill(Order position);
 
 }

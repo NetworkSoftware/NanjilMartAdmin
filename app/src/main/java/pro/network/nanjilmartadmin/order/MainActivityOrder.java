@@ -28,6 +28,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,11 +46,16 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Rectangle;
+import com.itextpdf.text.pdf.PdfWriter;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,6 +64,7 @@ import java.util.Map;
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
+import pro.network.nanjilmartadmin.app.PdfConfig;
 import pro.network.nanjilmartadmin.product.Product;
 
 import static pro.network.nanjilmartadmin.app.Appconfig.DELIVERY_GET_ALL;
@@ -205,7 +212,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("offset", offset * 10 + "");
-                if(getIntent().getStringExtra("status")!=null) {
+                if (getIntent().getStringExtra("status") != null) {
                     localHashMap.put("status", getIntent().getStringExtra("status"));
                 }
                 return localHashMap;
@@ -300,6 +307,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         fetchContacts();
 
     }
+
     private void showBottomDialog(Order order) {
         final RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(MainActivityOrder.this);
         LayoutInflater inflater = MainActivityOrder.this.getLayoutInflater();
@@ -350,6 +358,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         mBottomSheetDialog.show();
 
     }
+
     private void fetchDboys() {
         String tag_string_req = "req_register";
         progressDialog.setMessage("Processing ...");
@@ -392,6 +401,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
 
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
+
     private void assignDboyService(final Order order, final String dboyid,
                                    final RoundedBottomSheetDialog mBottomSheetDialog) {
         String tag_string_req = "req_register";
@@ -438,6 +448,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         strReq.setRetryPolicy(Appconfig.getPolicy());
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
+
     @Override
     public void onDeliveredClick(String id) {
         statusChange(id, "Delivered", "Delivered by admin");
@@ -526,6 +537,11 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
 
     }
 
+    @Override
+    public void bill(Order position) {
+          printFunction(MainActivityOrder.this, position);
+    }
+
 
     private void statusChange(final String id, final String status, final String reason) {
         String tag_string_req = "req_register";
@@ -579,5 +595,62 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     private void hideDialog() {
         if (progressDialog.isShowing())
             progressDialog.dismiss();
+    }
+
+    public void printFunction(Context context, Order mainbean) {
+
+        try {
+
+            String path = getExternalCacheDir().getPath() + "/PDF";
+            File dir = new File(path);
+            if (!dir.exists())
+                dir.mkdirs();
+            Log.d("PDFCreator", "PDF Path: " + path);
+            File file = new File(dir, mainbean.getName().replace(" ", "_") + "_" + mainbean.getId() + ".pdf");
+            if (file.exists()) {
+                file.delete();
+            }
+            FileOutputStream fOut = new FileOutputStream(file);
+
+            float left = 0;
+            float right = 0;
+            float top = 0;
+            float bottom = 0;
+            com.itextpdf.text.Document document = new Document(new Rectangle(288, 512));
+            PdfWriter pdfWriter = PdfWriter.getInstance(document, fOut);
+
+
+            document.open();
+            PdfConfig.addMetaData(document);
+
+           /* HeaderFooterPageEvent event = new HeaderFooterPageEvent(Image.getInstance(byteArray), Image.getInstance(byteArray1), isDigital, getConfigBean());
+            pdfWriter.setPageEvent(event);*/
+            PdfConfig.addContent(document, mainbean, MainActivityOrder.this);
+
+            document.close();
+
+            Uri fileUri = Uri.fromFile(file);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                Uri uri = FileProvider.getUriForFile(this, getPackageName() + ".provider", file);
+                Intent intent = new Intent(Intent.ACTION_VIEW);
+                intent.setData(uri);
+                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                startActivity(intent);
+            } else {
+                Intent target = new Intent(Intent.ACTION_VIEW);
+                target.setDataAndType(Uri.fromFile(file), "application/pdf");
+                Intent intent = Intent.createChooser(target, "Open File");
+                startActivity(intent);
+            }
+            hideDialog();
+            // new UploadInvoiceToServer().execute(imageutils.getPath(fileUri) + "@@" + mainbean.getBuyerphone() + "@@" + mainbean.getDbid());
+
+        } catch (Exception e) {
+            Toast.makeText(getApplicationContext(), e.toString(), Toast.LENGTH_LONG).show();
+            e.printStackTrace();
+            hideDialog();
+        }
+
+
     }
 }

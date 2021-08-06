@@ -21,6 +21,7 @@ public class Order implements Serializable {
     String reson;
     ArrayList<Product> productBeans;
     String createdOn;
+    String amount;
 
     public Order() {
     }
@@ -124,5 +125,13 @@ public class Order implements Serializable {
 
     public void setCreatedOn(String createdOn) {
         this.createdOn = createdOn;
+    }
+
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
     }
 }

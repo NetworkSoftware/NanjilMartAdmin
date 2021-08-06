@@ -251,17 +251,19 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 Log.d("Register Response: ", response);
                 hideDialog();
                 try {
-
-                    JSONObject jsonObject = new JSONObject(response);
+                    String val = response.contains("0000")?response.split("0000")[1]:response;
+                    JSONObject jsonObject = new JSONObject(val);
                     boolean success = jsonObject.getBoolean("success");
                     String msg = jsonObject.getString("message");
                     if (success) {
-                        final String shopname = model.getText().toString();
-                        sendNotification(brand.getText().toString() + " " + price.getText().toString()
-                                , shopname.length() > 30 ? shopname.substring(0, 29) + "..." :
-                                        shopname, jsonObject.getString("key"));
-                        finish();
+                            final String shopname = model.getText().toString();
+                            sendNotification(brand.getText().toString() + " " + price.getText().toString()
+                                    , shopname.length() > 30 ? shopname.substring(0, 29) + "..." :
+                                            shopname, description.getText().toString());
                     }
+
+
+
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();

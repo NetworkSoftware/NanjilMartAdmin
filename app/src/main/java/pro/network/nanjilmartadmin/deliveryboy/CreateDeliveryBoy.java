@@ -193,9 +193,9 @@ public class CreateDeliveryBoy extends BaseActivity implements Imageutils.ImageA
                 hideDialog();
                 try {
                     JSONObject jsonObject = new JSONObject(response);
-                    int success = jsonObject.getInt("success");
+                    boolean success = jsonObject.getBoolean("success");
                     String msg = jsonObject.getString("message");
-                    if (success == 1) {
+                    if (success) {
                         finish();
                     }
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
