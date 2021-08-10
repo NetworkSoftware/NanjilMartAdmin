@@ -98,62 +98,34 @@ public class PdfConfig {
 
         table3.setSplitLate(false);
         document.add(table3);
-        PdfPTable table4 = new PdfPTable(4);
-        table4.setWidthPercentage(100);
-        table4.setWidths(new float[]{0.5f, 2f, 0.5f, 1});
-        table4.addCell(createTextLeft("", catNormalFont, false));
-        table4.addCell(createTextLeft("Item Total", catNormalFont,false));
-        table4.addCell(createTextLeft("", catNormalFont, false));
-        table4.addCell(createTextLeft(mainbean.getPrice(), catNormalFont, false));
-        table4.setSplitLate(false);
-        document.add(table4);
-        PdfPTable table6 = new PdfPTable(4);
-        table6.setWidthPercentage(100);
-        table6.setWidths(new float[]{0.5f, 2f, 0.5f, 1});
-        table6.addCell(createTextLeft("", catNormalFont, false));
-        table6.addCell(createTextLeft("Promocode Discount", catNormalFont,false));
-        table6.addCell(createTextLeft("", catNormalFont, false));
-        table6.addCell(createTextLeft("0.00", catNormalFont, false));
-        table6.setSplitLate(false);
-        document.add(table6);
+
 
         PdfPTable table7 = new PdfPTable(4);
         table7.setWidthPercentage(100);
-        table7.setWidths(new float[]{0.5f, 2f, 0.5f, 1});
+        table7.setWidths(new float[]{0.0f, 0.0f, 3f, 1});
+
         table7.addCell(createTextLeft("", catNormalFont, false));
-        table7.addCell(createTextLeft("Delivery Fee", catNormalFont,false));
         table7.addCell(createTextLeft("", catNormalFont, false));
-        table7.addCell(createTextLeft("0.00", catNormalFont, false));
+        table7.addCell(createTextRight("Total", catNormalFont));
+        table7.addCell(createTextLeft(mainbean.getTotal(), catNormalFont, false));
+
+        table7.addCell(createTextLeft("", catNormalFont, false));
+        table7.addCell(createTextLeft("", catNormalFont, false));
+        table7.addCell(createTextRight("Delivery Fee", catNormalFont));
+        table7.addCell(createTextLeft(mainbean.getDcharge(), catNormalFont, false));
+
+        table7.addCell(createTextLeft("", catNormalFont, false));
+        table7.addCell(createTextLeft("", catNormalFont, false));
+        table7.addCell(createTextRight("Packing Charges", catNormalFont));
+        table7.addCell(createTextLeft("₹20.00", catNormalFont, false));
+
+        table7.addCell(createTextLeft("", catNormalFont, false));
+        table7.addCell(createTextLeft("", catNormalFont, false));
+        table7.addCell(createTextRight("Grand Total", catNormalFont));
+        table7.addCell(createTextLeft(mainbean.getPrice(), catNormalFont, false));
+
         table7.setSplitLate(false);
         document.add(table7);
-        PdfPTable table8 = new PdfPTable(4);
-        table8.setWidthPercentage(100);
-        table8.setWidths(new float[]{0.5f, 2f, 0.5f, 1});
-        table8.addCell(createTextLeft("", catNormalFont, false));
-        table8.addCell(createTextLeft("Packing Charges", catNormalFont,false));
-        table8.addCell(createTextLeft("", catNormalFont, false));
-        table8.addCell(createTextLeft("0.00", catNormalFont, false));
-        table8.setSplitLate(false);
-        document.add(table8);
-        PdfPTable table9 = new PdfPTable(4);
-        table9.setWidthPercentage(100);
-        table3.setWidths(new float[]{0.5f, 2f, 0.5f, 1});
-        table9.addCell(createTextLeft("", catNormalFont, false));
-        table9.addCell(createTextLeft("Tax", catNormalFont,false));
-        table9.addCell(createTextLeft("", catNormalFont, false));
-        table9.addCell(createTextLeft("0.00", catNormalFont, false));
-
-        table9.setSplitLate(false);
-        document.add(table9);
-        PdfPTable table10 = new PdfPTable(4);
-        table10.setWidthPercentage(100);
-        table10.setWidths(new float[]{0.0f, 0.0f, 3f, 1});
-        table10.addCell(createTextLeft("", catNormalFont, false));
-        table10.addCell(createTextLeft("", catNormalFont, false));
-        table10.addCell(createTextRight("Grand Total", catNormalFont));
-        table10.addCell(createTextLeft(mainbean.getPrice(), catNormalFont, false));
-        table10.setSplitLate(false);
-        document.add(table10);
 
         PdfPTable table5 = new PdfPTable(1);
         table5.setWidthPercentage(100);

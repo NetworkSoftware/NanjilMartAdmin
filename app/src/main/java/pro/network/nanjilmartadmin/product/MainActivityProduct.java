@@ -7,23 +7,24 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.DefaultItemAnimator;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.DefaultItemAnimator;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -37,16 +38,17 @@ import java.util.Map;
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
+import pro.network.nanjilmartadmin.shopreg.Shop;
 
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_GET_ALL;
 
 public class MainActivityProduct extends AppCompatActivity implements ProductAdapter.ContactsAdapterListener {
     private static final String TAG = MainActivityProduct.class.getSimpleName();
+    ProgressDialog progressDialog;
     private RecyclerView recyclerView;
     private List<Product> contactList;
     private ProductAdapter mAdapter;
     private SearchView searchView;
-    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,7 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
 
         recyclerView = findViewById(R.id.recycler_view);
         contactList = new ArrayList<>();
-        mAdapter = new ProductAdapter(this, contactList, this,this);
+        mAdapter = new ProductAdapter(this, contactList, this, this);
 
         // white background notification bar
         whiteNotificationBar(recyclerView);
@@ -78,7 +80,7 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
         //fetchContacts();
 
 
-        FloatingActionButton addStock = (FloatingActionButton) findViewById(R.id.addStock);
+        FloatingActionButton addStock = findViewById(R.id.addStock);
         addStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,7 +100,7 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
             @Override
             public void onResponse(String response) {
                 hideDialog();
-                Log.d("Register Response: ", response.toString());
+                Log.d("Register Response: ", response);
                 try {
                     JSONObject jObj = new JSONObject(response);
                     int success = jObj.getInt("success");
@@ -117,13 +119,22 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                             product.setStock_update(jsonObject.getString("stock_update"));
                             product.setDescription(jsonObject.getString("description"));
                             product.setPrice(jsonObject.getString("price"));
-
-                           product.setModel(jsonObject.getString("model"));
+                            product.setModel(jsonObject.getString("model"));
                             product.setImage(jsonObject.getString("image"));
+
+                            try {
+                                JSONObject shopObject = jsonObject.getJSONObject("shop");
+                                product.setShopid(shopObject.getString("id"));
+                                product.setShopname(shopObject.getString("shop_name"));
+                                product.setLatlong(shopObject.getString("latlong"));
+                            } catch (Exception e) {
+                                Log.e("xxxxxxxxx", e.toString());
+                            }
+
                             contactList.add(product);
                         }
                         mAdapter.notifyData(contactList);
-                        getSupportActionBar().setSubtitle(String.valueOf(contactList.size()) + "  Nos");
+                        getSupportActionBar().setSubtitle(contactList.size() + "  Nos");
 
                     } else {
                         Toast.makeText(getApplication(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
@@ -232,6 +243,7 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
         super.onStart();
         fetchContacts();
     }
+
     private void showDialog() {
         if (!progressDialog.isShowing())
             progressDialog.show();

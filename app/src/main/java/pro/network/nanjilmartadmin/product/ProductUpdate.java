@@ -65,7 +65,7 @@ import pro.network.nanjilmartadmin.app.Imageutils;
 
 import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
 import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORY;
-import static pro.network.nanjilmartadmin.app.Appconfig.DATAFETCHALL_SHOP;
+import static pro.network.nanjilmartadmin.app.Appconfig.DATA_FETCH_ALL_SHOP;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_CREATE;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_DELETE;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_UPDATE;
@@ -81,9 +81,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     private final String[] STOCKUPDATE = new String[]{
             "In Stock", "Currently Unavailable",
     };
-    private final String[] SUBCATRGORIES = new String[]{
-            "In Stock", "Currently Unavailable",
-    };
+
     AutoCompleteTextView brand;
     EditText model;
     EditText price;
@@ -97,12 +95,12 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     Imageutils imageutils;
     ImageView image_placeholder, image_wallpaper;
     CardView itemsAdd;
+    Map<String, String> shopIdName = new HashMap<>();
     private ProgressDialog pDialog;
     private RecyclerView imagelist;
     private ArrayList<String> samplesList = new ArrayList<>();
     private String imageUrl = "";
     private Product contact = null;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -113,8 +111,8 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
-        itemsAdd = (CardView) findViewById(R.id.itemsAdd);
-        ImageView image_wallpaper = (ImageView) findViewById(R.id.image_wallpaper);
+        itemsAdd = findViewById(R.id.itemsAdd);
+        ImageView image_wallpaper = findViewById(R.id.image_wallpaper);
         image_wallpaper.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -122,20 +120,20 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             }
         });
         samplesList = new ArrayList<>();
-        imagelist = (RecyclerView) findViewById(R.id.imagelist);
+        imagelist = findViewById(R.id.imagelist);
         maddImageAdapter = new AddImageAdapter(this, samplesList, this);
         final LinearLayoutManager addManager1 = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         imagelist.setLayoutManager(addManager1);
         imagelist.setAdapter(maddImageAdapter);
-        category = (MaterialBetterSpinner) findViewById(R.id.category);
+        category = findViewById(R.id.category);
 
 
-        model = (EditText) findViewById(R.id.model);
-        price = (EditText) findViewById(R.id.price);
+        model = findViewById(R.id.model);
+        price = findViewById(R.id.price);
         description = findViewById(R.id.description);
 
 
-        shopname = (MaterialBetterSpinner) findViewById(R.id.shopname);
+        shopname = findViewById(R.id.shopname);
         ArrayAdapter<String> shopAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SHOPNAME);
         shopname.setAdapter(shopAdapter);
@@ -149,7 +147,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             }
         });
 
-        stock_update = (MaterialBetterSpinner) findViewById(R.id.stock_update);
+        stock_update = findViewById(R.id.stock_update);
 
         ArrayAdapter<String> stockAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, STOCKUPDATE);
@@ -177,11 +175,15 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 }
                 brand.setAdapter(brandAdapter);
                 brand.setThreshold(1);
-                brand.setText("");
+                if (contact != null) {
+                    brand.setText(contact.brand);
+                } else {
+                    brand.setText("");
+                }
             }
         });
 
-        submit = (TextView) findViewById(R.id.submit);
+        submit = findViewById(R.id.submit);
         submit.setText("SUBMIT");
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -213,13 +215,20 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             contact = (Product) getIntent().getSerializableExtra("data");
             category.setText(contact.category);
             brand.setText(contact.brand);
-            shopname.setText(contact.shopname);
             model.setText(contact.model);
             price.setText(contact.price);
             description.setText(contact.description);
             studentId = contact.id;
             stock_update.setText(contact.stock_update);
+            shopname.setText(contact.shopname);
             imageUrl = contact.image;
+
+            if (category.getText().toString().equalsIgnoreCase(("FOOD"))) {
+                shopname.setVisibility(View.VISIBLE);
+            } else {
+                shopname.setVisibility(View.GONE);
+            }
+
             if (imageUrl == null) {
                 imageUrl = "";
             } else {
@@ -251,17 +260,16 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 Log.d("Register Response: ", response);
                 hideDialog();
                 try {
-                    String val = response.contains("0000")?response.split("0000")[1]:response;
+                    String val = response.contains("0000") ? response.split("0000")[1] : response;
                     JSONObject jsonObject = new JSONObject(val);
                     boolean success = jsonObject.getBoolean("success");
                     String msg = jsonObject.getString("message");
                     if (success) {
-                            final String shopname = model.getText().toString();
-                            sendNotification(brand.getText().toString() + " " + price.getText().toString()
-                                    , shopname.length() > 30 ? shopname.substring(0, 29) + "..." :
-                                            shopname, description.getText().toString());
+                        final String shopname = model.getText().toString();
+                        sendNotification(brand.getText().toString() + " " + price.getText().toString()
+                                , shopname.length() > 30 ? shopname.substring(0, 29) + "..." :
+                                        shopname, description.getText().toString());
                     }
-
 
 
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
@@ -285,7 +293,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("category", category.getText().toString());
                 localHashMap.put("sub_category", "sub_category");
-                localHashMap.put("shopname", shopname.getText().toString());
+                localHashMap.put("shopname", shopIdName.get(shopname.getText().toString()));
                 localHashMap.put("brand", brand.getText().toString());
                 localHashMap.put("model", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
@@ -545,7 +553,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     private void getAllShopname() {
         String tag_string_req = "req_register";
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                DATAFETCHALL_SHOP, new Response.Listener<String>() {
+                DATA_FETCH_ALL_SHOP, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 try {
@@ -555,8 +563,12 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                     if (success == 1) {
                         JSONArray jsonArray = jObj.getJSONArray("data");
                         SHOPNAME = new String[jsonArray.length()];
+                        shopIdName = new HashMap<>();
+
                         for (int i = 0; i < jsonArray.length(); i++) {
                             SHOPNAME[i] = jsonArray.getJSONObject(i).getString("shop_name");
+                            shopIdName.put(jsonArray.getJSONObject(i).getString("shop_name"),
+                                    jsonArray.getJSONObject(i).getString("id"));
                         }
                         ArrayAdapter<String> shopAdapter = new ArrayAdapter<String>(ProductUpdate.this,
                                 android.R.layout.simple_dropdown_item_1line, SHOPNAME);

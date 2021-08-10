@@ -2,6 +2,8 @@ package pro.network.nanjilmartadmin.product;
 
 import java.io.Serializable;
 
+import pro.network.nanjilmartadmin.shopreg.Shop;
+
 /**
  * Created by ravi on 16/11/17.
  */
@@ -19,7 +21,9 @@ public class Product implements Serializable {
     String stock_update;
     String userId;
     String sub_category;
-    String shopname;
+    public String shopname;
+    public String shopid;
+    public String latlong;
 
 
     public Product() {
@@ -142,5 +146,21 @@ public class Product implements Serializable {
 
     public void setShopname(String shopname) {
         this.shopname = shopname;
+    }
+
+    public String getShopid() {
+        return shopid;
+    }
+
+    public void setShopid(String shopid) {
+        this.shopid = shopid;
+    }
+
+    public String getLatlong() {
+        return latlong;
+    }
+
+    public void setLatlong(String latlong) {
+        this.latlong = latlong;
     }
 }

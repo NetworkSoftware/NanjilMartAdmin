@@ -8,14 +8,16 @@ public class Shop implements Serializable {
     String shop_name;
     String phone;
     String stock_update;
+    String latlong;
 
     public Shop() {
     }
 
-    public Shop(String shop_name, String phone,String stock_update) {
+    public Shop(String shop_name, String phone,String stock_update,String latlong) {
         this.shop_name = shop_name;
         this.phone = phone;
         this.stock_update = stock_update;
+        this.latlong=latlong;
     }
 
     public String getId() {
@@ -48,5 +50,13 @@ public class Shop implements Serializable {
 
     public void setStock_update(String stock_update) {
         this.stock_update = stock_update;
+    }
+
+    public String getLatlong() {
+        return latlong;
+    }
+
+    public void setLatlong(String latlong) {
+        this.latlong = latlong;
     }
 }

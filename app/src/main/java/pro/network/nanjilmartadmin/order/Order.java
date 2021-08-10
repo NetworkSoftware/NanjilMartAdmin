@@ -21,7 +21,9 @@ public class Order implements Serializable {
     String reson;
     ArrayList<Product> productBeans;
     String createdOn;
-    String amount;
+    String dcharge;
+    String pincode;
+    String total;
 
     public Order() {
     }
@@ -127,11 +129,27 @@ public class Order implements Serializable {
         this.createdOn = createdOn;
     }
 
-    public String getAmount() {
-        return amount;
+    public String getDcharge() {
+        return dcharge;
     }
 
-    public void setAmount(String amount) {
-        this.amount = amount;
+    public void setDcharge(String dcharge) {
+        this.dcharge = dcharge;
+    }
+
+    public String getPincode() {
+        return pincode;
+    }
+
+    public void setPincode(String pincode) {
+        this.pincode = pincode;
+    }
+
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
     }
 }

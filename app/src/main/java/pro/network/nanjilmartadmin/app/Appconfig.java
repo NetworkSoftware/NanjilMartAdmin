@@ -73,7 +73,7 @@ public class Appconfig {
     public static final String CREATE_SHOP = ip + "/create_shop.php";
     public static final String DELETE_SHOP = ip + "/delete_shop.php";
     public static final String UPDATE_SHOP = ip + "/update_shop.php";
-    public static final String DATAFETCHALL_SHOP = ip + "/dataFetchAll_shop.php";
+    public static final String DATA_FETCH_ALL_SHOP = ip + "/dataFetchAll_shop.php";
     //DeliveryBoy
     public static final String DELIVERY_GET_ALL = ip + "/get_all_delivery.php";
     public static final String CREATE_DELIVERYBOY = ip + "/delivery_register.php";

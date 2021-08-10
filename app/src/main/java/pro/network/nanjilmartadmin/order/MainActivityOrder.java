@@ -167,6 +167,9 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 order.setAddress(jsonObject.getString("address"));
                                 order.setReson(jsonObject.getString("reason"));
                                 order.setCreatedOn(jsonObject.getString("createdon"));
+                                order.setTotal(jsonObject.getString("total"));
+                                order.setDcharge(jsonObject.getString("dcharge"));
+                                order.setPincode(jsonObject.getString("pincode"));
                                 ObjectMapper mapper = new ObjectMapper();
                                 Object listBeans = new Gson().fromJson(jsonObject.getString("items"),
                                         Object.class);

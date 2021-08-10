@@ -34,14 +34,8 @@ import java.util.Map;
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
-import pro.network.nanjilmartadmin.categories.Categories;
-import pro.network.nanjilmartadmin.categories.CategoriesAdapter;
-import pro.network.nanjilmartadmin.categories.CategoriesClick;
-import pro.network.nanjilmartadmin.categories.CategoriesRegister;
-import pro.network.nanjilmartadmin.categories.CategoriesUpdate;
 
-import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
-import static pro.network.nanjilmartadmin.app.Appconfig.DATAFETCHALL_SHOP;
+import static pro.network.nanjilmartadmin.app.Appconfig.DATA_FETCH_ALL_SHOP;
 
 public class MainActivityShop extends AppCompatActivity implements ShopClick {
     private static final String TAG = MainActivityShop.class.getSimpleName();
@@ -91,7 +85,7 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
         progressDialog.setMessage("Processing ...");
         showDialog();
         StringRequest strReq = new StringRequest(Request.Method.POST,
-                DATAFETCHALL_SHOP, new Response.Listener<String>() {
+                DATA_FETCH_ALL_SHOP, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("Register Response: ", response);
@@ -103,13 +97,16 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
                     if (success == 1) {
                         JSONArray jsonArray = jObj.getJSONArray("data");
                         categoriesList = new ArrayList<>();
+
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             Shop categories = new Shop();
                             categories.setId(jsonObject.getString("id"));
                             categories.setShop_name(jsonObject.getString("shop_name"));
                             categories.setPhone(jsonObject.getString("phone"));
+                            categories.setLatlong(jsonObject.getString("latlong"));
                             categories.setStock_update(jsonObject.getString("stock_update"));
+
 
                             categoriesList.add(categories);
                         }

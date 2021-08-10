@@ -77,7 +77,7 @@ import static pro.network.nanjilmartadmin.app.Appconfig.UPDATE_SHOP;
 
 public class ShopUpdate extends AppCompatActivity {
 
-    EditText shop_name,phone;
+    EditText shop_name,phone,latlong;
     MaterialBetterSpinner stock_update;
     private String[] STOCKUPDATE = new String[]{
             "In Stock", "Currently Unavailable",
@@ -102,7 +102,7 @@ public class ShopUpdate extends AppCompatActivity {
         shop_name = (EditText) findViewById(R.id.shop_name);
         phone = (EditText) findViewById(R.id.phone);
         stock_update = (MaterialBetterSpinner) findViewById(R.id.stock_update);
-
+        latlong=findViewById(R.id.latlong);
         ArrayAdapter<String> stockAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, STOCKUPDATE);
         stock_update.setAdapter(stockAdapter);
@@ -122,7 +122,9 @@ public class ShopUpdate extends AppCompatActivity {
                     shop_name.setError("Select the Shop Name");
                 } else if (phone.getText().toString().length() <= 0) {
                     phone.setError("Select the Phone");
-                } else if (stock_update.getText().toString().length() <= 0) {
+                }else if (latlong.getText().toString().length() <= 0) {
+                    latlong.setError("Enter the correct Location");
+                }  else if (stock_update.getText().toString().length() <= 0) {
                     stock_update.setError("Select the Sold or Not");
                 }else {
                     registerUser();
@@ -136,6 +138,7 @@ public class ShopUpdate extends AppCompatActivity {
             Shop contact = (Shop) getIntent().getSerializableExtra("data");
             shop_name.setText(contact.shop_name);
             phone.setText(contact.phone);
+            latlong.setText(contact.latlong);
             studentId = contact.id;
             stock_update.setText(contact.stock_update);
         } catch (Exception e) {
@@ -182,6 +185,7 @@ public class ShopUpdate extends AppCompatActivity {
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("shop_name", shop_name.getText().toString());
                 localHashMap.put("phone", phone.getText().toString());
+                localHashMap.put("latlong", latlong.getText().toString());
                 localHashMap.put("stock_update", stock_update.getText().toString());
                 localHashMap.put("id", studentId);
                 return localHashMap;
