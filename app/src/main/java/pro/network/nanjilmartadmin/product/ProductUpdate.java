@@ -293,7 +293,8 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("category", category.getText().toString());
                 localHashMap.put("sub_category", "sub_category");
-                localHashMap.put("shopname", shopIdName.get(shopname.getText().toString()));
+                localHashMap.put("shopname", shopIdName.containsKey(shopname)?
+                        shopIdName.get(shopname.getText().toString()):"NA");
                 localHashMap.put("brand", brand.getText().toString());
                 localHashMap.put("model", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
