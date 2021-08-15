@@ -293,8 +293,8 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("category", category.getText().toString());
                 localHashMap.put("sub_category", "sub_category");
-                localHashMap.put("shopname", shopIdName.containsKey(shopname)?
-                        shopIdName.get(shopname.getText().toString()):"NA");
+                localHashMap.put("shopname", shopIdName.containsKey(shopname.getText().toString()) ?
+                        shopIdName.get(shopname.getText().toString()) : shopname.getText().toString());
                 localHashMap.put("brand", brand.getText().toString());
                 localHashMap.put("model", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
@@ -585,8 +585,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             }
         }) {
             protected Map<String, String> getParams() {
-                HashMap localHashMap = new HashMap();
-                return localHashMap;
+                return new HashMap();
             }
         };
         strReq.setRetryPolicy(Appconfig.getPolicy());
