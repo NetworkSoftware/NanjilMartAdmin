@@ -14,6 +14,7 @@ import pro.network.nanjilmartadmin.deliveryboy.MainActivityDelivery;
 import pro.network.nanjilmartadmin.order.MainActivityOrder;
 import pro.network.nanjilmartadmin.product.MainActivityProduct;
 import pro.network.nanjilmartadmin.shopreg.MainActivityShop;
+import pro.network.nanjilmartadmin.videos.MainActivityVideo;
 
 public class
 
@@ -33,7 +34,16 @@ NaviActivity extends AppCompatActivity {
                 startActivity(io);
             }
         });
-        CardView dboy = (CardView) findViewById(R.id.dboy);
+        CardView video =  findViewById(R.id.video);
+        video.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, MainActivityVideo.class);
+                startActivity(io);
+            }
+        });
+
+        CardView dboy =  findViewById(R.id.dboy);
         dboy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -43,7 +53,7 @@ NaviActivity extends AppCompatActivity {
         });
 
 
-        CardView stock = (CardView) findViewById(R.id.stock);
+        CardView stock =  findViewById(R.id.stock);
         stock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -53,7 +63,7 @@ NaviActivity extends AppCompatActivity {
             }
         });
 
-        CardView shop = (CardView) findViewById(R.id.shop);
+        CardView shop = findViewById(R.id.shop);
         shop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,7 +72,7 @@ NaviActivity extends AppCompatActivity {
 
             }
         });
-        CardView banner = (CardView) findViewById(R.id.banner);
+        CardView banner = findViewById(R.id.banner);
         banner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -71,14 +81,14 @@ NaviActivity extends AppCompatActivity {
 
             }
         });
-        CardView order = (CardView) findViewById(R.id.orders);
+        CardView order = findViewById(R.id.orders);
         order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navOrderPage("ordered");
             }
         });
-        CardView returned = (CardView) findViewById(R.id.returned);
+        CardView returned = findViewById(R.id.returned);
         returned.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,14 +96,14 @@ NaviActivity extends AppCompatActivity {
             }
         });
 
-        CardView canceled = (CardView) findViewById(R.id.canceled);
+        CardView canceled =  findViewById(R.id.canceled);
         canceled.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 navOrderPage("canceled");
             }
         });
-        CardView delivered = (CardView) findViewById(R.id.delivered);
+        CardView delivered = findViewById(R.id.delivered);
         delivered.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

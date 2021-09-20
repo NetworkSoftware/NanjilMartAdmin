@@ -61,7 +61,7 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
         recyclerView = findViewById(R.id.recycler_view);
         categoriesList = new ArrayList<>();
         mAdapter = new ShopAdapter(this, categoriesList, this);
-        final LinearLayoutManager addManager1 = new GridLayoutManager(MainActivityShop.this, 2);
+        final LinearLayoutManager addManager1 = new GridLayoutManager(MainActivityShop.this, 1);
         recyclerView.setLayoutManager(addManager1);
         recyclerView.setAdapter(mAdapter);
 
@@ -80,10 +80,11 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
     /**
      * fetches json by making http calls
      */
+
     private void fetchContacts() {
         String tag_string_req = "req_register";
         progressDialog.setMessage("Processing ...");
-        showDialog();
+      //  showDialog();
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 DATA_FETCH_ALL_SHOP, new Response.Listener<String>() {
             @Override
@@ -106,8 +107,10 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
                             categories.setPhone(jsonObject.getString("phone"));
                             categories.setLatlong(jsonObject.getString("latlong"));
                             categories.setStock_update(jsonObject.getString("stock_update"));
-
-
+                            categories.setTime_schedule(jsonObject.getString("time_schedule"));
+                            if(!jsonObject.isNull("image")){
+                                categories.setImage(jsonObject.getString("image"));
+                            }
                             categoriesList.add(categories);
                         }
                         mAdapter.notifyData(categoriesList);

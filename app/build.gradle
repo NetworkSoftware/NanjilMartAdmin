@@ -69,7 +69,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services:12.0.1'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.google.code.gson:gson:2.8.2'
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+  //  implementation 'com.squareup.picasso:picasso:2.5.2'
     implementation 'com.itextpdf:itext-pdfa:5.5.10'
     implementation 'com.itextpdf:itextg:5.5.9'
     implementation (
@@ -81,7 +81,7 @@ dependencies {
 
 
     // Add the Firebase Crashlytics SDK.
-
+    implementation 'net.alhazmy13.MediaPicker:libary:2.4.4'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.10.1'
     implementation (
             [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.4.1'],
@@ -90,5 +90,8 @@ dependencies {
     )
 
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
+    implementation 'com.wdullaer:materialdatetimepicker:3.6.4'
+    implementation project(':multipleImagePickerLib')
+
 }
 apply plugin: 'com.google.gms.google-services'

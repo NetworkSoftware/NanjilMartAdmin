@@ -140,12 +140,16 @@
             android:label="categories Register"
             android:theme="@style/AppThemewhite" />
         <activity
+            android:name="pro.network.nanjilmartadmin.videos.MainActivityVideo"
+            android:label="Videos"
+            android:theme="@style/AppThemewhite" />
+        <activity
             android:name="pro.network.nanjilmartadmin.shopreg.ShopRegister"
-            android:label="categories Register"
+            android:label="Shop Register"
             android:theme="@style/AppThemeWhite" />
         <activity
             android:name="pro.network.nanjilmartadmin.shopreg.ShopUpdate"
-            android:label="categories Register"
+            android:label="Shop Update"
             android:theme="@style/AppThemeWhite" />
         <activity
             android:name="pro.network.nanjilmartadmin.shopreg.MainActivityShop"

@@ -1,6 +1,7 @@
 package pro.network.nanjilmartadmin.app;
 
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -9,7 +10,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
 
@@ -33,15 +33,9 @@ public class Appconfig {
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
 
-  // public static final String ip = "http://192.168.43.57:8098/prisma/nanjilmart";
+   // public static final String ip = "http://192.168.1.103:8098/prisma/nanjilmart";
 
-    public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
-
-    public static String URL_IMAGE_UPLOAD = ip + "/fileUpload.php";
-    public static String BANNER_CREATE = ip + "/fileFeed.php";
-    public static String BANNER_GET_ALL = ip + "/get_all_feed.php";
-    public static String BANNER_DELETE = ip + "/fileDelete.php";
-
+      public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
     //Stack
     public static final String PRODUCT_CREATE = ip + "/create_stock.php";
     public static final String PRODUCT_UPDATE = ip + "/update_stock.php";
@@ -52,11 +46,8 @@ public class Appconfig {
     public static final String CATEGORIES_UPDATE = ip + "/update_category.php";
     public static final String CATEGORIES_DELETE = ip + "/delete_category.php";
     public static final String CATEGORIES_GET_ALL = ip + "/get_all_category.php";
-
-
     public static final String NEWS_CREATE = ip + "/create_news.php";
     public static final String GET_NEWS = ip + "/get_news.php";
-
     //Banner
     public static final String BANNERS_CREATE = ip + "/create_banner.php";
     public static final String BANNERS_UPDATE = ip + "/update_stock.php";
@@ -69,6 +60,12 @@ public class Appconfig {
     public static final String ASSIGN_DBOY = ip + "/assign_dboy.php";
     //public static final String TRACK_PRODUCT_ORDER_ID = ip + "/com_track_order_id.php";
     public static final String ORDER_ASSIGN_DBOY = ip + "/order_assign_dboy.php";
+
+    //Video
+    public static final String VIDEO = ip + "/video";
+
+
+
     //Shop
     public static final String CREATE_SHOP = ip + "/create_shop.php";
     public static final String DELETE_SHOP = ip + "/delete_shop.php";
@@ -80,9 +77,29 @@ public class Appconfig {
     public static final String UPDATE_DELIVERYBOY = ip + "/update_deliveryboy.php";
     public static final String DELETE_DELIVERYBOY = ip + "/delete_deliveryboy.php";
     public static final String DELIVERY_BOY_CHANGE_STATUS = ip + "/delivery_boy_change_status.php";
-
     public static final String IMAGE_URL = ip + "/images/";
+    public static String URL_IMAGE_UPLOAD = ip + "/fileUpload.php";
+    public static String BANNER_CREATE = ip + "/fileFeed.php";
+    public static String BANNER_GET_ALL = ip + "/get_all_feed.php";
+    public static String BANNER_DELETE = ip + "/fileDelete.php";
     public static Glide locationMap;
+    public static Map<String, String[]> stringMap = new HashMap<String, String[]>() {{
+        put("Fashion", new String[]{});
+        put("COSMETICS", new String[]{"Eye Liner", "Lipstic", "All Makeup Kits"});
+        put("Mobiles and Tablets", new String[]{});
+        put("Consumer Electronics", new String[]{});
+        put("Books", new String[]{});
+        put("Baby Products", new String[]{});
+    }};
+    public static String[] CATEGORY = new String[]{
+            "Fashion", "Mobiles and Tablets", "Consumer Electronics", "Books", "Baby Products",
+    };
+    public static String[] COSMETICS = new String[]{
+            "Eye Liner", "Lipstic", "All Makeup Kits",
+    };
+    public static String[] SHOPNAME = new String[]{
+            "Eye Liner", "Lipstic", "All Makeup Kits",
+    };
 
     public static String getResizedImage(String path, boolean isResized) {
         if (isResized) {
@@ -91,8 +108,7 @@ public class Appconfig {
         return path;
     }
 
-
-    public static String compressImage(String filePath,Context context) {
+    public static String compressImage(String filePath, Context context) {
 
         //String filePath = getRealPathFromURI(imageUri, context);
         Bitmap scaledBitmap = null;
@@ -122,11 +138,11 @@ public class Appconfig {
                 float tempRatio = maxWidth / actualWidth;
                 actualHeight = (int) (tempRatio * actualHeight);
                 actualWidth = (int) maxWidth;
-            }else  if (actualWidth < actualHeight) {
+            } else if (actualWidth < actualHeight) {
                 float tempRatio = maxHeight / actualHeight;
                 actualWidth = (int) (tempRatio * actualWidth);
                 actualHeight = (int) maxHeight;
-            }else {
+            } else {
                 actualHeight = (int) maxHeight;
                 actualWidth = (int) maxWidth;
             }
@@ -223,11 +239,13 @@ public class Appconfig {
         return filename;
 
     }
+
     public static String intToString(int num, int digits) {
         String output = Integer.toString(num);
         while (output.length() < digits) output = "0" + output;
         return output;
     }
+
     public static String getFilename(Context context) {
         File file = new File(context.getCacheDir().getPath(), "MyFolder/Images");
         if (!file.exists()) {
@@ -237,19 +255,16 @@ public class Appconfig {
         return uriSting;
 
     }
-
-    private String getRealPathFromURI(String contentURI, Context context) {
-        Uri contentUri = Uri.parse(contentURI);
-        Cursor cursor = context.getContentResolver().query(contentUri, null, null, null, null);
-        if (cursor == null) {
-            return contentUri.getPath();
+    public static boolean isDeviceSupportCamera(Context context) {
+        if (context.getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA)) {
+            // this device has a camera
+            return true;
         } else {
-            cursor.moveToFirst();
-            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
-            return cursor.getString(index);
+            // no camera on this device
+            return false;
         }
     }
-
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;
@@ -280,6 +295,7 @@ public class Appconfig {
             return time;
         }
     }
+
     public static String[] getSubCatFromCat(String category) {
         if (stringMap.containsKey(category)) {
             return stringMap.get(category);
@@ -287,31 +303,22 @@ public class Appconfig {
         return new String[]{};
     }
 
-
-    public static Map<String, String[]> stringMap = new HashMap<String, String[]>() {{
-        put("Fashion",new String[]{});
-        put("COSMETICS",new String[]{"Eye Liner", "Lipstic","All Makeup Kits"});
-        put("Mobiles and Tablets",new String[]{});
-        put("Consumer Electronics",new String[]{});
-        put("Books",new String[]{});
-        put("Baby Products",new String[]{});
-           }};
-
-    public static String[] CATEGORY = new String[]{
-            "Fashion", "Mobiles and Tablets","Consumer Electronics","Books","Baby Products",
-    };
-
-    public static String[] COSMETICS = new String[]{
-            "Eye Liner", "Lipstic","All Makeup Kits",
-    };
-    public static String[] SHOPNAME = new String[]{
-           "Eye Liner", "Lipstic","All Makeup Kits",
-    };
-
     public static DefaultRetryPolicy getPolicy() {
         return new DefaultRetryPolicy(
                 50000,
                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+    }
+
+    private String getRealPathFromURI(String contentURI, Context context) {
+        Uri contentUri = Uri.parse(contentURI);
+        Cursor cursor = context.getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor == null) {
+            return contentUri.getPath();
+        } else {
+            cursor.moveToFirst();
+            int index = cursor.getColumnIndex(MediaStore.Images.ImageColumns.DATA);
+            return cursor.getString(index);
+        }
     }
 }

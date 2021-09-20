@@ -13,7 +13,6 @@ import android.widget.TextView;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.gson.Gson;
-import com.squareup.picasso.Picasso;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -21,6 +20,7 @@ import java.util.List;
 
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.Appconfig;
+import pro.network.nanjilmartadmin.app.GlideApp;
 
 /**
  * Created by ravi on 16/11/17.
@@ -92,7 +92,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
 //if(urls.size()>0){
-        Picasso.with(context)
+        GlideApp.with(context)
                 .load(Appconfig.getResizedImage(urls.get(0), true))
                 .into(holder.thumbnail);
 //}
