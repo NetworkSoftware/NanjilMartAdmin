@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.rahul.media"
+    android:versionCode="1"
+    android:versionName="1.0">
+
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="false" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true">
+
+        <activity
+            android:name="com.rahul.media.activity.MultipleImagePreviewActivity"
+            android:label="Gallery"
+            android:theme="@style/MediaAppTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="crop.CropImageActivity"
+            android:label="Crop"
+            android:theme="@style/MediaAppTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="procrop.BasicActivity"
+            android:label="Crop"
+            android:theme="@style/AppThemeNowhite"
+            android:screenOrientation="portrait" />
+
+
+        <activity
+            android:name="com.rahul.media.activity.CameraPickActivity"
+            android:label="Camera"
+            android:theme="@style/MediaAppTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.rahul.media.activity.VideoPickActivity"
+            android:label="@string/video_preview"
+            android:theme="@style/MediaAppTheme"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.rahul.media.videomodule.VideoAlbumActivity"
+            android:label="@string/video_gallery"
+            android:theme="@style/MediaAppTheme"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name="com.rahul.media.videomodule.VideoAlbumGalleryActivity"
+            android:label="@string/video_gallery"
+            android:theme="@style/MediaAppTheme"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".imagemodule.ImageAlbumListActivity"
+            android:label="@string/album"
+            android:theme="@style/MediaAppTheme"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".imagemodule.ImageGalleryPickerActivity"
+            android:theme="@style/MediaAppTheme"
+            android:screenOrientation="portrait" />
+    </application>
+
+</manifest>

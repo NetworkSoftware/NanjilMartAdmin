@@ -1,0 +1,73 @@
+apply plugin: 'com.android.library'
+apply plugin: 'android-maven'
+
+//ext {
+//    libraryDescription  = 'A library to select and crop multiple images from gallery and camera'
+//
+//    siteUrl             = 'https://github.com/rahulr4/MultiImagePickerCropper2'
+//    gitUrl              = 'https://github.com/rahulr4/MultiImagePickerCropper2.git'
+//
+//    publishedGroupId    = 'com.crop.multiple'
+//    artifact            = 'multipleImagePickerLib'
+//
+//    libraryName         = 'multipleImagePickerLib'
+//
+//    licenseName         = 'The Apache Software License, Version 2.0'
+//    licenseUrl          = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+//
+//    developerId         = 'rahul-r4'
+//    developerName       = 'Rahul Gupta'
+//    developerEmail      = 'rahul.r4@gmail.com'
+//
+//    libraryVersion      = '1.4.4'
+//
+//    allLicenses         = ["Apache-2.0"]
+//
+//    bintrayRepo         = 'maven'
+//    bintrayName         = 'ImageCropperPickerLib3'
+//}
+
+android {
+    compileSdkVersion 28
+    buildToolsVersion "28.0.1"
+
+    defaultConfig {
+        minSdkVersion 17
+        targetSdkVersion 28
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+dependencies {
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'androidx.cardview:cardview:1.0.0'
+    implementation 'com.google.android.material:material:1.0.0'
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    implementation files('libs/universal-image-loader-1.9.4.jar')
+    implementation 'com.facebook.fresco:fresco:0.14.1'
+    implementation 'com.github.bumptech.glide:glide:4.0.0'
+    implementation "io.reactivex.rxjava2:rxjava:2.1.10"
+    implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
+//    implementation "com.github.hotchemi:permissionsdispatcher:2.4.0"
+//    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:2.4.0"
+    implementation "com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar"
+    implementation 'com.isseiaoki:simplecropview:1.1.8'
+    implementation 'com.github.vansikrishna:Multimager:1.0.8'
+
+
+//    implementation 'com.github.darsh2:MultipleImageSelect:v0.0.4'
+
+}
+
+//apply from: '../install.gradle'
+//apply from: '../bintray.gradle'

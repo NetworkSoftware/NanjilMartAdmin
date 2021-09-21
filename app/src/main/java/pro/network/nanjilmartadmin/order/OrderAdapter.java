@@ -57,6 +57,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.status.setText(order.getStatus());
         holder.phone.setText(order.getPhone());
         holder.name.setText(order.getName());
+        holder.dtime.setText(order.getDtime());
         holder.address.setText(order.getAddress());
         holder.reason.setText(order.getReson());
         holder.orderedOn.setText(Appconfig.convertTimeToLocal(order.createdOn));
@@ -216,7 +217,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, price, status, quantity, phone, orderedOn, address, reason,order_id;
+        public TextView name, price, status, quantity, phone, orderedOn, address,dtime, reason,order_id;
         public ImageView thumbnail;
         public RecyclerView cart_sub_list;
         Button deliveredBtn, whatsapp, call, cancalOrder,
@@ -246,6 +247,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             trackOrder = view.findViewById(R.id.trackOrder);
             order_id = view.findViewById(R.id.order_id);
             bill = view.findViewById(R.id.bill);
+            dtime = view.findViewById(R.id.dtime);
 
         }
     }

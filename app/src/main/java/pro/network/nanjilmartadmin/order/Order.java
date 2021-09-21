@@ -24,6 +24,7 @@ public class Order implements Serializable {
     String dcharge;
     String pincode;
     String total;
+    String dtime;
 
     public Order() {
     }
@@ -151,5 +152,13 @@ public class Order implements Serializable {
 
     public void setTotal(String total) {
         this.total = total;
+    }
+
+    public String getDtime() {
+        return dtime;
+    }
+
+    public void setDtime(String dtime) {
+        this.dtime = dtime;
     }
 }

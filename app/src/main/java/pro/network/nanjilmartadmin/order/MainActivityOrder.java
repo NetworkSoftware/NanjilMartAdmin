@@ -58,8 +58,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
@@ -86,13 +88,14 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     private OrderAdapter deliverAdapter;
     private ArrayList<Order> deliveredList;
     private RecyclerView recycler_view_delivered;
+    private final Set<String> time_Schedule = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainorder);
-        Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+       /* Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);*/
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
@@ -170,6 +173,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 order.setTotal(jsonObject.getString("total"));
                                 order.setDcharge(jsonObject.getString("dcharge"));
                                 order.setPincode(jsonObject.getString("pincode"));
+                                order.setDtime(jsonObject.getString("dtime"));
                                 ObjectMapper mapper = new ObjectMapper();
                                 Object listBeans = new Gson().fromJson(jsonObject.getString("items"),
                                         Object.class);
