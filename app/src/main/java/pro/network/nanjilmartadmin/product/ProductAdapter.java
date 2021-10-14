@@ -86,7 +86,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         }
         holder.sub_category.setText(product.getSub_category());
         holder.stock_update.setText(product.getStock_update());
-
         ArrayList<String> urls = new Gson().fromJson(product.image, (Type) List.class);
         new ObjectMapper()
                 .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

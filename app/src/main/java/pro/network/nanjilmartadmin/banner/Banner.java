@@ -10,6 +10,7 @@ public class Banner implements Serializable {
     String id;
     String banner;
     String description;
+    String stockname;
 
     public Banner() {
     }
@@ -41,5 +42,13 @@ public class Banner implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getStockname() {
+        return stockname;
+    }
+
+    public void setStockname(String stockname) {
+        this.stockname = stockname;
     }
 }

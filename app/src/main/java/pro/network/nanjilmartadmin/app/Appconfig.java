@@ -33,9 +33,9 @@ public class Appconfig {
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
 
-   // public static final String ip = "http://192.168.1.103:8098/prisma/nanjilmart";
+   // public static final String ip = "http://192.168.1.108:8098/prisma/nanjilmart";
+   public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
 
-      public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
     //Stack
     public static final String PRODUCT_CREATE = ip + "/create_stock.php";
     public static final String PRODUCT_UPDATE = ip + "/update_stock.php";
@@ -46,13 +46,12 @@ public class Appconfig {
     public static final String CATEGORIES_UPDATE = ip + "/update_category.php";
     public static final String CATEGORIES_DELETE = ip + "/delete_category.php";
     public static final String CATEGORIES_GET_ALL = ip + "/get_all_category.php";
-    public static final String NEWS_CREATE = ip + "/create_news.php";
-    public static final String GET_NEWS = ip + "/get_news.php";
+    public static final String NEWS_CREATE = ip + "/news";
     //Banner
     public static final String BANNERS_CREATE = ip + "/create_banner.php";
-    public static final String BANNERS_UPDATE = ip + "/update_stock.php";
     public static final String BANNERS_GET_ALL = ip + "/dataFetchAll_banner.php";
     public static final String BANNERS_DELETE = ip + "/delete_banner.php";
+    public static final String BANNERS_UPDATE = ip + "/banner";
     //Order
     public static final String ORDER_GET_ALL = ip + "/dataFetchAll_order.php";
     public static final String ORDER_CHANGE_STATUS = ip + "/order_change_status.php";
@@ -115,8 +114,6 @@ public class Appconfig {
 
         BitmapFactory.Options options = new BitmapFactory.Options();
 
-//      by setting this field as true, the actual bitmap pixels are not loaded in the memory. Just the bounds are loaded. If
-//      you try the use the bitmap here, you will get null.
         options.inJustDecodeBounds = true;
         Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
 
@@ -146,20 +143,7 @@ public class Appconfig {
                 actualHeight = (int) maxHeight;
                 actualWidth = (int) maxWidth;
             }
-//            if (imgRatio < maxRatio) {
-//                imgRatio = maxHeight / actualHeight;
-//                actualWidth = (int) (imgRatio * actualWidth);
-//                actualHeight = (int) maxHeight;
-//            } else if (imgRatio > maxRatio) {
-//                imgRatio = maxWidth / actualWidth;
-//                actualHeight = (int) (imgRatio * actualHeight);
-//                actualWidth = (int) maxWidth;
-//            } else {
-//                actualHeight = (int) maxHeight;
-//                actualWidth = (int) maxWidth;
-//
-//            }
-        }
+    }
 
 //      setting inSampleSize value allows to load a scaled down version of the original image
 
@@ -178,7 +162,6 @@ public class Appconfig {
             bmp = BitmapFactory.decodeFile(filePath, options);
         } catch (OutOfMemoryError exception) {
             exception.printStackTrace();
-
         }
         try {
             scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, Bitmap.Config.ARGB_8888);

@@ -68,6 +68,12 @@ public class BannerAdapter extends RecyclerView.Adapter<BannerAdapter.MyViewHold
                 bannerClick.onDeleteClick(position);
             }
         });
+        holder.thumbnail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bannerClick.onClick(position);
+            }
+        });
     }
 
     @Override

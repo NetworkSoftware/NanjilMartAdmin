@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView;
 import pro.network.nanjilmartadmin.banner.MainActivityBanner;
 import pro.network.nanjilmartadmin.categories.MainActivityCategories;
 import pro.network.nanjilmartadmin.deliveryboy.MainActivityDelivery;
+import pro.network.nanjilmartadmin.news.NewsRegister;
 import pro.network.nanjilmartadmin.order.MainActivityOrder;
 import pro.network.nanjilmartadmin.product.MainActivityProduct;
 import pro.network.nanjilmartadmin.shopreg.MainActivityShop;
@@ -25,8 +26,15 @@ NaviActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navi);
 
-
-        CardView catrgories = (CardView) findViewById(R.id.catrgories);
+        CardView news =  findViewById(R.id.news);
+        news.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, NewsRegister.class);
+                startActivity(io);
+            }
+        });
+        CardView catrgories =  findViewById(R.id.catrgories);
         catrgories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

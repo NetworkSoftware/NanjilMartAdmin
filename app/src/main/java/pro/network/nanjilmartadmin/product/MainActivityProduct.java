@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,6 +50,8 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
     private List<Product> contactList;
     private ProductAdapter mAdapter;
     private SearchView searchView;
+    int offset = 0;
+    Button loadMore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,7 +65,13 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
         // toolbar fancy stuff
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.toolbar_title);
-
+        loadMore = findViewById(R.id.loadMore);
+        loadMore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                fetchContacts();
+            }
+        });
         recyclerView = findViewById(R.id.recycler_view);
         contactList = new ArrayList<>();
         mAdapter = new ProductAdapter(this, contactList, this, this);
@@ -107,7 +116,10 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
 
                     if (success == 1) {
                         JSONArray jsonArray = jObj.getJSONArray("data");
-                        contactList = new ArrayList<>();
+                        if (offset == 0) {
+                            contactList = new ArrayList<>();
+                        }
+                        offset = offset + 1;
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             Product product = new Product();
@@ -142,7 +154,6 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                 } catch (JSONException e) {
                     Log.e("xxxxxxxxxxx", e.toString());
                     Toast.makeText(getApplication(), "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();
-
                 }
 
             }
@@ -157,6 +168,7 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
         }) {
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
+                localHashMap.put("offset", offset * 10 + "");
                 return localHashMap;
             }
         };

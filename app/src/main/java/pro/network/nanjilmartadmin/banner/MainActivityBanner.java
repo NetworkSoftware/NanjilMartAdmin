@@ -33,6 +33,8 @@ import java.util.Map;
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
+import pro.network.nanjilmartadmin.categories.CategoriesUpdate;
+import pro.network.nanjilmartadmin.categories.MainActivityCategories;
 
 import static pro.network.nanjilmartadmin.app.Appconfig.BANNERS_GET_ALL;
 
@@ -66,10 +68,8 @@ public class MainActivityBanner extends AppCompatActivity implements BannerClick
         RecyclerView.LayoutManager mLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
-//        recyclerView.addItemDecoration(new (this, DividerItemDecoration.VERTICAL, 36));
         recyclerView.setAdapter(mAdapter);
 
-        //fetchContacts();
 
 
         FloatingActionButton addStock = (FloatingActionButton) findViewById(R.id.addbanner);
@@ -108,6 +108,9 @@ public class MainActivityBanner extends AppCompatActivity implements BannerClick
                             banner.setId(jsonObject.getString("id"));
                             banner.setBanner(jsonObject.getString("banner"));
                             banner.setDescription(jsonObject.getString("description"));
+                            if(!jsonObject.isNull("stockname")){
+                                banner.setStockname(jsonObject.getString("stockname"));
+                            }
                             bannerList.add(banner);
                         }
                         mAdapter.notifyData(bannerList);
@@ -153,14 +156,11 @@ public class MainActivityBanner extends AppCompatActivity implements BannerClick
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finish();
         }
-        //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_search) {
             return true;
         }
@@ -193,6 +193,14 @@ public class MainActivityBanner extends AppCompatActivity implements BannerClick
         deleteFile(position);
 
     }
+
+    @Override
+    public void onClick(int position) {
+        Intent intent = new Intent(MainActivityBanner.this, BannerRegister.class);
+        intent.putExtra("data", bannerList.get(position));
+        startActivity(intent);
+    }
+
     private void deleteFile(final int position) {
         String tag_string_req = "req_register";
         progressDialog.setMessage("Fetching ...");

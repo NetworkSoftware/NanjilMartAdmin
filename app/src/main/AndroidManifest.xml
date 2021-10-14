@@ -61,7 +61,10 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyBufZZ6hR1jYcnwqXg2egbpvCU8Vbd2UU0" />
-
+        <activity
+            android:name="pro.network.nanjilmartadmin.news.NewsRegister"
+            android:label="News"
+            android:theme="@style/AppThemeWhite" />
         <activity
             android:name="pro.network.nanjilmartadmin.product.MainActivityProduct"
             android:label="@string/app_name"
@@ -117,7 +120,7 @@
             android:name="pro.network.nanjilmartadmin.categories.CategoriesRegister"
             android:label="categories Register"
             android:theme="@style/AppThemeWhite" />
-
+        <activity android:name=".app.ActivityMediaOnline" />
 
         <activity
             android:name="pro.network.nanjilmartadmin.categories.CategoriesUpdate"

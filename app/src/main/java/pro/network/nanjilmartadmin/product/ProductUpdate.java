@@ -497,7 +497,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         imageutils.onActivityResult(requestCode, resultCode, data);
-
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
