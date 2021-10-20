@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -78,7 +79,7 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
     Imageutils imageutils;
     private ImageView profiletImage;
     private String imageUrl = "";
-    MaterialBetterSpinner stock_name;
+    AutoCompleteTextView stock_name;
     private Banner banner = null;
 
     @Override
@@ -98,6 +99,9 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
         });
 
         stock_name = findViewById(R.id.stock_name);
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_item, STOCKNAME);
+        stock_name.setThreshold(2);
+        stock_name.setAdapter(adapter);
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
         getAllStocks();
@@ -276,7 +280,7 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
         }) {
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
-                localHashMap.put("model","ture");
+                localHashMap.put("user","ture");
                 return localHashMap;
             }
         };

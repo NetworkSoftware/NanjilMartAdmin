@@ -132,15 +132,15 @@
             android:theme="@style/AppThemeSe.NoActionBar" />
         <activity
             android:name="pro.network.nanjilmartadmin.order.Order_TimelineActivity"
-            android:label="categories Register"
+            android:label="Track Order"
             android:theme="@style/AppThemewhite" />
         <activity
             android:name="pro.network.nanjilmartadmin.deliveryboy.CreateDeliveryBoy"
-            android:label="categories Register"
+            android:label="Create Delivery Boy"
             android:theme="@style/AppThemewhite" />
         <activity
             android:name="pro.network.nanjilmartadmin.deliveryboy.MainActivityDelivery"
-            android:label="categories Register"
+            android:label="Delivery"
             android:theme="@style/AppThemewhite" />
         <activity
             android:name="pro.network.nanjilmartadmin.videos.MainActivityVideo"

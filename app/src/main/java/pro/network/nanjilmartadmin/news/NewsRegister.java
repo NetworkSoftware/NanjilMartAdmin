@@ -43,7 +43,7 @@ public class NewsRegister extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.news_register);
 
-        getSupportActionBar().setTitle("அறிவிப்பு");
+        getSupportActionBar().setTitle("Offers Notify");
 
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);

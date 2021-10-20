@@ -21,6 +21,7 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -114,7 +115,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         loadMore = findViewById(R.id.loadMore);
 
         // white background notification bar
-        whiteNotificationBar(recyclerView);
+      //  whiteNotificationBar(recyclerView);
 
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -324,6 +325,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         final AutoCompleteTextView dboyName = dialogView.findViewById(R.id.dboyName);
         final TextInputLayout dboylayout = dialogView.findViewById(R.id.dboylayout);
         final MaterialButton assignDboy = dialogView.findViewById(R.id.assignDboy);
+        ImageView close = dialogView.findViewById(R.id.close);
 
         title.setText("Assign Delivery boy");
         dboylayout.setHint("Select Delivery boy");
@@ -332,6 +334,12 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         dboyName.setThreshold(1);
         dboyName.setAdapter(adapter);
 
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBottomSheetDialog.cancel();
+            }
+        });
 
         assignDboy.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -464,7 +472,6 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     @Override
     public void onWhatsAppClick(String phone) {
         try {
-
             Intent intent = new Intent(Intent.ACTION_VIEW);
             intent.setData(Uri.parse("http://api.whatsapp.com/send?phone=91" + phone
                     + "&text=" + "Hi"));

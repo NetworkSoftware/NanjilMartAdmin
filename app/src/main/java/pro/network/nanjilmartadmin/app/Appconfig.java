@@ -28,13 +28,12 @@ import java.util.Map;
 import java.util.TimeZone;
 
 public class Appconfig {
-
     //Key values
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
 
-   // public static final String ip = "http://192.168.1.108:8098/prisma/nanjilmart";
-   public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
+    // public static final String ip = "http://192.168.1.101:8098/prisma/nanjilmart";
+    public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
 
     //Stack
     public static final String PRODUCT_CREATE = ip + "/create_stock.php";
@@ -62,7 +61,6 @@ public class Appconfig {
 
     //Video
     public static final String VIDEO = ip + "/video";
-
 
 
     //Shop
@@ -143,7 +141,7 @@ public class Appconfig {
                 actualHeight = (int) maxHeight;
                 actualWidth = (int) maxWidth;
             }
-    }
+        }
 
 //      setting inSampleSize value allows to load a scaled down version of the original image
 
@@ -238,16 +236,14 @@ public class Appconfig {
         return uriSting;
 
     }
+
     public static boolean isDeviceSupportCamera(Context context) {
-        if (context.getPackageManager().hasSystemFeature(
-                PackageManager.FEATURE_CAMERA)) {
-            // this device has a camera
-            return true;
-        } else {
-            // no camera on this device
-            return false;
-        }
+        // this device has a camera
+        // no camera on this device
+        return context.getPackageManager().hasSystemFeature(
+                PackageManager.FEATURE_CAMERA);
     }
+
     public static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
         final int height = options.outHeight;
         final int width = options.outWidth;

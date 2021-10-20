@@ -36,16 +36,25 @@
                     android:visibility="gone" />
             </FrameLayout>
 
-            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1">
+
+            <AutoCompleteTextView
                 android:id="@+id/stock_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:hint="Select Product"
-                android:textColor="@color/black"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/gray"
+                android:hint="Select Produt"
+                android:inputType="text"
                 android:textColorHint="#c6c6c6"
-                android:textSize="15dp"
-                app:met_floatingLabel="normal" />
+                android:textSize="@dimen/textsize" />
+            </com.google.android.material.textfield.TextInputLayout>
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

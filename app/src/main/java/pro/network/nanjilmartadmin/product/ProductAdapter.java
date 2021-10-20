@@ -36,7 +36,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public TextView model,price,brand,stock_update,description,sub_category,shopname;
         public ImageView thumbnail;
-
         public MyViewHolder(View view) {
             super(view);
             model = view.findViewById(R.id.model);
