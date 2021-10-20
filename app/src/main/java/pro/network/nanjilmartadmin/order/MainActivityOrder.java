@@ -28,7 +28,6 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -77,6 +76,7 @@ import static pro.network.nanjilmartadmin.app.Appconfig.ORDER_GET_ALL;
 
 public class MainActivityOrder extends AppCompatActivity implements OrderAdapter.ContactsAdapterListener, StatusListener {
     private static final String TAG = MainActivityOrder.class.getSimpleName();
+    private final Set<String> time_Schedule = new HashSet<>();
     ProgressDialog progressDialog;
     Button loadMore;
     int offset = 0;
@@ -89,7 +89,6 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     private OrderAdapter deliverAdapter;
     private ArrayList<Order> deliveredList;
     private RecyclerView recycler_view_delivered;
-    private final Set<String> time_Schedule = new HashSet<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -115,7 +114,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         loadMore = findViewById(R.id.loadMore);
 
         // white background notification bar
-      //  whiteNotificationBar(recyclerView);
+        //  whiteNotificationBar(recyclerView);
 
 
         recyclerView.setItemAnimator(new DefaultItemAnimator());
@@ -134,7 +133,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                 fetchContacts();
             }
         });
-        fetchDboys();
+
     }
 
     private void fetchContacts() {
@@ -312,7 +311,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     @Override
     protected void onStart() {
         super.onStart();
-        fetchContacts();
+        fetchDboys();
 
     }
 
@@ -431,6 +430,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                     int success = jObj.getInt("success");
                     Toast.makeText(getApplication(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
                     if (success == 1) {
+                        offset = 0;
                         fetchContacts();
                         if (mBottomSheetDialog != null) {
                             mBottomSheetDialog.cancel();
@@ -553,7 +553,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
 
     @Override
     public void bill(Order position) {
-          printFunction(MainActivityOrder.this, position);
+        printFunction(MainActivityOrder.this, position);
     }
 
 

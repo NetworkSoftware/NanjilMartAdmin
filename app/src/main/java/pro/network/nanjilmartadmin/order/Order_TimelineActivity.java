@@ -3,6 +3,8 @@ package pro.network.nanjilmartadmin.order;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -41,7 +43,9 @@ public class Order_TimelineActivity extends AppCompatActivity {
 
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
-
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_round_arrow_back_24);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setTitle("Track Order");
 
         recycler = (RecyclerView) findViewById(R.id.recycler);
         recycler.setLayoutManager(new LinearLayoutManager(this,  LinearLayoutManager.VERTICAL, false));
@@ -124,6 +128,34 @@ public class Order_TimelineActivity extends AppCompatActivity {
         if (progressDialog.isShowing())
             progressDialog.dismiss();
     }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
 
+        // Associate searchable configuration with the SearchView
+
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == android.R.id.home) {
+            finish();
+        }
+        //noinspection SimplifiableIfStatement
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // close search view on back button pressed
+
+        super.onBackPressed();
+    }
 
 }
