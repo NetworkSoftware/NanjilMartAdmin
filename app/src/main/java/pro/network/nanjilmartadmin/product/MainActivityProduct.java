@@ -12,11 +12,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -52,6 +54,8 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
     private SearchView searchView;
     int offset = 0;
     Button loadMore;
+    boolean isAlreadyLoading;
+    ProgressBar productRecycle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,13 +69,7 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
         // toolbar fancy stuff
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setTitle(R.string.toolbar_title);
-        loadMore = findViewById(R.id.loadMore);
-        loadMore.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                fetchContacts();
-            }
-        });
+
         recyclerView = findViewById(R.id.recycler_view);
         contactList = new ArrayList<>();
         mAdapter = new ProductAdapter(this, contactList, this, this);
@@ -86,6 +84,23 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
         recyclerView.setLayoutManager(addManager1);
         recyclerView.setAdapter(mAdapter);
 
+        productRecycle = findViewById(R.id.productRecycle);
+        NestedScrollView nestedScrollview = findViewById(R.id.nestedScrollview);
+        nestedScrollview.setNestedScrollingEnabled(false);
+        nestedScrollview.setOnScrollChangeListener(new NestedScrollView.OnScrollChangeListener() {
+            @Override
+            public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) { //scrollY is the sliding distance
+                if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+                    if (!isAlreadyLoading) {
+                        if (searchView != null && !searchView.isIconified() && searchView.getQuery().toString().length() > 0) {
+                            fetchContacts(searchView.getQuery().toString());
+                        } else {
+                            fetchContacts("");
+                        }
+                    }
+                }
+            }
+        });
         //fetchContacts();
 
 
@@ -100,25 +115,24 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
     }
 
 
-    private void fetchContacts() {
+    private void fetchContacts(final String searchKey) {
+        isAlreadyLoading = true;
         String tag_string_req = "req_register";
         progressDialog.setMessage("Processing ...");
-        showDialog();
+        productRecycle.setVisibility(View.VISIBLE);
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 PRODUCT_GET_ALL, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                hideDialog();
+                productRecycle.setVisibility(View.GONE);
                 Log.d("Register Response: ", response);
-                try {
+                if (offset == 0) {
+                    contactList = new ArrayList<>();
+                }  try {
                     JSONObject jObj = new JSONObject(response);
                     int success = jObj.getInt("success");
-
                     if (success == 1) {
                         JSONArray jsonArray = jObj.getJSONArray("data");
-                        if (offset == 0) {
-                            contactList = new ArrayList<>();
-                        }
                         offset = offset + 1;
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -146,6 +160,7 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                             contactList.add(product);
                         }
                         mAdapter.notifyData(contactList);
+                        isAlreadyLoading = false;
                         getSupportActionBar().setSubtitle(contactList.size() + "  Nos");
 
                     } else {
@@ -161,13 +176,18 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Registration Error: ", error.getMessage());
+                productRecycle.setVisibility(View.GONE);
+                isAlreadyLoading = false;  Log.e("Registration Error: ", error.getMessage());
                 Toast.makeText(getApplication(),
                         "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
             }
         }) {
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
+                localHashMap.put("searchKey", searchKey);
+                if(contactList.size()<10){
+                    offset=0;
+                }
                 localHashMap.put("offset", offset * 10 + "");
                 return localHashMap;
             }
@@ -184,26 +204,47 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search)
                 .getActionView();
+
         searchView.setSearchableInfo(searchManager
                 .getSearchableInfo(getComponentName()));
         searchView.setMaxWidth(Integer.MAX_VALUE);
-
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                offset = 0;
+                fetchContacts("");
+                return false;
+            }
+        });
         // listening to search query text change
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // filter recycler view when query submitted
-                mAdapter.getFilter().filter(query);
+                if (query.length() > 3) {
+                    offset = 0;
+                    fetchContacts(query);
+                } else if (query.length() == 0) {
+                    fetchContacts("");
+                }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String query) {
                 // filter recycler view when text is changed
-                mAdapter.getFilter().filter(query);
+                if (query.length() > 3) {
+                    offset = 0;
+                    fetchContacts(query);
+                } else if (query.length() == 0) {
+                    fetchContacts("");
+                }
                 return false;
             }
         });
+        if (getIntent() != null && getIntent().getBooleanExtra("isSearch", false)) {
+            searchView.setIconified(false);
+        }
         return true;
     }
 
@@ -253,7 +294,7 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
     @Override
     protected void onStart() {
         super.onStart();
-        fetchContacts();
+        fetchContacts("");
     }
 
     private void showDialog() {

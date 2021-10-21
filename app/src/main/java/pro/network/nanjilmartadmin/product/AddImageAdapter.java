@@ -1,8 +1,10 @@
 package pro.network.nanjilmartadmin.product;
 
 import android.content.Context;
+
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,20 +20,15 @@ import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.GlideApp;
 
 public class AddImageAdapter extends RecyclerView.Adapter<AddImageAdapter.MyViewHolder> {
-   ImageClick imageClick;
     private final Context mainActivityUser;
+    ImageClick imageClick;
     private ArrayList<String> samplesbean;
 
 
-
-
-
-
-
     public AddImageAdapter(Context mainActivityUser, ArrayList<String> samplesList, ImageClick imageClick) {
-        this.mainActivityUser= mainActivityUser;
-        this.samplesbean=samplesList;
-        this.imageClick= imageClick;
+        this.mainActivityUser = mainActivityUser;
+        this.samplesbean = samplesList;
+        this.imageClick = imageClick;
     }
 
 
@@ -65,23 +62,24 @@ public class AddImageAdapter extends RecyclerView.Adapter<AddImageAdapter.MyView
         }
 
 
-       holder.delete.setOnClickListener(new View.OnClickListener() {
-           @Override
-          public void onClick(View v) {
-             imageClick.onDeleteClick(position);
-           }
-       });
-       holder.itemsImage.setOnClickListener(new View.OnClickListener() {
+        holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
-           public void onClick(View v) {
-            imageClick.onImageClick(position);
-           }
-      });
+            public void onClick(View v) {
+                imageClick.onDeleteClick(position);
+            }
+        });
+        holder.itemsImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageClick.onImageClick(position);
+            }
+        });
     }
 
     public int getItemCount() {
         return samplesbean.size();
     }
+
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         private final CardView itemsCard, itemsAdd;
