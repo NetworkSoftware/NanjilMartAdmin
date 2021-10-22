@@ -12,13 +12,13 @@ class FileCache {
 
         //Find the dir at SDCARD to save cached images
 
-        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
-            //if SDCARD is mounted (SDCARD is present on device and mounted)
-            cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), "MultiImagePicker");
-        } else {
+//        if (android.os.Environment.getExternalStorageState().equals(android.os.Environment.MEDIA_MOUNTED)) {
+//            //if SDCARD is mounted (SDCARD is present on device and mounted)
+//            cacheDir = new File(android.os.Environment.getExternalStorageDirectory(), "MultiImagePicker");
+//        } else {
             // if checking on simulator the create cache dir in your application context
             cacheDir = context.getCacheDir();
-        }
+      //  }
 
         if (!cacheDir.exists()) {
             // create cache dir in your application context

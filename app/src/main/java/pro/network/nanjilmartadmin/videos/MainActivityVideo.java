@@ -1,8 +1,9 @@
 package pro.network.nanjilmartadmin.videos;
 
 import android.app.ProgressDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +21,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.rahul.media.main.MediaFactory;
-
-import net.alhazmy13.mediapicker.Video.VideoPicker;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -45,13 +44,15 @@ import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AndroidMultiPartEntity;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
+import pro.network.nanjilmartadmin.app.Imageutils;
 
 
-public class MainActivityVideo extends AppCompatActivity implements AdClick {
+public class MainActivityVideo extends AppCompatActivity implements AdClick, Imageutils.ImageAttachmentListener {
 
     AdvideoAdapter shopAdapter;
     List<String> shopList = new ArrayList<>();
     ProgressDialog progressDialog;
+    Imageutils imageutils;
     private MediaFactory mediaFactory;
     private ArrayList<String> all_path;
 
@@ -60,7 +61,7 @@ public class MainActivityVideo extends AppCompatActivity implements AdClick {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ad_img_main);
 
-
+        imageutils = new Imageutils(this);
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
@@ -76,7 +77,16 @@ public class MainActivityVideo extends AppCompatActivity implements AdClick {
         addShop.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imagePicker();
+                imageutils.launchVideo(1);
+                imageutils.setImageAttachmentListener(new Imageutils.ImageAttachmentListener() {
+                    @Override
+                    public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
+                        progressDialog.setMessage("Uploading..");
+                        String updatedPath = imageutils.saveVideo(uri, MainActivityVideo.this, filename);
+                        showDialog();
+                        new UploadFileToServer().execute(imageutils.getPath(uri));
+                    }
+                });
             }
         });
 
@@ -99,7 +109,6 @@ public class MainActivityVideo extends AppCompatActivity implements AdClick {
         String tag_string_req = "req_register";
         progressDialog.setMessage("Fetching ...");
         showDialog();
-        // showDialog();
         StringRequest strReq = new StringRequest(Request.Method.GET,
                 Appconfig.VIDEO, new Response.Listener<String>() {
             @Override
@@ -133,7 +142,6 @@ public class MainActivityVideo extends AppCompatActivity implements AdClick {
 
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("Registration Error: ", error.getMessage());
                 Toast.makeText(MainActivityVideo.this,
                         "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
                 hideDialog();
@@ -208,80 +216,14 @@ public class MainActivityVideo extends AppCompatActivity implements AdClick {
         deleteFile(position);
     }
 
-    public void imagePicker() {
-        final CharSequence[] items;
-        if (Appconfig.isDeviceSupportCamera(MainActivityVideo.this)) {
-            items = new CharSequence[2];
-            items[0] = "Camera";
-            items[1] = "Gallery";
-        } else {
-            items = new CharSequence[1];
-            items[0] = "Gallery";
-        }
-
-        android.app.AlertDialog.Builder alertdialog = new android.app.AlertDialog.Builder(MainActivityVideo.this);
-        alertdialog.setTitle("Add Image");
-        alertdialog.setItems(items, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int item) {
-                if (items[item].equals("Camera")) {
-                 /*   MediaFactory.MediaBuilder mediaBuilder = new MediaFactory.MediaBuilder(MainActivityVideo.this)
-                            .fromCamera()
-                            .setPickCount(1)
-                            .isSquareCrop(false)
-                            .withAspectRatio(9, 16)
-                            .doCropping();
-                    mediaFactory = MediaFactory.create().start(mediaBuilder);*/
-                    new VideoPicker.Builder(MainActivityVideo.this)
-                            .mode(VideoPicker.Mode.CAMERA)
-                            .directory(VideoPicker.Directory.DEFAULT)
-                            .extension(VideoPicker.Extension.MP4)
-                            .enableDebuggingMode(true)
-                            .build();
-                } else if (items[item].equals("Gallery")) {
-                  /*  MediaFactory.MediaBuilder mediaBuilder = new MediaFactory.MediaBuilder(MainActivityVideo.this)
-                            .fromGallery()
-                            .setPickCount(1)
-                            .isSquareCrop(false)
-                            .withAspectRatio(9, 16)
-                            .doCropping();
-                    mediaFactory = MediaFactory.create().start(mediaBuilder);*/
-                    new VideoPicker.Builder(MainActivityVideo.this)
-                            .mode(VideoPicker.Mode.GALLERY)
-                            .directory(VideoPicker.Directory.DEFAULT)
-                            .extension(VideoPicker.Extension.MP4)
-                            .enableDebuggingMode(true)
-                            .build();
-                }
-            }
-        });
-        alertdialog.show();
-    }
-
-    private void performUpload() {
-        if (all_path.size() > 0) {
-            String path = all_path.get(0);
-            all_path.remove(0);
-            showDialog();
-            new MainActivityVideo.UploadFileToServer().execute(path);
-        } else {
-            hideDialog();
-        }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        imageutils.onActivityResult(requestCode, resultCode, data);
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        try {
-            if (requestCode == VideoPicker.VIDEO_PICKER_REQUEST_CODE && resultCode == RESULT_OK) {
-                all_path=new ArrayList<>();
-                ArrayList<String> mPaths = data.getStringArrayListExtra(VideoPicker.EXTRA_VIDEO_PATH);
-                all_path=mPaths;
-                performUpload();
-
-            }
-        } catch (Exception e) {
-            Log.e("xxxxxxxx", e.toString());
-        }
+    public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
 
     }
 
@@ -292,7 +234,7 @@ public class MainActivityVideo extends AppCompatActivity implements AdClick {
         @Override
         protected void onPreExecute() {
             // setting progress bar to zero
-
+            showDialog();
             super.onPreExecute();
 
         }
@@ -361,13 +303,13 @@ public class MainActivityVideo extends AppCompatActivity implements AdClick {
             Log.e("Response from server: ", result);
             try {
                 JSONObject jsonObject = new JSONObject(result);
-                getAllStaff();
                 Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                getAllStaff();
 
             } catch (Exception e) {
                 Toast.makeText(getApplicationContext(), "Image not uploaded", Toast.LENGTH_SHORT).show();
+                hideDialog();
             }
-            hideDialog();
             // showing the server response in an alert dialog
             //showAlert(result);
 

@@ -81,7 +81,6 @@ dependencies {
 
 
     // Add the Firebase Crashlytics SDK.
-    implementation 'net.alhazmy13.MediaPicker:libary:2.4.4'
     implementation 'com.fasterxml.jackson.core:jackson-core:2.10.1'
     implementation (
             [group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.4.1'],
@@ -92,6 +91,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:17.3.4'
     implementation 'com.wdullaer:materialdatetimepicker:3.6.4'
     implementation project(':multipleImagePickerLib')
+
 
 }
 apply plugin: 'com.google.gms.google-services'
