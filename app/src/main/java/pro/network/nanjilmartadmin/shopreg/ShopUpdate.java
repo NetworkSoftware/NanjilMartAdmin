@@ -269,7 +269,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
             }
         });
 
-        openHoursEdit.setOnClickListener(new View.OnClickListener() {
+       /* openHoursEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -302,7 +302,8 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
                         }, mHour, mMinute, true);
                 timePickerDialog.show();
             }
-        });
+        });*/
+
         final Button submit = dialogView.findViewById(R.id.submit);
 
         submit.setOnClickListener(new View.OnClickListener() {

@@ -94,7 +94,6 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.shop_reg);
-
         getSupportActionBar().setTitle("Shop Register");
 
         pDialog = new ProgressDialog(this);
@@ -225,7 +224,7 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
             }
         });
 
-        openHoursEdit.setOnClickListener(new View.OnClickListener() {
+       /* openHoursEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 final Calendar c = Calendar.getInstance();
@@ -258,7 +257,7 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
                         }, mHour, mMinute, true);
                 timePickerDialog.show();
             }
-        });
+        });*/
         final Button submit = dialogView.findViewById(R.id.submit);
 
         submit.setOnClickListener(new View.OnClickListener() {

@@ -53,7 +53,6 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
     private ProductAdapter mAdapter;
     private SearchView searchView;
     int offset = 0;
-    Button loadMore;
     boolean isAlreadyLoading;
     ProgressBar productRecycle;
 
