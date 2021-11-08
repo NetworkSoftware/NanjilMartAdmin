@@ -94,9 +94,6 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mainorder);
-       /* Toolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);*/
-
         progressDialog = new ProgressDialog(this);
         progressDialog.setCancelable(false);
 
@@ -170,6 +167,9 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 order.setAddress(jsonObject.getString("address"));
                                 order.setReson(jsonObject.getString("reason"));
                                 order.setCreatedOn(jsonObject.getString("createdon"));
+                                if (!jsonObject.isNull("shopname")) {
+                                    order.setShopname(jsonObject.getString("shopname"));
+                                }
                                 order.setTotal(jsonObject.getString("total"));
                                 order.setDcharge(jsonObject.getString("dcharge"));
                                 order.setPincode(jsonObject.getString("pincode"));

@@ -2,12 +2,13 @@ package pro.network.nanjilmartadmin.order;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
@@ -21,24 +22,10 @@ import pro.network.nanjilmartadmin.product.Product;
 
 public class OrderListSubAdapter extends RecyclerView.Adapter<OrderListSubAdapter.MyViewHolder> {
 
-    private Context mainActivityUser;
-    private ArrayList<Product> myorderBeans;
     SharedPreferences preferences;
     int selectedPosition = 0;
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-
-        private ImageView product_image;
-        private TextView qty;
-
-
-        public MyViewHolder(View view) {
-            super((view));
-            product_image = (ImageView) view.findViewById(R.id.product_image);
-            qty = (TextView) view.findViewById(R.id.qty);
-
-        }
-    }
+    private final Context mainActivityUser;
+    private ArrayList<Product> myorderBeans;
 
     public OrderListSubAdapter(Context mainActivityUser, ArrayList<Product> myorderBeans) {
         this.mainActivityUser = mainActivityUser;
@@ -65,10 +52,9 @@ public class OrderListSubAdapter extends RecyclerView.Adapter<OrderListSubAdapte
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Product myorderBean = myorderBeans.get(position);
-   /*     holder.qty.setText(myorderBean.getQty()+"("
-                +myorderBean.getRqty() + "" + myorderBean.getRqtyType() +")\n"+ myorderBean.getBrand()+" "+myorderBean.getModel());*/
-//        ArrayList<String> images = new Gson().fromJson(myorderBean.getImage(), (Type) List.class);
-
+        holder.qty.setText("Qty: " + myorderBean.getQty());
+        holder.productName.setText(myorderBean.getBrand() + " - " + myorderBean.getModel());
+        holder.shopName.setText("Shop:" + myorderBean.getShopname());
         GlideApp.with(mainActivityUser)
                 .load(Appconfig.getResizedImage(myorderBean.getImage(), true))
                 .diskCacheStrategy(DiskCacheStrategy.ALL)
@@ -80,6 +66,23 @@ public class OrderListSubAdapter extends RecyclerView.Adapter<OrderListSubAdapte
 
     public int getItemCount() {
         return myorderBeans.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+
+        private final ImageView product_image;
+        private final TextView qty;
+        private final TextView productName;
+        private final TextView shopName;
+
+
+        public MyViewHolder(View view) {
+            super((view));
+            product_image = view.findViewById(R.id.product_image);
+            qty = view.findViewById(R.id.qty);
+            productName = view.findViewById(R.id.productName);
+            shopName = view.findViewById(R.id.shopName);
+        }
     }
 
 }
