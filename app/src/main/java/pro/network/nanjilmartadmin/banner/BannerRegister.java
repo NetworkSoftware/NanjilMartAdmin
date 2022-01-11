@@ -70,7 +70,6 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
     String[] STOCKNAME = new String[]{"Loading"};
     private Map<String, String> nameIdMap = new HashMap<>();
     private ProgressDialog pDialog;
-
     EditText description;
 
     String studentId = null;

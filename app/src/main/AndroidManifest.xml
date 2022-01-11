@@ -157,7 +157,7 @@
             android:theme="@style/AppThemeWhite" />
         <activity
             android:name="pro.network.nanjilmartadmin.shopreg.MainActivityShop"
-            android:label="categories Register"
+            android:label="Shop Register"
             android:theme="@style/AppThemeSe.NoActionBar" />
 
         <service

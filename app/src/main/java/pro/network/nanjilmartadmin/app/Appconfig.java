@@ -32,7 +32,7 @@ public class Appconfig {
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
 
-    // public static final String ip = "http://192.168.1.101:8098/prisma/nanjilmart";
+    // public static final String ip = "http://192.168.1.102:8098/prisma/nanjilmart";
     public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
 
     //Stack
@@ -58,7 +58,6 @@ public class Appconfig {
     public static final String ASSIGN_DBOY = ip + "/assign_dboy.php";
     //public static final String TRACK_PRODUCT_ORDER_ID = ip + "/com_track_order_id.php";
     public static final String ORDER_ASSIGN_DBOY = ip + "/order_assign_dboy.php";
-
     //Video
     public static final String VIDEO = ip + "/video";
 

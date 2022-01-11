@@ -90,7 +90,8 @@ public class PdfConfig {
         for (int i = 0; i < mainbean.getProductBeans().size(); i++) {
             table3.addCell(createTextLeft((i + 1) + "", catNormalFont, false));
             Product productListBean = mainbean.getProductBeans().get(i);
-            table3.addCell(createTextLeft(productListBean.getBrand() + "_" + productListBean.getModel(), catNormalFont, false));
+            table3.addCell(createTextLeft(productListBean.getBrand() + "_" + productListBean.getModel()
+                    +"\n"+"Shop-" + productListBean.shopname, catNormalFont, false));
             table3.addCell(createTextLeft(productListBean.getQty(), catNormalFont, false));
             table3.addCell(createTextLeft(productListBean.getPrice(), catNormalFont, false));
         }

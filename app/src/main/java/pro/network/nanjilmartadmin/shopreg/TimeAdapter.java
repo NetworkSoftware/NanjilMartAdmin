@@ -58,7 +58,6 @@ public class TimeAdapter extends RecyclerView.Adapter<TimeAdapter.MyViewHolder> 
         holder.out_time.setText(samples.getCloseHours());
         holder.isopen.setText(samples.isOpen?"Open":"Close");
         holder.day.setText(samples.getDayInWeek());
-
         holder.delete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
