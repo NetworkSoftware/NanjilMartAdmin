@@ -174,13 +174,13 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 order.setDcharge(jsonObject.getString("dcharge"));
                                 order.setPincode(jsonObject.getString("pincode"));
                                 order.setDtime(jsonObject.getString("dtime"));
-                                ObjectMapper mapper = new ObjectMapper();
-                                Object listBeans = new Gson().fromJson(jsonObject.getString("items"),
-                                        Object.class);
-                                ArrayList<Product> accountList = mapper.convertValue(
-                                        listBeans,
-                                        new TypeReference<ArrayList<Product>>() {
-                                        }
+                                            ObjectMapper mapper = new ObjectMapper();
+                                            Object listBeans = new Gson().fromJson(jsonObject.getString("items"),
+                                                    Object.class);
+                                            ArrayList<Product> accountList = mapper.convertValue(
+                                                    listBeans,
+                                                    new TypeReference<ArrayList<Product>>() {
+                                                    }
                                 );
                                 order.setProductBeans(accountList);
                                 if (order.getStatus().equalsIgnoreCase("ordered")) {

@@ -58,7 +58,7 @@ public class PdfConfig {
         table1.setWidthPercentage(100);
         table1.setWidths(new int[]{1});
 
-        table1.addCell(createTextCellCenter("Nanjil Evening Mart\nPh:916381074637", nameFont, true));
+        table1.addCell(createTextCellCenter("Nanjil Evening Mart\nPh:919994526713", nameFont, true));
 
         table1.setSplitLate(false);
         document.add(table1);
