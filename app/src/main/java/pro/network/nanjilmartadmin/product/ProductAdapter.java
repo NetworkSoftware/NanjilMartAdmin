@@ -1,7 +1,6 @@
 package pro.network.nanjilmartadmin.product;
 
 import android.content.Context;
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +8,8 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,34 +29,10 @@ import pro.network.nanjilmartadmin.app.GlideApp;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHolder>
         implements Filterable {
-    private Context context;
+    private final Context context;
     private List<Product> productList;
     private List<Product> productListFiltered;
-    private ContactsAdapterListener listener;
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView model,price,brand,stock_update,description,sub_category,shopname;
-        public ImageView thumbnail;
-        public MyViewHolder(View view) {
-            super(view);
-            model = view.findViewById(R.id.model);
-            sub_category = view.findViewById(R.id.sub_category);
-            shopname = view.findViewById(R.id.shopname);
-            brand = view.findViewById(R.id.brand);
-            price = view.findViewById(R.id.price);
-            stock_update = view.findViewById(R.id.stock_update_row);
-            thumbnail = view.findViewById(R.id.thumbnail);
-            description=view.findViewById(R.id.description);
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    // send selected contact in callback
-                    listener.onContactSelected(productListFiltered.get(getAdapterPosition()));
-                }
-            });
-        }
-    }
-
+    private final ContactsAdapterListener listener;
 
     public ProductAdapter(Context context, List<Product> productList, ContactsAdapterListener listener, MainActivityProduct mainActivityProduct) {
         this.context = context;
@@ -77,23 +54,28 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         final Product product = productListFiltered.get(position);
         holder.brand.setText(product.getBrand());
         holder.model.setText(product.getModel());
-        holder.price.setText("₹ "+product.getPrice());
+        holder.price.setText("₹ " + product.getPrice());
         holder.shopname.setText(product.getShopname());
         holder.shopname.setVisibility(View.VISIBLE);
-        if(product.getShopname().equalsIgnoreCase("NA")){
+        if (product.getShopname().equalsIgnoreCase("NA")) {
             holder.shopname.setVisibility(View.GONE);
         }
+
+        holder.id.setText("#"+product.id);
         holder.sub_category.setText(product.getSub_category());
         holder.stock_update.setText(product.getStock_update());
-        ArrayList<String> urls = new Gson().fromJson(product.image, (Type) List.class);
-        new ObjectMapper()
-                .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        try {
+            ArrayList<String> urls = new Gson().fromJson(product.image, (Type) List.class);
+            new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 
-//if(urls.size()>0){
-        GlideApp.with(context)
-                .load(Appconfig.getResizedImage(urls.get(0), true))
-                .into(holder.thumbnail);
-//}
+            GlideApp.with(context)
+                    .load(Appconfig.getResizedImage(urls.get(0), true))
+                    .into(holder.thumbnail);
+        } catch (Exception e) {
+
+        }
+
     }
 
     @Override
@@ -113,10 +95,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
                     List<Product> filteredList = new ArrayList<>();
                     for (Product row : productList) {
 
-                        String val=row.getBrand();
+                        String val = row.getBrand();
                         if (val.toLowerCase().contains(charString.toLowerCase())) {
                             filteredList.add(row);
-                        }else if (row.getModel().contains(charString.toLowerCase())) {
+                        } else if (row.getModel().contains(charString.toLowerCase())) {
                             filteredList.add(row);
 
                         }
@@ -137,12 +119,39 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
             }
         };
     }
+
     public void notifyData(List<Product> productList) {
-        this.productListFiltered=productList;
-        this.productList=productList;
+        this.productListFiltered = productList;
+        this.productList = productList;
         notifyDataSetChanged();
     }
+
     public interface ContactsAdapterListener {
         void onContactSelected(Product product);
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+        public TextView model, price, id,brand, stock_update, description, sub_category, shopname;
+        public ImageView thumbnail;
+
+        public MyViewHolder(View view) {
+            super(view);
+            model = view.findViewById(R.id.model);
+            sub_category = view.findViewById(R.id.sub_category);
+            shopname = view.findViewById(R.id.shopname);
+            brand = view.findViewById(R.id.brand);
+            price = view.findViewById(R.id.price);
+            id = view.findViewById(R.id.id);
+            stock_update = view.findViewById(R.id.stock_update_row);
+            thumbnail = view.findViewById(R.id.thumbnail);
+            description = view.findViewById(R.id.description);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    // send selected contact in callback
+                    listener.onContactSelected(productListFiltered.get(getAdapterPosition()));
+                }
+            });
+        }
     }
 }

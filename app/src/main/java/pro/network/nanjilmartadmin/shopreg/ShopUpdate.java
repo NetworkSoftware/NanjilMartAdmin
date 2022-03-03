@@ -86,7 +86,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
             "In Stock", "Currently Unavailable",
     };
     public Button addSize;
-    EditText shop_name, phone, latlong;
+    EditText shop_name, phone, latlong,address,category,offerAmt;
     MaterialBetterSpinner stock_update;
     String studentId = null;
     TextView submit;
@@ -117,7 +117,10 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
         itemsAdd = findViewById(R.id.itemsAdd);
 
         shop_name = findViewById(R.id.shop_name);
+        offerAmt = findViewById(R.id.offerAmt);
+        address = findViewById(R.id.address);
         phone = findViewById(R.id.phone);
+        category = findViewById(R.id.category);
         stock_update = findViewById(R.id.stock_update);
         latlong = findViewById(R.id.latlong);
         ArrayAdapter<String> stockAdapter = new ArrayAdapter<String>(this,
@@ -148,6 +151,11 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
                 times.remove(position);
                 timeAdapter.notifyData(times);
             }
+
+            @Override
+            public void onEditClick(int position) {
+
+            }
         }, true);
         sizelist = findViewById(R.id.sizelist);
         final LinearLayoutManager sizeManager = new LinearLayoutManager(
@@ -162,12 +170,16 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
             public void onClick(View v) {
 
                 if (shop_name.getText().toString().length() <= 0) {
-                    shop_name.setError("Select the Shop Name");
+                    shop_name.setError("Enter the correct Shop Name");
                 } else if (phone.getText().toString().length() <= 0) {
-                    phone.setError("Select the Phone");
+                    phone.setError("Enter the correct Phone");
+                } else if (address.getText().toString().length() <= 0) {
+                    address.setError("Enter the correct  Address");
                 } else if (latlong.getText().toString().length() <= 0) {
                     latlong.setError("Enter the correct Location");
-                } else if (stock_update.getText().toString().length() <= 0) {
+                }  else if (category.getText().toString().length() <= 0) {
+                    category.setError("Enter the Category");
+                }else if (stock_update.getText().toString().length() <= 0) {
                     stock_update.setError("Select the Sold or Not");
                 } else {
                     registerUser();
@@ -186,6 +198,9 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
                     .into(profiletImage);
             phone.setText(contact.phone);
             latlong.setText(contact.latlong);
+            category.setText(contact.category);
+            address.setText(contact.address);
+            offerAmt.setText(contact.offerAmt);
             studentId = contact.id;
             stock_update.setText(contact.stock_update);
             if (contact.getTime_schedule() == null || contact.getTime_schedule().equalsIgnoreCase("null")) {
@@ -269,40 +284,6 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
             }
         });
 
-       /* openHoursEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
-                int mHour = c.get(Calendar.HOUR_OF_DAY);
-                int mMinute = c.get(Calendar.MINUTE);
-                TimePickerDialog timePickerDialog = new TimePickerDialog(ShopUpdate.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                openHoursEdit.setText(hourOfDay + "." + minute);
-                            }
-                        }, mHour, mMinute, true);
-                timePickerDialog.show();
-            }
-        });
-        closeHoursEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Calendar c = Calendar.getInstance();
-                int mHour = c.get(Calendar.HOUR_OF_DAY);
-                int mMinute = c.get(Calendar.MINUTE);
-                TimePickerDialog timePickerDialog = new TimePickerDialog(ShopUpdate.this,
-                        new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay,
-                                                  int minute) {
-                                closeHoursEdit.setText(hourOfDay + "." + minute);
-                            }
-                        }, mHour, mMinute, true);
-                timePickerDialog.show();
-            }
-        });*/
 
         final Button submit = dialogView.findViewById(R.id.submit);
 
@@ -394,11 +375,14 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("shop_name", shop_name.getText().toString());
+                localHashMap.put("address", address.getText().toString());
                 localHashMap.put("image", imageUrl);
                 localHashMap.put("phone", phone.getText().toString());
+                localHashMap.put("category", category.getText().toString());
                 localHashMap.put("latlong", latlong.getText().toString());
                 localHashMap.put("stock_update", stock_update.getText().toString());
                 localHashMap.put("time_schedule", new Gson().toJson(times));
+                localHashMap.put("offerAmt", offerAmt.getText().length()>0?offerAmt.getText().toString():"0");
                 localHashMap.put("id", studentId);
                 return localHashMap;
             }

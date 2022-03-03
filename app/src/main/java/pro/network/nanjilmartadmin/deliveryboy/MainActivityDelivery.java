@@ -1,11 +1,23 @@
 package pro.network.nanjilmartadmin.deliveryboy;
 
+import static pro.network.nanjilmartadmin.app.Appconfig.DELIVERY_BOY_CHANGE_STATUS;
+import static pro.network.nanjilmartadmin.app.Appconfig.DELIVERY_GET_ALL;
+import static pro.network.nanjilmartadmin.app.Appconfig.WALLET;
+
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -17,7 +29,11 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -31,9 +47,7 @@ import java.util.Map;
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
-
-import static pro.network.nanjilmartadmin.app.Appconfig.DELIVERY_BOY_CHANGE_STATUS;
-import static pro.network.nanjilmartadmin.app.Appconfig.DELIVERY_GET_ALL;
+import pro.network.nanjilmartadmin.wallet.WalletActivity;
 
 
 public class MainActivityDelivery extends AppCompatActivity {
@@ -66,6 +80,11 @@ public class MainActivityDelivery extends AppCompatActivity {
             }
 
             @Override
+            public void onWalletClick(DeliveryBean deliveryBean) {
+                showCashBack(deliveryBean);
+            }
+
+            @Override
             public void onEditClick(pro.network.nanjilmartadmin.deliveryboy.DeliveryBean deliveryBeans) {
                 Intent intent = new Intent(MainActivityDelivery.this, pro.network.nanjilmartadmin.deliveryboy.CreateDeliveryBoy.class);
                 intent.putExtra("data", deliveryBeans);
@@ -75,6 +94,13 @@ public class MainActivityDelivery extends AppCompatActivity {
             @Override
             public void onDeleteClick(int position) {
                 deleteFile(position);
+            }
+
+            @Override
+            public void onHistoryClick(DeliveryBean deliveryBean) {
+                Intent intent = new Intent(MainActivityDelivery.this, WalletActivity.class);
+                intent.putExtra("id", deliveryBean.id);
+                startActivity(intent);
             }
         });
         addDelivery = findViewById(R.id.addDelivery);
@@ -94,10 +120,10 @@ public class MainActivityDelivery extends AppCompatActivity {
         });
 
 
-        fetchContacts();
+        fetchDBoy();
     }
 
-    private void fetchContacts() {
+    private void fetchDBoy() {
         String tag_string_req = "req_register";
         progressDialog.setMessage("Processing ...");
         showDialog();
@@ -124,6 +150,7 @@ public class MainActivityDelivery extends AppCompatActivity {
                             deliveryBean.setAdharcard(jsonObject.getString("adharcard"));
                             deliveryBean.setPassword(jsonObject.getString("password"));
                             deliveryBean.setStatus(jsonObject.getString("status"));
+                            deliveryBean.setWalletAmt(String.valueOf(jsonObject.getInt("walletAmt")));
                             deliveryBeans.add(deliveryBean);
                         }
                         deliveryAdapter.notifyData(deliveryBeans);
@@ -173,7 +200,7 @@ public class MainActivityDelivery extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
-        fetchContacts();
+        fetchDBoy();
 
     }
 
@@ -200,7 +227,7 @@ public class MainActivityDelivery extends AppCompatActivity {
                     JSONObject jObj = new JSONObject(response);
                     int success = jObj.getInt("success");
                     if (success == 1) {
-                        fetchContacts();
+                        fetchDBoy();
                     } else {
                         Toast.makeText(getApplication(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
                     }
@@ -274,5 +301,127 @@ public class MainActivityDelivery extends AppCompatActivity {
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
+    private void showCashBack(final DeliveryBean deliveryBean) {
+        final RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(MainActivityDelivery.this);
+        LayoutInflater inflater = MainActivityDelivery.this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.bottom_amount_layout, null);
+
+        TextInputLayout reviewTxt = dialogView.findViewById(R.id.walletTxt);
+        final TextInputEditText walletEdit = dialogView.findViewById(R.id.wallet);
+        final TextInputEditText description = dialogView.findViewById(R.id.description);
+
+
+        final RadioButton radioIn = dialogView.findViewById(R.id.radioIn);
+        final RadioButton radioOut = dialogView.findViewById(R.id.radioOut);
+        radioIn.setChecked(true);
+
+        radioIn.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    radioIn.setChecked(true);
+                    radioOut.setChecked(false);
+                } else {
+                    radioIn.setChecked(false);
+                    radioOut.setChecked(true);
+                }
+            }
+        });
+        radioOut.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    radioIn.setChecked(false);
+                    radioOut.setChecked(true);
+                } else {
+                    radioIn.setChecked(true);
+                    radioOut.setChecked(false);
+                }
+            }
+        });
+
+        final Button submit = dialogView.findViewById(R.id.submit);
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (walletEdit.getText().toString().length() <= 0 ||
+                        description.getText().toString().length() <= 0) {
+                    Toast.makeText(MainActivityDelivery.this, "Enter Valid Cashback", Toast.LENGTH_LONG).show();
+                    return;
+                } else {
+                    updateWallet(deliveryBean.getId(), walletEdit.getText().toString(), description.getText().toString(),
+                            radioIn.isChecked(), mBottomSheetDialog);
+                }
+            }
+        });
+        mBottomSheetDialog.setContentView(dialogView);
+        walletEdit.requestFocus();
+        mBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mBottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RoundedBottomSheetDialog d = (RoundedBottomSheetDialog) dialog;
+                        FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
+                        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }, 0);
+            }
+        });
+        mBottomSheetDialog.show();
+    }
+
+    private void updateWallet(final String userId, final String wallet, final String description, final boolean isCredit,
+                              final RoundedBottomSheetDialog mBottomSheetDialog) {
+        String tag_string_req = "req_register";
+        showDialog();
+        StringRequest strReq = new StringRequest(Request.Method.PUT,
+                WALLET, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                hideDialog();
+                Log.d("Register Response: ", response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    Toast.makeText(getApplication(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
+                    int success = jObj.getInt("success");
+                    if (success == 1) {
+                        if (mBottomSheetDialog != null) {
+                            mBottomSheetDialog.cancel();
+                        }
+                        fetchDBoy();
+                    }
+                } catch (Exception e) {
+                    Log.e("xxxxxxxxxxx", e.toString());
+                    Toast.makeText(getApplication(), "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                hideDialog();
+                Log.e("Registration Error: ", error.getMessage());
+                Toast.makeText(getApplication(),
+                        "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
+                localHashMap.put("dboyId", userId);
+                localHashMap.put("amt", wallet);
+                localHashMap.put("description", description);
+                localHashMap.put("credit", "add");
+                return localHashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
 
 }

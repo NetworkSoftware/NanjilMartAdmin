@@ -1,10 +1,6 @@
 package pro.network.nanjilmartadmin.order;
 
 import android.content.Context;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +9,9 @@ import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,11 +25,11 @@ import pro.network.nanjilmartadmin.app.Appconfig;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder>
         implements Filterable {
-    private Context context;
+    StatusListener statusListener;
+    private final Context context;
     private List<Order> orderList;
     private List<Order> orderListFiltered;
-    private ContactsAdapterListener listener;
-    StatusListener statusListener;
+    private final ContactsAdapterListener listener;
 
     public OrderAdapter(Context context, List<Order> orderList, ContactsAdapterListener listener, StatusListener statusListener) {
         this.context = context;
@@ -51,7 +50,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final Order order = orderListFiltered.get(position);
-        holder.order_id.setText("#"+ order.getId());
+        holder.order_id.setText("#" + order.getId());
         holder.price.setText(order.getPrice());
         holder.quantity.setText(order.getQuantity());
         holder.status.setText(order.getStatus());
@@ -112,6 +111,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.cart_sub_list.setLayoutManager(addManager1);
         holder.cart_sub_list.setAdapter(OrderListAdapter);
 
+        if ("NA".equalsIgnoreCase(order.subProduct)) {
+            holder.subProduct.setVisibility(View.GONE);
+            holder.subProduct.setText("");
+        } else {
+            holder.subProduct.setVisibility(View.VISIBLE);
+            holder.subProduct.setText("Sub Product Type : "+order.subProduct);
+        }
         holder.deliveredBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -217,7 +223,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, price, status, quantity, phone, orderedOn, address,dtime, reason,order_id;
+        public TextView name, price, status, quantity, phone, orderedOn, address, dtime, reason, subProduct, order_id;
         public ImageView thumbnail;
         public RecyclerView cart_sub_list;
         Button deliveredBtn, whatsapp, call, cancalOrder,
@@ -237,6 +243,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             cart_sub_list = view.findViewById(R.id.cart_sub_list);
             deliveredBtn = view.findViewById(R.id.deliveredBtn);
             whatsapp = view.findViewById(R.id.whatsapp);
+            subProduct = view.findViewById(R.id.subProduct);
             cancalOrder = view.findViewById(R.id.cancalOrder);
             call = view.findViewById(R.id.call);
             address = view.findViewById(R.id.address);

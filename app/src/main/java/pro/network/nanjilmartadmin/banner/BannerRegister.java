@@ -24,6 +24,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.gson.Gson;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -60,25 +61,19 @@ import static pro.network.nanjilmartadmin.app.Appconfig.BANNERS_UPDATE;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_GET_ALL;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_UPDATE;
 
-/**
- * Created by user_1 on 11-07-2018.
- */
-
 public class  BannerRegister extends AppCompatActivity implements Imageutils.ImageAttachmentListener{
 
 
     String[] STOCKNAME = new String[]{"Loading"};
-    private Map<String, String> nameIdMap = new HashMap<>();
     private ProgressDialog pDialog;
     EditText description;
 
     String studentId = null;
-
     TextView submit;
     Imageutils imageutils;
     private ImageView profiletImage;
     private String imageUrl = "";
-    AutoCompleteTextView stock_name;
+    TextInputEditText stock_name;
     private Banner banner = null;
 
     @Override
@@ -87,7 +82,6 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
         setContentView(R.layout.banner_register);
 
         imageutils = new Imageutils(this);
-
         getSupportActionBar().setTitle("Banner Register");
         profiletImage = (ImageView) findViewById(R.id.profiletImage);
         profiletImage.setOnClickListener(new View.OnClickListener() {
@@ -98,9 +92,15 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
         });
 
         stock_name = findViewById(R.id.stock_name);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.select_dialog_item, STOCKNAME);
-        stock_name.setThreshold(2);
-        stock_name.setAdapter(adapter);
+        stock_name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                Appconfig.multiSelectionModule(BannerRegister.this,
+                        "Select Stock Name", STOCKNAME, stock_name);
+            }
+        });
+
+
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
         getAllStocks();
@@ -125,7 +125,6 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (banner != null) {
                    updateUser();
                 }else {
@@ -176,7 +175,7 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
 
                 localHashMap.put("banner", imageUrl);
                 localHashMap.put("description", description.getText().toString());
-                localHashMap.put("stockname", nameIdMap.get(stock_name.getText().toString()));
+                localHashMap.put("stockname",stock_name.getText().toString());
                 return localHashMap;
             }
         };
@@ -222,7 +221,7 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
                 localHashMap.put("id", studentId);
                 localHashMap.put("banner", imageUrl);
                 localHashMap.put("description", description.getText().toString());
-                localHashMap.put("stockname", nameIdMap.get(stock_name.getText().toString()));
+                localHashMap.put("stockname",stock_name.getText().toString());
                 return localHashMap;
             }
         };
@@ -247,12 +246,9 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
                     if (success == 1) {
                         JSONArray jsonArray = jObj.getJSONArray("data");
                         STOCKNAME = new String[jsonArray.length()];
-                        nameIdMap = new HashMap<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            nameIdMap.put(jsonObject.getString("model"),
-                                    jsonObject.getString("id"));
-                            STOCKNAME[i] = jsonObject.getString("model");
+                            STOCKNAME[i] = jsonObject.getString("id");
                         }
 
                     } else {
@@ -263,9 +259,7 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
                     Toast.makeText(getApplication(), "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();
 
                 }
-                ArrayAdapter<String> stateAdapter = new ArrayAdapter<String>(BannerRegister.this,
-                        android.R.layout.simple_dropdown_item_1line, STOCKNAME);
-                stock_name.setAdapter(stateAdapter);
+
 
             }
         }, new Response.ErrorListener() {
@@ -425,7 +419,5 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         imageutils.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
-
-
     }
 }

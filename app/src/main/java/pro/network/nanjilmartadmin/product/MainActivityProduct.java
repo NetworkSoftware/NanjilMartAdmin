@@ -1,5 +1,7 @@
 package pro.network.nanjilmartadmin.product;
 
+import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_GET_ALL;
+
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.Context;
@@ -11,7 +13,6 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -41,20 +42,17 @@ import java.util.Map;
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
-import pro.network.nanjilmartadmin.shopreg.Shop;
-
-import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_GET_ALL;
 
 public class MainActivityProduct extends AppCompatActivity implements ProductAdapter.ContactsAdapterListener {
     private static final String TAG = MainActivityProduct.class.getSimpleName();
     ProgressDialog progressDialog;
+    int offset = 0;
+    boolean isAlreadyLoading;
+    ProgressBar productRecycle;
     private RecyclerView recyclerView;
     private List<Product> contactList;
     private ProductAdapter mAdapter;
     private SearchView searchView;
-    int offset = 0;
-    boolean isAlreadyLoading;
-    ProgressBar productRecycle;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,7 +125,8 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                 Log.d("Register Response: ", response);
                 if (offset == 0) {
                     contactList = new ArrayList<>();
-                }  try {
+                }
+                try {
                     JSONObject jObj = new JSONObject(response);
                     int success = jObj.getInt("success");
                     if (success == 1) {
@@ -139,7 +138,14 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                             product.setId(jsonObject.getString("id"));
                             product.setBrand(jsonObject.getString("brand"));
                             product.setCategory(jsonObject.getString("category"));
+                            if (!jsonObject.isNull("qtyPrice")) {
+                                product.setQtyPrice(jsonObject.getString("qtyPrice"));
+                            }
                             product.setSub_category(jsonObject.getString("sub_category"));
+
+                            if(jsonObject.has("strikeoutAmt")){
+                                product.setStrikeoutAmt(jsonObject.getString("strikeoutAmt"));
+                            }
                             product.setShopname(jsonObject.getString("shopname"));
                             product.setStock_update(jsonObject.getString("stock_update"));
                             product.setDescription(jsonObject.getString("description"));
@@ -176,7 +182,8 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
             @Override
             public void onErrorResponse(VolleyError error) {
                 productRecycle.setVisibility(View.GONE);
-                isAlreadyLoading = false;  Log.e("Registration Error: ", error.getMessage());
+                isAlreadyLoading = false;
+                Log.e("Registration Error: ", error.getMessage());
                 Toast.makeText(getApplication(),
                         "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
             }
@@ -184,8 +191,8 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("searchKey", searchKey);
-                if(contactList.size()<10){
-                    offset=0;
+                if (contactList.size() < 10) {
+                    offset = 0;
                 }
                 localHashMap.put("offset", offset * 10 + "");
                 return localHashMap;
@@ -293,6 +300,7 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
     @Override
     protected void onStart() {
         super.onStart();
+        offset = 0;
         fetchContacts("");
     }
 

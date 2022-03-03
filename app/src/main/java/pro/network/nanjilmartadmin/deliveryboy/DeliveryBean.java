@@ -14,7 +14,7 @@ public class DeliveryBean implements Serializable {
     String profileImage;
     String license;
     String adharcard;
-    String status;
+    String status,walletAmt;
 
     public DeliveryBean() {
     }
@@ -81,5 +81,13 @@ public class DeliveryBean implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getWalletAmt() {
+        return walletAmt;
+    }
+
+    public void setWalletAmt(String walletAmt) {
+        this.walletAmt = walletAmt;
     }
 }

@@ -90,10 +90,23 @@ public class PdfConfig {
         for (int i = 0; i < mainbean.getProductBeans().size(); i++) {
             table3.addCell(createTextLeft((i + 1) + "", catNormalFont, false));
             Product productListBean = mainbean.getProductBeans().get(i);
+            String shop;
+            if("NA".equalsIgnoreCase(productListBean.shopname)){
+                shop = "";
+            }else {
+                shop = "Shop-"+productListBean.shopname;
+            }
             table3.addCell(createTextLeft(productListBean.getBrand() + "_" + productListBean.getModel()
-                    +"\n"+"Shop-" + productListBean.shopname, catNormalFont, false));
+                    +"\n"+shop, catNormalFont, false));
             table3.addCell(createTextLeft(productListBean.getQty(), catNormalFont, false));
-            table3.addCell(createTextLeft(productListBean.getPrice(), catNormalFont, false));
+            String subProduct;
+            if(productListBean.getSubProduct() == null){
+                subProduct = productListBean.getQty();
+            }else {
+                subProduct = productListBean.getSubProduct();
+            }
+            table3.addCell(createTextLeft("Rs."+productListBean.getPrice()+"/"+subProduct, catNormalFont, false));
+
         }
 
 

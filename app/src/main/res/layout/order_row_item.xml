@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="5dp"
@@ -14,6 +13,19 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/subProduct"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_marginLeft="5dp"
+            android:layout_weight="1"
+            android:fontFamily="@font/sans_bold"
+            android:gravity="left"
+            android:visibility="visible"
+            android:text="SubProduct Type"
+            android:textColor="@android:color/black" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -101,15 +113,6 @@
                     android:text="Phone"
                     android:textColor="@android:color/black" />
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginRight="10dp"
-                    android:fontFamily="@font/sans_bold"
-                    android:gravity="left"
-                    android:text="Address"
-                    android:textColor="@android:color/black" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -130,6 +133,16 @@
                     android:gravity="left"
                     android:text="Delivery Time"
                     android:textColor="@android:color/black" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginRight="10dp"
+                    android:fontFamily="@font/sans_bold"
+                    android:gravity="left"
+                    android:text="Address"
+                    android:textColor="@android:color/black" />
             </LinearLayout>
 
             <LinearLayout
@@ -149,6 +162,7 @@
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
                     android:text="Rs.5000" />
+
                 <TextView
                     android:id="@+id/quantity"
                     android:layout_width="match_parent"
@@ -178,6 +192,7 @@
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
                     android:text="2020-09-19" />
+
                 <TextView
                     android:id="@+id/reason"
                     android:layout_width="match_parent"
@@ -208,15 +223,6 @@
                     android:gravity="left"
                     android:text="2020-09-19" />
 
-                <TextView
-                    android:id="@+id/address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="left"
-                    android:layout_marginLeft="15dp"
-                    android:fontFamily="@font/sans_bold"
-                    android:gravity="left"
-                    android:text="2020-09-19" />
 
                 <TextView
                     android:id="@+id/orderedOn"
@@ -227,6 +233,7 @@
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
                     android:text="2020-09-19" />
+
                 <TextView
                     android:id="@+id/dtime"
                     android:layout_width="match_parent"
@@ -237,7 +244,15 @@
                     android:gravity="left"
                     android:text="2020-09-19" />
 
-
+                <TextView
+                    android:id="@+id/address"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="15dp"
+                    android:fontFamily="@font/sans_bold"
+                    android:gravity="left"
+                    android:text="2020-09-19" />
             </LinearLayout>
 
 
@@ -247,6 +262,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -309,6 +325,7 @@
                     android:text="Cancel"
                     android:textColor="@color/colorPrimary"
                     app:strokeColor="@color/colorPrimary" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/trackOrder"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -342,6 +359,7 @@
                     android:text="Whatsapp"
                     android:textColor="@color/colorPrimary"
                     app:strokeColor="@color/colorPrimary" />
+
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/bill"
                     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -352,7 +370,6 @@
                     android:text="Invoice"
                     android:textColor="@color/colorPrimary"
                     app:strokeColor="@color/colorPrimary" />
-
 
 
             </LinearLayout>

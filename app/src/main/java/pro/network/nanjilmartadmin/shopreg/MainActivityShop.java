@@ -90,7 +90,6 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
                 try {
                     JSONObject jObj = new JSONObject(response);
                     int success = jObj.getInt("success");
-
                     if (success == 1) {
                         JSONArray jsonArray = jObj.getJSONArray("data");
                         categoriesList = new ArrayList<>();
@@ -103,6 +102,9 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
                             categories.setPhone(jsonObject.getString("phone"));
                             categories.setLatlong(jsonObject.getString("latlong"));
                             categories.setStock_update(jsonObject.getString("stock_update"));
+                            categories.setCategory(jsonObject.getString("category"));
+                            categories.setAddress(jsonObject.getString("address"));
+                            categories.setOfferAmt(jsonObject.getString("offerAmt"));
                             categories.setTime_schedule(jsonObject.getString("time_schedule"));
                             if(!jsonObject.isNull("image")){
                                 categories.setImage(jsonObject.getString("image"));

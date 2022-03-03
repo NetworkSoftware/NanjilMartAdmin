@@ -10,27 +10,47 @@ import androidx.cardview.widget.CardView;
 
 import pro.network.nanjilmartadmin.banner.MainActivityBanner;
 import pro.network.nanjilmartadmin.categories.MainActivityCategories;
+import pro.network.nanjilmartadmin.coupon.MainActivityCoupon;
 import pro.network.nanjilmartadmin.deliveryboy.MainActivityDelivery;
+import pro.network.nanjilmartadmin.enquires.MainActivityEnquire;
+import pro.network.nanjilmartadmin.festival.FestivalMainActivity;
 import pro.network.nanjilmartadmin.news.NewsRegister;
 import pro.network.nanjilmartadmin.order.MainActivityOrder;
 import pro.network.nanjilmartadmin.product.MainActivityProduct;
 import pro.network.nanjilmartadmin.shopreg.MainActivityShop;
 import pro.network.nanjilmartadmin.videos.MainActivityVideo;
 
-public class
-
-NaviActivity extends AppCompatActivity {
+public class NaviActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navi);
 
+
         CardView news =  findViewById(R.id.news);
         news.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent io = new Intent(NaviActivity.this, NewsRegister.class);
+                startActivity(io);
+            }
+        });
+
+        CardView festival =  findViewById(R.id.festival);
+        festival.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, FestivalMainActivity.class);
+                startActivity(io);
+            }
+        });
+
+        CardView coupon =  findViewById(R.id.coupon);
+        coupon.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, MainActivityCoupon.class);
                 startActivity(io);
             }
         });
@@ -118,7 +138,14 @@ NaviActivity extends AppCompatActivity {
                 navOrderPage("Delivered");
             }
         });
-
+        CardView enquire =  findViewById(R.id.enquiresCard);
+        enquire.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, MainActivityEnquire.class);
+                startActivity(io);
+            }
+        });
     }
 
     private void navOrderPage(String status){

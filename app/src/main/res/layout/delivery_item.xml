@@ -80,6 +80,16 @@
                             android:text="Status"
                             android:textColor="@android:color/black"
                             android:textSize="17dp" />
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginRight="10dp"
+                            android:fontFamily="@font/sans_bold"
+                            android:gravity="left"
+                            android:text="Wallet"
+                            android:textColor="@android:color/black"
+                            android:textSize="17dp" />
 
                     </LinearLayout>
 
@@ -114,6 +124,16 @@
 
                         <TextView
                             android:id="@+id/status"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="17dp"
+                            android:fontFamily="@font/sans_bold"
+                            android:gravity="left"
+                            android:text="COD"
+                            android:textSize="20dp" />
+                        <TextView
+                            android:id="@+id/walletAmt"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_gravity="left"
@@ -177,6 +197,22 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:text="In Active"
+                app:strokeColor="@color/colorPrimary" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/wallet"
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Wallet"
+                app:strokeColor="@color/colorPrimary" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/walletHistory"
+                android:layout_width="match_parent"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:text="Wallet History"
                 app:strokeColor="@color/colorPrimary" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/edit"

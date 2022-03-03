@@ -391,14 +391,20 @@ public class Imageutils {
         }
     }
 
-    /**
-     * Show AlertDialog with the following options
-     * <p>
-     * Camera
-     * Gallery
-     *
-     * @param from
-     */
+    public void launchGif(int from) {
+
+        this.from = from;
+
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (isFragment)
+                permission_check_fragment(4);
+            else
+                permission_check(4);
+        } else {
+            gif_call();
+        }
+    }
+
 
     public void imagepicker(final int from) {
         this.from = from;
@@ -472,6 +478,8 @@ public class Imageutils {
             galley_call();
         else if (code == 3)
             video_call();
+        else if (code == 4)
+            gif_call();
     }
 
 
@@ -515,6 +523,8 @@ public class Imageutils {
             galley_call();
         else if (code == 3)
             video_call();
+        else if (code == 4)
+            gif_call();
     }
 
 
@@ -575,6 +585,18 @@ public class Imageutils {
 
     }
 
+    public void gif_call() {
+        Log.d(TAG, "gif_call: ");
+
+        Intent intent2 = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        intent2.setType("image/gif/*");
+
+        if (isFragment)
+            current_fragment.startActivityForResult(intent2, 2);
+        else
+            current_activity.startActivityForResult(intent2, 2);
+
+    }
 
     /**
      * Activity PermissionResult
@@ -680,6 +702,36 @@ public class Imageutils {
     }
 
     public String saveVideo(Uri sourceuri, Context context, String fileName) {
+        String sourceFilename = getPath(sourceuri);
+        String destinationFilename = context.getCacheDir().getPath() + File.separatorChar + fileName;
+
+        BufferedInputStream bis = null;
+        BufferedOutputStream bos = null;
+
+        try {
+            bis = new BufferedInputStream(new FileInputStream(sourceFilename));
+            bos = new BufferedOutputStream(new FileOutputStream(destinationFilename, false));
+            byte[] buf = new byte[1024];
+            bis.read(buf);
+            do {
+                bos.write(buf);
+            } while (bis.read(buf) != -1);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (bis != null) bis.close();
+                if (bos != null) bos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return destinationFilename;
+    }
+
+
+
+    public String saveGif(Uri sourceuri, Context context, String fileName) {
         String sourceFilename = getPath(sourceuri);
         String destinationFilename = context.getCacheDir().getPath() + File.separatorChar + fileName;
 

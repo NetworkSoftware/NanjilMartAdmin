@@ -7,14 +7,19 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,6 +38,10 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.gson.Gson;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -62,6 +71,8 @@ import pro.network.nanjilmartadmin.app.AndroidMultiPartEntity;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
 import pro.network.nanjilmartadmin.app.Imageutils;
+import pro.network.nanjilmartadmin.priceQty.PriceAdapter;
+import pro.network.nanjilmartadmin.priceQty.QuantityPrice;
 
 import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
 import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORY;
@@ -84,7 +95,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
 
     AutoCompleteTextView brand;
     EditText model;
-    EditText price;
+    EditText price,strikeoutAmt;
     EditText description;
     AddImageAdapter maddImageAdapter;
     MaterialBetterSpinner category;
@@ -93,7 +104,6 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     String studentId = null;
     TextView submit;
     Imageutils imageutils;
-    ImageView image_placeholder, image_wallpaper;
     CardView itemsAdd;
     Map<String, String> shopIdName = new HashMap<>();
     private ProgressDialog pDialog;
@@ -101,7 +111,11 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     private ArrayList<String> samplesList = new ArrayList<>();
     private String imageUrl = "";
     private Product contact = null;
-
+    //
+    public Button addSize;
+    private RecyclerView sizelist;
+    ArrayList<QuantityPrice> quantityPrices = new ArrayList<>();
+    PriceAdapter priceAdapter;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,7 +140,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         imagelist.setLayoutManager(addManager1);
         imagelist.setAdapter(maddImageAdapter);
         category = findViewById(R.id.category);
-
+        strikeoutAmt = findViewById(R.id.strikeoutAmt);
 
         model = findViewById(R.id.model);
         price = findViewById(R.id.price);
@@ -183,6 +197,40 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             }
         });
 
+
+
+        //
+
+        addSize = findViewById(R.id.addSize);
+        sizelist = findViewById(R.id.sizelist);
+        addSize.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showSizeBottom(-1);
+            }
+        });
+        quantityPrices = new ArrayList<>();
+        priceAdapter = new PriceAdapter(this, quantityPrices, new ImageClick() {
+            @Override
+            public void onImageClick(int position) {
+
+            }
+
+            @Override
+            public void onDeleteClick(int position) {
+                quantityPrices.remove(position);
+                priceAdapter.notifyData(quantityPrices);
+            }
+
+            @Override
+            public void onEditClick(int position) {
+                showSizeBottom(position);
+            }
+        }, true);
+        final LinearLayoutManager qtyPercentManager = new LinearLayoutManager(
+                this, LinearLayoutManager.HORIZONTAL, false);
+        sizelist.setLayoutManager(qtyPercentManager);
+        sizelist.setAdapter(priceAdapter);
         submit = findViewById(R.id.submit);
         submit.setText("SUBMIT");
         submit.setOnClickListener(new View.OnClickListener() {
@@ -210,8 +258,6 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
 
 
         try {
-            //  submit.setText("UPDATE");
-            //   getSupportActionBar().setTitle("Stock Update");
             contact = (Product) getIntent().getSerializableExtra("data");
             category.setText(contact.category);
             brand.setText(contact.brand);
@@ -222,6 +268,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             stock_update.setText(contact.stock_update);
             shopname.setText(contact.shopname);
             imageUrl = contact.image;
+            strikeoutAmt.setText(contact.strikeoutAmt);
 
             if (category.getText().toString().equalsIgnoreCase(("FOOD"))) {
                 shopname.setVisibility(View.VISIBLE);
@@ -235,15 +282,93 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 samplesList = new Gson().fromJson(imageUrl, (Type) List.class);
             }
             maddImageAdapter.notifyData(samplesList);
+//
 
+            if (contact.getQtyPrice() == null || contact.getQtyPrice().equalsIgnoreCase("null")) {
+                quantityPrices = new ArrayList<>();
+            } else {
+                try {
+                    ObjectMapper mapper = new ObjectMapper();
+                    Object listBeans = new Gson().fromJson(contact.getQtyPrice(),
+                            Object.class);
+                    quantityPrices = mapper.convertValue(
+                            listBeans,
+                            new TypeReference<ArrayList<QuantityPrice>>() {
+                            }
+                    );
+                } catch (Exception e) {
+                    Log.e("xxxxxxxxxx", e.toString());
+                }
+            }
+            if (quantityPrices == null) {
+                quantityPrices = new ArrayList<>();
+            }
+            priceAdapter.notifyData(quantityPrices);
         } catch (Exception e) {
             Log.e("xxxxxxxxxxx", e.toString());
-
         }
+
+
         getAllCategories();
         getAllShopname();
 
     }
+
+    private void showSizeBottom(final int position) {
+        final RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(ProductUpdate.this);
+        LayoutInflater inflater = ProductUpdate.this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.bottom_quantityprice, null);
+
+        final EditText quantity = dialogView.findViewById(R.id.quantity);
+        final EditText quantityPrice = dialogView.findViewById(R.id.price);
+        final Button submit = dialogView.findViewById(R.id.submit);
+        if (position >= 0) {
+            QuantityPrice size = quantityPrices.get(position);
+            quantity.setText(size.getQuantity());
+            quantityPrice.setText(size.getPrice());
+        }
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (quantity.getText().toString().length() <= 0) {
+                    Toast.makeText(getApplicationContext(), "Enter Valid Size", Toast.LENGTH_LONG).show();
+                    return;
+                } else if (quantityPrice.getText().toString().length() <= 0) {
+                    Toast.makeText(getApplicationContext(), "Enter Valid Price", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                if (position >= 0) {
+                    quantityPrices.get(position).setQuantity(quantity.getText().toString());
+                    quantityPrices.get(position).setPrice(quantityPrice.getText().toString());
+                } else {
+                    quantityPrices.add(new QuantityPrice(quantity.getText().toString(), quantityPrice.getText().toString()));
+                }
+                 priceAdapter.notifyData(quantityPrices);
+                mBottomSheetDialog.cancel();
+            }
+        });
+        quantity.requestFocus();
+        quantityPrice.requestFocus();
+
+        mBottomSheetDialog.setContentView(dialogView);
+        mBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mBottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RoundedBottomSheetDialog d = (RoundedBottomSheetDialog) dialog;
+                        FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
+                        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }, 0);
+            }
+        });
+        mBottomSheetDialog.show();
+    }
+
 
     private void registerUser() {
         String tag_string_req = "req_register";
@@ -298,6 +423,9 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 localHashMap.put("brand", brand.getText().toString());
                 localHashMap.put("model", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
+                localHashMap.put("strikeoutAmt", strikeoutAmt.getText().length()
+                        >0 ?strikeoutAmt.getText().toString() : "0");
+                localHashMap.put("qtyPrice", new Gson().toJson(quantityPrices));
                 localHashMap.put("stock_update", stock_update.getText().toString());
                 if (contact != null) {
                     localHashMap.put("id", studentId);
@@ -486,6 +614,11 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     public void onDeleteClick(int position) {
         samplesList.remove(position);
         maddImageAdapter.notifyData(samplesList);
+    }
+
+    @Override
+    public void onEditClick(int position) {
+
     }
 
 

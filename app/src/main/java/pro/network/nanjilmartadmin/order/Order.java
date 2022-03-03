@@ -25,12 +25,14 @@ public class Order implements Serializable {
     String pincode;
     String total;
     String dtime;
-    String shopname;
+    String shopname,latlong,paymentId,paymentMode,subProduct,strikeoutAmt ;
 
     public Order() {
     }
 
-    public Order(String items, String quantity, String price, String status, String name, String phone, String address, String reson, ArrayList<Product> productBeans, String createdOn) {
+    public Order(String items, String quantity, String price, String status, String name,
+                 String phone, String address, String reson, ArrayList<Product> productBeans,
+                 String createdOn,String subProduct,String strikeoutAmt ) {
         this.items = items;
         this.quantity = quantity;
         this.price = price;
@@ -41,6 +43,8 @@ public class Order implements Serializable {
         this.reson = reson;
         this.productBeans = productBeans;
         this.createdOn = createdOn;
+        this.subProduct = subProduct;
+        this.strikeoutAmt = strikeoutAmt;
     }
 
     public String getId() {
@@ -169,5 +173,45 @@ public class Order implements Serializable {
 
     public void setShopname(String shopname) {
         this.shopname = shopname;
+    }
+
+    public String getLatlong() {
+        return latlong;
+    }
+
+    public void setLatlong(String latlong) {
+        this.latlong = latlong;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
+    }
+
+    public String getPaymentMode() {
+        return paymentMode;
+    }
+
+    public void setPaymentMode(String paymentMode) {
+        this.paymentMode = paymentMode;
+    }
+
+    public String getSubProduct() {
+        return subProduct;
+    }
+
+    public void setSubProduct(String subProduct) {
+        this.subProduct = subProduct;
+    }
+
+    public String getStrikeoutAmt() {
+        return strikeoutAmt;
+    }
+
+    public void setStrikeoutAmt(String strikeoutAmt) {
+        this.strikeoutAmt = strikeoutAmt;
     }
 }

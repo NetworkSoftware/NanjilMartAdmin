@@ -166,9 +166,16 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 order.setPhone(jsonObject.getString("phone"));
                                 order.setAddress(jsonObject.getString("address"));
                                 order.setReson(jsonObject.getString("reason"));
+                                order.setLatlong(jsonObject.getString("latlong"));
+                                order.setSubProduct(jsonObject.getString("subProduct"));
+                                order.setPaymentMode(jsonObject.getString("paymentMode"));
+                                order.setPaymentId(jsonObject.getString("paymentId"));
                                 order.setCreatedOn(jsonObject.getString("createdon"));
                                 if (!jsonObject.isNull("shopname")) {
                                     order.setShopname(jsonObject.getString("shopname"));
+                                }
+                                if(jsonObject.has("strikeoutAmt")){
+                                    order.setStrikeoutAmt(jsonObject.getString("strikeoutAmt"));
                                 }
                                 order.setTotal(jsonObject.getString("total"));
                                 order.setDcharge(jsonObject.getString("dcharge"));
@@ -190,6 +197,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 }
                             } catch (Exception e) {
 
+                                Log.e("order",e.toString());
                             }
                         }
                         mAdapter.notifyData(orderList);
@@ -236,7 +244,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        getMenuInflater().inflate(R.menu.menu_order, menu);
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -292,20 +300,10 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
         super.onBackPressed();
     }
 
-    private void whiteNotificationBar(View view) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int flags = view.getSystemUiVisibility();
-            flags |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
-            view.setSystemUiVisibility(flags);
-            getWindow().setStatusBarColor(Color.WHITE);
-        }
-    }
 
     @Override
     public void onContactSelected(Order contact) {
-       /* Intent intent = new Intent(MainActivityOrder.this, ProductUpdate.class);
-        intent.putExtra("data", contact);
-        startActivity(intent);*/
+
     }
 
     @Override

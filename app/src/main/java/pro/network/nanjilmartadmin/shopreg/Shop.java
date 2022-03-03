@@ -12,12 +12,14 @@ public class Shop implements Serializable {
     String latlong;
     String image;
     String time_schedule;
+    String address,category,offerAmt;
     ArrayList<Time> times;
 
     public Shop() {
     }
 
-    public Shop(String shop_name, String phone,String stock_update,String latlong,String image,String time_schedule,ArrayList<Time> times) {
+    public Shop(String shop_name, String phone,String stock_update,String latlong,
+                String image,String time_schedule,ArrayList<Time> times) {
         this.shop_name = shop_name;
         this.phone = phone;
         this.stock_update = stock_update;
@@ -90,5 +92,29 @@ public class Shop implements Serializable {
 
     public void setTimes(ArrayList<Time> times) {
         this.times = times;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public String getOfferAmt() {
+        return offerAmt;
+    }
+
+    public void setOfferAmt(String offerAmt) {
+        this.offerAmt = offerAmt;
     }
 }

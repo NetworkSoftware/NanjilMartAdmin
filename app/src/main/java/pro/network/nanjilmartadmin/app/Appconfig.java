@@ -1,17 +1,23 @@
 package pro.network.nanjilmartadmin.app;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
 import android.util.Log;
+import android.view.Gravity;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.android.volley.DefaultRetryPolicy;
 import com.bumptech.glide.Glide;
@@ -21,6 +27,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
@@ -32,10 +39,8 @@ public class Appconfig {
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
 
-    // public static final String ip = "http://192.168.1.102:8098/prisma/nanjilmart";
+  //   public static final String ip = "http://192.168.1.204:8098/prisma/nanjilmart";
     public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
-
-    //Stack
     public static final String PRODUCT_CREATE = ip + "/create_stock.php";
     public static final String PRODUCT_UPDATE = ip + "/update_stock.php";
     public static final String PRODUCT_GET_ALL = ip + "/dataFetchAll.php";
@@ -46,6 +51,7 @@ public class Appconfig {
     public static final String CATEGORIES_DELETE = ip + "/delete_category.php";
     public static final String CATEGORIES_GET_ALL = ip + "/get_all_category.php";
     public static final String NEWS_CREATE = ip + "/news";
+    public static final String ENQUIRE = ip + "/enquiry";
     //Banner
     public static final String BANNERS_CREATE = ip + "/create_banner.php";
     public static final String BANNERS_GET_ALL = ip + "/dataFetchAll_banner.php";
@@ -60,8 +66,9 @@ public class Appconfig {
     public static final String ORDER_ASSIGN_DBOY = ip + "/order_assign_dboy.php";
     //Video
     public static final String VIDEO = ip + "/video";
-
-
+    public static final String COUPON = ip + "/coupon";
+    public static final String WALLET = ip + "/wallet";
+    public static final String FESTIVAL = ip + "/festival";
     //Shop
     public static final String CREATE_SHOP = ip + "/create_shop.php";
     public static final String DELETE_SHOP = ip + "/delete_shop.php";
@@ -219,6 +226,70 @@ public class Appconfig {
         return filename;
 
     }
+
+    public static void multiSelectionModule(final Context context, String title,
+                                            final String[] items, final EditText editText) {
+        final ArrayList seletedItems = new ArrayList();
+        boolean[] checkedItems = new boolean[items.length];
+
+        if (editText.getText().toString() != null && editText.getText().toString().length() > 0) {
+            String[] strings = editText.getText().toString().split(",");
+            for (int j = 0; j < strings.length; j++) {
+                for (int i = 0; i < items.length; i++) {
+                    if (items[i].equals(strings[j])) {
+                        checkedItems[i] = true;
+                        seletedItems.add(items[i]);
+                        break;
+                    }
+                }
+            }
+        }
+
+
+        TextView myMsg = new TextView(context);
+        myMsg.setText(title);
+        myMsg.setGravity(Gravity.CENTER_HORIZONTAL);
+        myMsg.setTextSize(13);
+        myMsg.setTextColor(Color.BLACK);
+
+
+        AlertDialog dialog = new AlertDialog.Builder(context)
+                .setCustomTitle(myMsg)
+                .setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int indexSelected, boolean isChecked) {
+                        if (isChecked) {
+                            // If the user checked the item, add it to the selected items
+                            seletedItems.add(items[indexSelected]);
+                        } else if (seletedItems.contains(items[indexSelected])) {
+                            // Else, if the item is already in the array, remove it
+                            seletedItems.remove(items[Integer.valueOf(indexSelected)]);
+                        }
+                    }
+                }).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on OK
+                        //  You can write the code  to save the selected item here
+                        StringBuffer stringBuffer = new StringBuffer();
+
+                        for (int i = 0; i < seletedItems.size(); i++) {
+                            stringBuffer.append(seletedItems.get(i));
+                            if (i != seletedItems.size() - 1) {
+                                stringBuffer.append(",");
+                            }
+                            editText.setText(stringBuffer.toString());
+                        }
+                    }
+                }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int id) {
+                        //  Your code when user clicked on Cancel
+                    }
+                }).create();
+        dialog.show();
+    }
+
 
     public static String intToString(int num, int digits) {
         String output = Integer.toString(num);

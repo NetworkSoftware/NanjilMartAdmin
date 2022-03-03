@@ -49,6 +49,35 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/thumbnail"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/sans"
+                        android:text="Id"
+                        android:textColor="@color/textColor"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/id"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toRightOf="@id/thumbnail"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/sans"
+                        android:text="Brand"
+                        android:textColor="@color/contact_name"
+                        android:textSize="16dp" />
+                </LinearLayout>
+
+
 
                 <LinearLayout
                     android:layout_width="match_parent"

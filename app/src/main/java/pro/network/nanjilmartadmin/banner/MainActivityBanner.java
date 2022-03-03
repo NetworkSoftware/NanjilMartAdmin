@@ -82,9 +82,6 @@ public class MainActivityBanner extends AppCompatActivity implements BannerClick
         });
     }
 
-    /**
-     * fetches json by making http calls
-     */
     private void fetchContacts() {
         String tag_string_req = "req_register";
         progressDialog.setMessage("Processing ...");
@@ -98,7 +95,6 @@ public class MainActivityBanner extends AppCompatActivity implements BannerClick
                 try {
                     JSONObject jObj = new JSONObject(response);
                     int success = jObj.getInt("success");
-
                     if (success == 1) {
                         JSONArray jsonArray = jObj.getJSONArray("data");
                         bannerList = new ArrayList<>();

@@ -10,7 +10,7 @@ import pro.network.nanjilmartadmin.shopreg.Shop;
 
 public class Product implements Serializable {
     String id;
-    String brand;
+    String brand,qtyPrice;
     String model;
     String price;
     String name;
@@ -23,7 +23,7 @@ public class Product implements Serializable {
     String sub_category;
     public String shopname;
     public String shopid;
-    public String latlong;
+    public String latlong,subProduct,strikeoutAmt;
 
 
     public Product() {
@@ -37,7 +37,9 @@ public class Product implements Serializable {
         this.userId = userId;
     }
 
-    public Product(String brand, String model, String price, String name, String image, String description, String category,String sub_category,String shopname) {
+    public Product(String brand, String model, String price, String name,
+                   String image, String description, String category,
+                   String sub_category,String shopname,String subProduct) {
         this.brand = brand;
         this.model = model;
         this.price = price;
@@ -47,6 +49,7 @@ public class Product implements Serializable {
         this.category = category;
         this.sub_category = sub_category;
         this.shopname = shopname;
+        this.subProduct = subProduct;
     }
 
     public String getId() {
@@ -162,5 +165,29 @@ public class Product implements Serializable {
 
     public void setLatlong(String latlong) {
         this.latlong = latlong;
+    }
+
+    public String getQtyPrice() {
+        return qtyPrice;
+    }
+
+    public void setQtyPrice(String qtyPrice) {
+        this.qtyPrice = qtyPrice;
+    }
+
+    public String getSubProduct() {
+        return subProduct;
+    }
+
+    public void setSubProduct(String subProduct) {
+        this.subProduct = subProduct;
+    }
+
+    public String getStrikeoutAmt() {
+        return strikeoutAmt;
+    }
+
+    public void setStrikeoutAmt(String strikeoutAmt) {
+        this.strikeoutAmt = strikeoutAmt;
     }
 }
