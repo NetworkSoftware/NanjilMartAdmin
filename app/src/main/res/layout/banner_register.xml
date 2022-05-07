@@ -61,6 +61,19 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                android:id="@+id/categories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:hint="Select Category"
+                android:textColor="@color/black"
+                android:textColorHint="#c6c6c6"
+                android:textSize="15dp"
+                app:met_floatingLabel="normal" />
+
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"

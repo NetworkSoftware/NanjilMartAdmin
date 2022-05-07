@@ -51,7 +51,7 @@ import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_UPDATE;
 
 public class CategoriesUpdate extends AppCompatActivity implements Imageutils.ImageAttachmentListener {
 
-    EditText description;
+    EditText description,deliveryCost;
     String studentId = null;
     TextView submit;
     Imageutils imageutils;
@@ -68,6 +68,7 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
 
         getSupportActionBar().setTitle("Categories Register");
 
+        deliveryCost = findViewById(R.id.deliveryCost);
         profiletImage = findViewById(R.id.profiletImage);
         profiletImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,13 +86,20 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerUser();
+                if(description.getText().length()<=0){
+                    description.setError("Enter valid description");
+                }else if(deliveryCost.getText().length()<=0){
+                    deliveryCost.setError("Enter valid deliveryCost");
+                }else {
+                    registerUser();
+                }
             }
         });
 
         try {
             Categories categories = (Categories) getIntent().getSerializableExtra("data");
             description.setText(categories.title);
+            deliveryCost.setText(categories.deliveryCost);
             studentId = categories.id;
             imageUrl=categories.image;
             GlideApp.with(CategoriesUpdate.this).load(categories.image)
@@ -141,6 +149,7 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
                 localHashMap.put("id",studentId);
                 localHashMap.put("image", imageUrl);
                 localHashMap.put("title", description.getText().toString());
+                localHashMap.put("deliveryCost", deliveryCost.getText().toString());
                 return localHashMap;
             }
         };
@@ -183,6 +192,7 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
         imageutils.onActivityResult(requestCode, resultCode, data);
 
     }

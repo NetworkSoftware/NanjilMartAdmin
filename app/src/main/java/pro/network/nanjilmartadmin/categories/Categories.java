@@ -10,13 +10,23 @@ public class Categories implements Serializable {
     String id;
     String title;
     String image;
+    String deliveryCost;
 
     public Categories() {
     }
 
-    public Categories(String title, String image) {
+    public Categories(String title, String image,String deliveryCost) {
         this.title = title;
         this.image = image;
+        this.deliveryCost = deliveryCost;
+    }
+
+    public String getDeliveryCost() {
+        return deliveryCost;
+    }
+
+    public void setDeliveryCost(String deliveryCost) {
+        this.deliveryCost = deliveryCost;
     }
 
     public String getId() {

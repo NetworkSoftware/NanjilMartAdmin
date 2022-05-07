@@ -1,5 +1,6 @@
 package pro.network.nanjilmartadmin.product;
 
+import static pro.network.nanjilmartadmin.app.Appconfig.DATA_FETCH_ALL_SHOP;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_GET_ALL;
 
 import android.app.ProgressDialog;
@@ -36,24 +37,36 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
+import pro.network.nanjilmartadmin.filter.OnStatus;
+import pro.network.nanjilmartadmin.filter.ShopFilterAdapter;
+import pro.network.nanjilmartadmin.filter.ShopFilterBean;
+import pro.network.nanjilmartadmin.shopreg.MainActivityShop;
+import pro.network.nanjilmartadmin.shopreg.Shop;
 
-public class MainActivityProduct extends AppCompatActivity implements ProductAdapter.ContactsAdapterListener {
+public class MainActivityProduct extends AppCompatActivity implements ProductAdapter.ContactsAdapterListener, OnStatus {
     private static final String TAG = MainActivityProduct.class.getSimpleName();
     ProgressDialog progressDialog;
     int offset = 0;
     boolean isAlreadyLoading;
     ProgressBar productRecycle;
     private RecyclerView recyclerView;
-    private List<Product> contactList;
+    private List<Product> productList;
     private ProductAdapter mAdapter;
     private SearchView searchView;
-
+    private ArrayList<ShopFilterBean> shopFilterBean = new ArrayList<>();
+    private Set<String> subCategories = new HashSet<>();
+    private String selectedShop = null;
+    ShopFilterAdapter shopFilterAdapter;
+    RecyclerView recycleSubCat;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,8 +81,8 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
         getSupportActionBar().setTitle(R.string.toolbar_title);
 
         recyclerView = findViewById(R.id.recycler_view);
-        contactList = new ArrayList<>();
-        mAdapter = new ProductAdapter(this, contactList, this, this);
+        productList = new ArrayList<>();
+        mAdapter = new ProductAdapter(this, productList, this, this);
 
         // white background notification bar
         whiteNotificationBar(recyclerView);
@@ -90,16 +103,14 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                 if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
                     if (!isAlreadyLoading) {
                         if (searchView != null && !searchView.isIconified() && searchView.getQuery().toString().length() > 0) {
-                            fetchContacts(searchView.getQuery().toString());
+                            fetchProduct(searchView.getQuery().toString());
                         } else {
-                            fetchContacts("");
+                            fetchProduct("");
                         }
                     }
                 }
             }
         });
-        //fetchContacts();
-
 
         FloatingActionButton addStock = findViewById(R.id.addStock);
         addStock.setOnClickListener(new View.OnClickListener() {
@@ -109,10 +120,20 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                 startActivity(intent);
             }
         });
+        filterSubCate();
+
+    }
+    private void filterSubCate() {
+        shopFilterBean = new ArrayList<>();
+        recycleSubCat = findViewById(R.id.recycler_view_chip);
+        shopFilterAdapter = new ShopFilterAdapter(MainActivityProduct.this, shopFilterBean, this, selectedShop);
+        final LinearLayoutManager addManager2 = new LinearLayoutManager(MainActivityProduct.this, LinearLayoutManager.HORIZONTAL, false);
+        recycleSubCat.setLayoutManager(addManager2);
+        recycleSubCat.setAdapter(shopFilterAdapter);
+        fetchShop();
     }
 
-
-    private void fetchContacts(final String searchKey) {
+    private void fetchProduct(final String searchKey) {
         isAlreadyLoading = true;
         String tag_string_req = "req_register";
         progressDialog.setMessage("Processing ...");
@@ -124,7 +145,8 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                 productRecycle.setVisibility(View.GONE);
                 Log.d("Register Response: ", response);
                 if (offset == 0) {
-                    contactList = new ArrayList<>();
+                    productList = new ArrayList<>();
+                    subCategories = new HashSet<>();
                 }
                 try {
                     JSONObject jObj = new JSONObject(response);
@@ -161,12 +183,11 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                             } catch (Exception e) {
                                 Log.e("xxxxxxxxx", e.toString());
                             }
-
-                            contactList.add(product);
+                            productList.add(product);
                         }
-                        mAdapter.notifyData(contactList);
+                        mAdapter.notifyData(productList);
                         isAlreadyLoading = false;
-                        getSupportActionBar().setSubtitle(contactList.size() + "  Nos");
+                        getSupportActionBar().setSubtitle(productList.size() + "  Nos");
 
                     } else {
                         Toast.makeText(getApplication(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
@@ -191,10 +212,76 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("searchKey", searchKey);
-                if (contactList.size() < 10) {
+                if (productList.size() < 10) {
                     offset = 0;
                 }
                 localHashMap.put("offset", offset * 10 + "");
+                if(selectedShop !=null){
+                    localHashMap.put("shopname", selectedShop);
+                }
+                return localHashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+    private void fetchShop() {
+        String tag_string_req = "req_register";
+        progressDialog.setMessage("Processing ...");
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                DATA_FETCH_ALL_SHOP, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("Register Response: ", response);
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int success = jObj.getInt("success");
+                    if (success == 1) {
+                        JSONArray jsonArray = jObj.getJSONArray("data");
+                        shopFilterBean = new ArrayList<>();
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            ShopFilterBean shopBean = new ShopFilterBean();
+                            shopBean.setId(jsonObject.getString("id"));
+                            shopBean.setStatus(jsonObject.getString("shop_name").toUpperCase(Locale.ROOT));
+
+                            if (shopFilterBean.size() <= 0) {
+                                shopFilterBean = new ArrayList<>();
+                                shopFilterBean.add(new ShopFilterBean("ALL","ALL"));
+                                for (String e : subCategories) {
+                                    shopFilterBean.add(new ShopFilterBean(e));
+                                }
+                                shopFilterAdapter.notifyData(shopFilterBean);
+                                selectedShop = "ALL";
+                                getSupportActionBar().setSubtitle(selectedShop);
+                                shopFilterAdapter.notifyData(selectedShop);
+                            }
+                            shopFilterBean.add(shopBean);
+                        }
+                        shopFilterAdapter.notifyData(shopFilterBean);
+
+                    } else {
+                        Toast.makeText(MainActivityProduct.this, jObj.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Log.e("xxxxxxxxxxx", e.toString());
+                    Toast.makeText(MainActivityProduct.this, "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Registration Error: ", error.getMessage());
+                Toast.makeText(MainActivityProduct.this,
+                        "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
                 return localHashMap;
             }
         };
@@ -206,7 +293,6 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
 
-        // Associate searchable configuration with the SearchView
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         searchView = (SearchView) menu.findItem(R.id.action_search)
                 .getActionView();
@@ -218,20 +304,19 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
             @Override
             public boolean onClose() {
                 offset = 0;
-                fetchContacts("");
+                fetchProduct("");
                 return false;
             }
         });
-        // listening to search query text change
+
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                // filter recycler view when query submitted
                 if (query.length() > 3) {
                     offset = 0;
-                    fetchContacts(query);
+                    fetchProduct(query);
                 } else if (query.length() == 0) {
-                    fetchContacts("");
+                    fetchProduct("");
                 }
                 return false;
             }
@@ -241,9 +326,9 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                 // filter recycler view when text is changed
                 if (query.length() > 3) {
                     offset = 0;
-                    fetchContacts(query);
+                    fetchProduct(query);
                 } else if (query.length() == 0) {
-                    fetchContacts("");
+                    fetchProduct("");
                 }
                 return false;
             }
@@ -301,16 +386,17 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
     protected void onStart() {
         super.onStart();
         offset = 0;
-        fetchContacts("");
+        fetchProduct("");
     }
 
-    private void showDialog() {
-        if (!progressDialog.isShowing())
-            progressDialog.show();
-    }
 
-    private void hideDialog() {
-        if (progressDialog.isShowing())
-            progressDialog.dismiss();
+    @Override
+    public void onStatus(ShopFilterBean status) {
+        selectedShop = status.getId();
+        shopFilterAdapter.notifyData(selectedShop);
+        offset = 0;
+        fetchProduct("");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setSubtitle(productList.size() + " Nos");
     }
 }

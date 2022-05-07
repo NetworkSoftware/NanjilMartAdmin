@@ -7,11 +7,16 @@
     android:layout_margin="10dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:showIn="@layout/activity_mainstock">
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_view_chip"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"/>
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollview"
         android:layout_width="match_parent"
         android:overScrollMode="never"
+        android:layout_below="@+id/recycler_view_chip"
         android:layout_height="match_parent">
 
         <LinearLayout

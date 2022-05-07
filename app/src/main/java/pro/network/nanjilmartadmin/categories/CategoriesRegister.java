@@ -53,7 +53,7 @@ public class CategoriesRegister extends AppCompatActivity implements Imageutils.
 
         private ProgressDialog pDialog;
 
-        EditText description;
+        EditText description,deliveryCost;
 
         String studentId = null;
 
@@ -82,13 +82,20 @@ public class CategoriesRegister extends AppCompatActivity implements Imageutils.
             pDialog = new ProgressDialog(this);
             pDialog.setCancelable(false);
 
+            deliveryCost = findViewById(R.id.deliveryCost);
             description=(EditText) findViewById(R.id.description);
             submit = (TextView) findViewById(R.id.submit);
 
             submit.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    if(description.getText().length()<=0){
+                        description.setError("Enter valid description");
+                    }else if(deliveryCost.getText().length()<=0){
+                        deliveryCost.setError("Enter valid deliveryCost");
+                    }else {
                     registerUser();
+                    }
                 }
             });
 
@@ -131,6 +138,7 @@ public class CategoriesRegister extends AppCompatActivity implements Imageutils.
                     HashMap localHashMap = new HashMap();
                     localHashMap.put("image", imageUrl);
                     localHashMap.put("title", description.getText().toString());
+                    localHashMap.put("deliveryCost", deliveryCost.getText().toString());
                     return localHashMap;
                 }
             };
@@ -264,8 +272,6 @@ public class CategoriesRegister extends AppCompatActivity implements Imageutils.
                     Toast.makeText(getApplicationContext(), "Image not uploaded", Toast.LENGTH_SHORT).show();
                 }
                 hideDialog();
-                // showing the server response in an alert dialog
-                //showAlert(result);
 
 
                 super.onPostExecute(result);
@@ -275,6 +281,7 @@ public class CategoriesRegister extends AppCompatActivity implements Imageutils.
 
         @Override
         protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+            super.onActivityResult(requestCode, resultCode, data);
             imageutils.onActivityResult(requestCode, resultCode, data);
 
         }
