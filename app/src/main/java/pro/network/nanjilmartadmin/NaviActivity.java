@@ -8,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import pro.network.nanjilmartadmin.background.MainActivityBackground;
 import pro.network.nanjilmartadmin.banner.MainActivityBanner;
 import pro.network.nanjilmartadmin.categories.MainActivityCategories;
 import pro.network.nanjilmartadmin.coupon.MainActivityCoupon;
@@ -26,7 +27,14 @@ public class NaviActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navi);
-
+        CardView background =  findViewById(R.id.background);
+        background.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, MainActivityBackground.class);
+                startActivity(io);
+            }
+        });
 
         CardView news =  findViewById(R.id.news);
         news.setOnClickListener(new View.OnClickListener() {

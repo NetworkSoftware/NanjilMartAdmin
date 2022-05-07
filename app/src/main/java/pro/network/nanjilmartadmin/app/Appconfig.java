@@ -65,6 +65,8 @@ public class Appconfig {
     public static final String ASSIGN_DBOY = ip + "/assign_dboy.php";
     //public static final String TRACK_PRODUCT_ORDER_ID = ip + "/com_track_order_id.php";
     public static final String ORDER_ASSIGN_DBOY = ip + "/order_assign_dboy.php";
+
+    public static final String CHANGEBG = ip + "/changeBg";
     //Video
     public static final String VIDEO = ip + "/video";
     public static final String COUPON = ip + "/coupon";

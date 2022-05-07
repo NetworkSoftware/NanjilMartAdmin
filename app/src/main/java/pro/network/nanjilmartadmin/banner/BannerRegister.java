@@ -82,6 +82,7 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
     //
     String[] CATEGORY = new String[]{"Loading"};
     private Map<String, String> nameIdMap = new HashMap<>();
+    private Map<String, String> idNameMap = new HashMap<>();
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -106,8 +107,11 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
         stock_name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View view, boolean b) {
-                Appconfig.multiSelectionModule(BannerRegister.this,
-                        "Select Stock Name", STOCKNAME, stock_name);
+                if(b){
+                    Appconfig.multiSelectionModule(BannerRegister.this,
+                            "Select Stock Name", STOCKNAME, stock_name);
+                }
+
             }
         });
 
@@ -122,7 +126,6 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
             banner = (Banner) getIntent().getSerializableExtra("data");
             stock_name.setText(banner.stockname);
             description.setText(banner.description);
-            categories.setText(banner.categories);
             studentId = banner.id;
             imageUrl=banner.banner;
             GlideApp.with(BannerRegister.this).load(banner.banner)
@@ -143,8 +146,8 @@ public class  BannerRegister extends AppCompatActivity implements Imageutils.Ima
                 }
             }
         });
+        fetchCategory();
 
-fetchCategory();
     }
     private void fetchCategory() {
         showDialog();
@@ -161,12 +164,20 @@ fetchCategory();
                         JSONArray jsonArray = jObj.getJSONArray("data");
                         CATEGORY = new String[jsonArray.length()];
                         nameIdMap = new HashMap<>();
+                        idNameMap = new HashMap<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
                             nameIdMap.put(jsonObject.getString("title"),
                                     jsonObject.getString("id"));
+                            idNameMap.put(jsonObject.getString("id"),
+                                    jsonObject.getString("title"));
                             CATEGORY[i] = jsonObject.getString("title");
                         }
+                        if(banner!=null){
+                            categories.setText(idNameMap.get(banner.categories));
+                        }
+
+
                         ArrayAdapter<String> stateAdapter = new ArrayAdapter<String>(BannerRegister.this,
                                 android.R.layout.simple_dropdown_item_1line, CATEGORY);
                         categories.setAdapter(stateAdapter);

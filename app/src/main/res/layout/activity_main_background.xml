@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/layout"
+    tools:context=".background.MainActivityBackground"
+    tools:ignore="HardcodedText">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:orientation="horizontal">
+        <TextView
+            android:id="@+id/startColor"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:text="StartColor"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:fontFamily="@font/sans_bold"
+            android:layout_margin="3dp"
+            android:textAllCaps="true"
+            android:background="@color/white"/>
+        <TextView
+            android:id="@+id/endColor"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:text="EndColor"
+            android:gravity="center"
+            android:layout_weight="1"
+            android:layout_margin="3dp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/sans_bold"
+            android:textAllCaps="true"
+            android:background="@color/white"/>
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="Submit"/>
+</LinearLayout>

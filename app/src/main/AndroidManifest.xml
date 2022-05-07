@@ -111,7 +111,10 @@
             </intent-filter>
 
         </activity>
-
+        <activity
+            android:name="pro.network.nanjilmartadmin.background.MainActivityBackground"
+            android:label="Stock Register"
+            android:theme="@style/AppThemeMaterial"/>
         <activity
             android:name=".coupon.MainActivityCoupon"
             android:label="MainActivityCoupon"
