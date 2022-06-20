@@ -168,6 +168,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 order.setReson(jsonObject.getString("reason"));
                                 order.setLatlong(jsonObject.getString("latlong"));
                                 order.setSubProduct(jsonObject.getString("subProduct"));
+                                order.setGstAmt(jsonObject.getString("gstAmt"));
                                 order.setPaymentMode(jsonObject.getString("paymentMode"));
                                 order.setPaymentId(jsonObject.getString("paymentId"));
                                 order.setCreatedOn(jsonObject.getString("createdon"));

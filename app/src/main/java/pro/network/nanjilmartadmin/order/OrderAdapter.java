@@ -61,6 +61,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.reason.setText(order.getReson());
         holder.orderedOn.setText(Appconfig.convertTimeToLocal(order.createdOn));
 
+        holder.gstAmt.setText(order.getGstAmt());
         if (order.getStatus().equalsIgnoreCase("ordered")) {
             holder.assignDboy.setVisibility(View.VISIBLE);
             holder.cancalOrder.setVisibility(View.VISIBLE);
@@ -223,7 +224,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, price, status, quantity, phone, orderedOn, address, dtime, reason, subProduct, order_id;
+        public TextView name, price, status, quantity, phone,gstAmt, orderedOn, address, dtime, reason, subProduct, order_id;
         public ImageView thumbnail;
         public RecyclerView cart_sub_list;
         Button deliveredBtn, whatsapp, call, cancalOrder,
@@ -234,6 +235,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             name = view.findViewById(R.id.name);
             orderedOn = view.findViewById(R.id.orderedOn);
 
+            gstAmt = view.findViewById(R.id.gstAmt);
             price = view.findViewById(R.id.price);
             name = view.findViewById(R.id.name);
             phone = view.findViewById(R.id.phone);

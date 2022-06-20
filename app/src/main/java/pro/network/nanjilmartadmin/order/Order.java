@@ -24,6 +24,7 @@ public class Order implements Serializable {
     String dcharge;
     String pincode;
     String total;
+    String gstAmt;
     String dtime;
     String shopname,latlong,paymentId,paymentMode,subProduct,strikeoutAmt ;
 
@@ -32,7 +33,7 @@ public class Order implements Serializable {
 
     public Order(String items, String quantity, String price, String status, String name,
                  String phone, String address, String reson, ArrayList<Product> productBeans,
-                 String createdOn,String subProduct,String strikeoutAmt ) {
+                 String createdOn,String subProduct,String strikeoutAmt,String gstAmt ) {
         this.items = items;
         this.quantity = quantity;
         this.price = price;
@@ -45,6 +46,15 @@ public class Order implements Serializable {
         this.createdOn = createdOn;
         this.subProduct = subProduct;
         this.strikeoutAmt = strikeoutAmt;
+        this.gstAmt = gstAmt;
+    }
+
+    public String getGstAmt() {
+        return gstAmt;
+    }
+
+    public void setGstAmt(String gstAmt) {
+        this.gstAmt = gstAmt;
     }
 
     public String getId() {

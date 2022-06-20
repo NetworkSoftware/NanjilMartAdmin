@@ -21,6 +21,7 @@ public class Product implements Serializable {
     String stock_update;
     String userId;
     String sub_category;
+    String dCost;
     public String shopname;
     public String shopid;
     public String latlong,subProduct,strikeoutAmt;
@@ -50,6 +51,14 @@ public class Product implements Serializable {
         this.sub_category = sub_category;
         this.shopname = shopname;
         this.subProduct = subProduct;
+    }
+
+    public String getdCost() {
+        return dCost;
+    }
+
+    public void setdCost(String dCost) {
+        this.dCost = dCost;
     }
 
     public String getId() {

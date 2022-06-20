@@ -31,7 +31,6 @@ import pro.network.nanjilmartadmin.shopreg.MainActivityShop;
 import pro.network.nanjilmartadmin.videos.MainActivityVideo;
 
 public class NaviActivity extends AppCompatActivity {
-    private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
