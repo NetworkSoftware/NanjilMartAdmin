@@ -110,6 +110,7 @@ public class MainActivityCoupon extends AppCompatActivity implements CouponAdapt
                             banner.setPercentage(jsonObject.getString("percentage"));
                             banner.setMinimumOrder(jsonObject.getString("miniorder"));
                             banner.setMaxNumbers(jsonObject.getString("maxNumbers"));
+                            banner.setShopId(jsonObject.getString("shopId"));
                             bannerList.add(banner);
                         }
                         mAdapter.notifyData(bannerList);

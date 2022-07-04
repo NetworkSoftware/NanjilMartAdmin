@@ -160,6 +160,22 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                             product.setId(jsonObject.getString("id"));
                             product.setBrand(jsonObject.getString("brand"));
                             product.setCategory(jsonObject.getString("category"));
+                            if (!jsonObject.isNull("offer")) {
+                                product.setOffer(jsonObject.getString("offer"));
+                            }else {
+                                product.setOffer("0");
+                            }
+                            if (jsonObject.has("time_periods")) {
+                                product.setTime_periods(jsonObject.getString("time_periods"));
+                            }else {
+                                product.setTime_periods("NA");
+                            }
+                            if (!jsonObject.isNull("offerPercent")) {
+                                product.setOfferPercent(jsonObject.getString("offerPercent"));
+                            }
+                            if (!jsonObject.isNull("offerImage")) {
+                                product.setOfferImage(jsonObject.getString("offerImage"));
+                            }
                             if (!jsonObject.isNull("qtyPrice")) {
                                 product.setQtyPrice(jsonObject.getString("qtyPrice"));
                             }

@@ -39,9 +39,10 @@ public class Appconfig {
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
 
-  // public static final String ip = "http://192.168.1.204:8098/prisma/nanjilmart";
+ //  public static final String ip = "http://192.168.1.204:8098/prisma/nanjilmart";
+  //  public static final String ip = "http://192.168.43.217:8098/prisma/nanjilmart";
     public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
-  // public static final String ip = "http://192.168.1.175:8098/prisma/nanjilmart";
+  // public static final String ip = "http://192.168.131.27:8098/prisma/nanjilmart";
     public static final String PRODUCT_CREATE = ip + "/create_stock.php";
     public static final String PRODUCT_UPDATE = ip + "/update_stock.php";
     public static final String PRODUCT_GET_ALL = ip + "/dataFetchAll.php";
@@ -220,7 +221,7 @@ public class Appconfig {
             out = new FileOutputStream(filename);
 
 //          write the compressed bitmap at the destination specified by filename.
-            scaledBitmap.compress(Bitmap.CompressFormat.JPEG, 80, out);
+            scaledBitmap.compress(Bitmap.CompressFormat.PNG, 80, out);
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();

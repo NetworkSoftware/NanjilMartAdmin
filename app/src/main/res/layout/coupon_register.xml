@@ -5,192 +5,230 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+<androidx.core.widget.NestedScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:scrollbars="none">
+
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/gray"
+                android:hint="Coupon"
+                android:inputType="text"
+                android:textColorHint="#c6c6c6"
+                android:textSize="@dimen/textsize" />
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
-            <com.google.android.material.textfield.TextInputLayout
+            <RadioButton
+                android:id="@+id/rupeesBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:text="Rupees" />
 
-                <EditText
-                    android:id="@+id/coupon"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/gray"
-                    android:hint="Coupon"
-                    android:inputType="text"
-                    android:textColorHint="#c6c6c6"
-                    android:textSize="@dimen/textsize" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <LinearLayout
+            <RadioButton
+                android:id="@+id/percentBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <RadioButton
-                    android:id="@+id/rupeesBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Rupees" />
-
-                <RadioButton
-                    android:id="@+id/percentBtn"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="Percentage" />
-
-            </LinearLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1">
-
-                <EditText
-                    android:id="@+id/percentage"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/gray"
-                    android:visibility="gone"
-                    android:hint="Percentage"
-                    android:inputType="number"
-                    android:textColorHint="#c6c6c6"
-                    android:textSize="@dimen/textsize" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1">
-
-                <EditText
-                    android:id="@+id/amt"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/gray"
-                    android:hint="Amount"
-                    android:inputType="numberDecimal"
-                    android:textColorHint="#c6c6c6"
-                    android:textSize="@dimen/textsize" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1">
-
-                <EditText
-                    android:id="@+id/minimumOrder"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/gray"
-                    android:hint="Minimum order value"
-                    android:inputType="numberDecimal"
-                    android:textColorHint="#c6c6c6"
-                    android:textSize="@dimen/textsize" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1">
-
-                <EditText
-                    android:id="@+id/description"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/gray"
-                    android:hint="Description"
-                    android:inputType="text"
-                    android:textColorHint="#c6c6c6"
-                    android:textSize="@dimen/textsize" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1">
-
-                <EditText
-                    android:id="@+id/maxNumbers"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:backgroundTint="@color/gray"
-                    android:hint="Maximum Times"
-                    android:inputType="number"
-                    android:textColorHint="#c6c6c6"
-                    android:textSize="@dimen/textsize" />
-
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-                android:id="@+id/status"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:hint="Status"
-                android:textColor="@color/black"
-                android:textColorHint="#c6c6c6"
-                android:textSize="15dp"
-                app:met_floatingLabel="normal" />
-
-
-            <CheckBox
-                android:id="@+id/isHidden"
-                android:layout_width="match_parent"
-                android:layout_margin="5dp"
-                android:textSize="15dp"
-                android:layout_height="wrap_content"
-                android:text="Is Hidden" />
-
-            <CheckBox
-                android:id="@+id/isNotify"
-                android:layout_width="match_parent"
-                android:layout_margin="5dp"
-                android:textSize="15dp"
-                android:layout_height="wrap_content"
-                android:text="Notify to user" />
+                android:layout_weight="1"
+                android:text="Percentage" />
 
         </LinearLayout>
 
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/percentTxt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:visibility="gone"
+            android:layout_weight="1"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/percentage"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/gray"
+                android:hint="Percentage"
+                android:inputType="number"
+                android:textColorHint="#c6c6c6"
+                android:textSize="@dimen/textsize" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/amt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/gray"
+                android:hint="Amount"
+                android:inputType="numberDecimal"
+                android:textColorHint="#c6c6c6"
+                android:textSize="@dimen/textsize" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/minimumOrder"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/gray"
+                android:hint="Minimum order value"
+                android:inputType="numberDecimal"
+                android:textColorHint="#c6c6c6"
+                android:textSize="@dimen/textsize" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/shopTxt"
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:visibility="visible"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/shop_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:drawableEnd="@drawable/ic_baseline_arrow_drop_down_24"
+                android:fontFamily="@font/sans"
+                android:hint="Select Shop"
+                android:inputType="text"
+                android:textColor="@color/black"
+                android:textSize="15dp" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/gray"
+                android:hint="Description"
+                android:inputType="text"
+                android:textColorHint="#c6c6c6"
+                android:textSize="@dimen/textsize" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:layout_weight="1"
+            app:errorEnabled="true">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/maxNumbers"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="@color/gray"
+                android:hint="Maximum Times"
+                android:inputType="number"
+                android:textColorHint="#c6c6c6"
+                android:textSize="@dimen/textsize" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+            android:id="@+id/status"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:hint="Status"
+            android:textColor="@color/black"
+            android:textColorHint="#c6c6c6"
+            android:textSize="15dp"
+            app:met_floatingLabel="normal" />
+
+
+        <CheckBox
+            android:id="@+id/isHidden"
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:textSize="15dp"
+            android:layout_height="wrap_content"
+            android:text="Is Hidden" />
+
+        <CheckBox
+            android:id="@+id/isNotify"
+            android:layout_width="match_parent"
+            android:layout_margin="5dp"
+            android:textSize="15dp"
+            android:layout_height="wrap_content"
+            android:text="Notify to user" />
 
     </LinearLayout>
+
+</androidx.core.widget.NestedScrollView>
+
 
     <TextView
         android:id="@+id/submit"

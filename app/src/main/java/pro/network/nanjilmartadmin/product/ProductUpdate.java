@@ -1,5 +1,13 @@
 package pro.network.nanjilmartadmin.product;
 
+import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
+import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORY;
+import static pro.network.nanjilmartadmin.app.Appconfig.DATA_FETCH_ALL_SHOP;
+import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_CREATE;
+import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_DELETE;
+import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_UPDATE;
+import static pro.network.nanjilmartadmin.app.Appconfig.SHOPNAME;
+
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -18,9 +26,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,10 +49,14 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -70,32 +85,26 @@ import pro.network.nanjilmartadmin.app.ActivityMediaOnline;
 import pro.network.nanjilmartadmin.app.AndroidMultiPartEntity;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
+import pro.network.nanjilmartadmin.app.GlideApp;
 import pro.network.nanjilmartadmin.app.Imageutils;
+import pro.network.nanjilmartadmin.banner.BannerRegister;
 import pro.network.nanjilmartadmin.priceQty.PriceAdapter;
 import pro.network.nanjilmartadmin.priceQty.QuantityPrice;
-
-import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
-import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORY;
-import static pro.network.nanjilmartadmin.app.Appconfig.DATA_FETCH_ALL_SHOP;
-import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_CREATE;
-import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_DELETE;
-import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_UPDATE;
-import static pro.network.nanjilmartadmin.app.Appconfig.SHOPNAME;
 
 /**
  * Created by user_1 on 11-07-2018.
  */
 
-public class ProductUpdate extends AppCompatActivity implements Imageutils.ImageAttachmentListener, ImageClick {
-
+public class ProductUpdate extends AppCompatActivity implements
+        Imageutils.ImageAttachmentListener, ImageClick {
 
     private final String[] STOCKUPDATE = new String[]{
             "In Stock", "Currently Unavailable",
     };
-
+    public Button addSize;
     AutoCompleteTextView brand;
     EditText model;
-    EditText price,strikeoutAmt;
+    EditText price, strikeoutAmt;
     EditText description;
     AddImageAdapter maddImageAdapter;
     MaterialBetterSpinner category;
@@ -106,16 +115,25 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
     Imageutils imageutils;
     CardView itemsAdd;
     Map<String, String> shopIdName = new HashMap<>();
+    ArrayList<QuantityPrice> quantityPrices = new ArrayList<>();
+    PriceAdapter priceAdapter;
+    ImageView offerPicImage;
+    CheckBox offerBtn;
+    TextInputEditText offerPercent;
     private ProgressDialog pDialog;
     private RecyclerView imagelist;
     private ArrayList<String> samplesList = new ArrayList<>();
     private String imageUrl = "";
+    private String offerImageUrl = "";
+    private String offerPercentVal = "";
     private Product contact = null;
-    //
-    public Button addSize;
     private RecyclerView sizelist;
-    ArrayList<QuantityPrice> quantityPrices = new ArrayList<>();
-    PriceAdapter priceAdapter;
+    //
+    LinearLayout timePeriodTxt;
+    TextInputEditText select_periods;
+    TextView periods_time;
+    String[] DAYPERIODS = new String[]{"Morning","Afternoon","Evening"};
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -125,6 +143,19 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
 
+        timePeriodTxt = findViewById(R.id.timePeriodTxt);
+        periods_time = findViewById(R.id.periods_time);
+        periods_time.setText("Morning: 6AM to 11AM - Afternoon: 11AM to 3PM - Evening: 3PM to 9AM");
+        select_periods = findViewById(R.id.select_periods);
+        select_periods.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b){
+                    Appconfig.multiSelectionModule(ProductUpdate.this,
+                            "Select Day Periods", DAYPERIODS, select_periods);
+                }
+            }
+        });
         itemsAdd = findViewById(R.id.itemsAdd);
         ImageView image_wallpaper = findViewById(R.id.image_wallpaper);
         image_wallpaper.setOnClickListener(new View.OnClickListener() {
@@ -133,6 +164,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 imageutils.imagepicker(1);
             }
         });
+        offerBtn = findViewById(R.id.offerBtn);
         samplesList = new ArrayList<>();
         imagelist = findViewById(R.id.imagelist);
         maddImageAdapter = new AddImageAdapter(this, samplesList, this);
@@ -145,8 +177,6 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         model = findViewById(R.id.model);
         price = findViewById(R.id.price);
         description = findViewById(R.id.description);
-
-
         shopname = findViewById(R.id.shopname);
         ArrayAdapter<String> shopAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SHOPNAME);
@@ -179,6 +209,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 shopname.setVisibility(View.GONE);
+                timePeriodTxt.setVisibility(View.GONE);
                 ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(ProductUpdate.this,
                         android.R.layout.simple_dropdown_item_1line, new String[0]);
                 if (category.getText().toString().equalsIgnoreCase(("COSMETICS"))) {
@@ -186,6 +217,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                             android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(CATEGORY[i]));
                 } else if (category.getText().toString().equalsIgnoreCase(("FOOD"))) {
                     shopname.setVisibility(View.VISIBLE);
+                    timePeriodTxt.setVisibility(View.VISIBLE);
                 }
                 brand.setAdapter(brandAdapter);
                 brand.setThreshold(1);
@@ -196,7 +228,6 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 }
             }
         });
-
 
 
         //
@@ -269,11 +300,17 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             shopname.setText(contact.shopname);
             imageUrl = contact.image;
             strikeoutAmt.setText(contact.strikeoutAmt);
+            select_periods.setText(contact.getTime_periods());
+            offerBtn.setChecked(contact.offer.equals("1"));
+            offerImageUrl = contact.offerImage;
+            offerPercentVal = contact.offerPercent;
 
             if (category.getText().toString().equalsIgnoreCase(("FOOD"))) {
                 shopname.setVisibility(View.VISIBLE);
+                timePeriodTxt.setVisibility(View.VISIBLE);
             } else {
                 shopname.setVisibility(View.GONE);
+                timePeriodTxt.setVisibility(View.GONE);
             }
 
             if (imageUrl == null) {
@@ -281,6 +318,8 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             } else {
                 samplesList = new Gson().fromJson(imageUrl, (Type) List.class);
             }
+
+
             maddImageAdapter.notifyData(samplesList);
 //
 
@@ -309,6 +348,20 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         }
 
 
+        offerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(offerBtn.isChecked()){
+                    if (contact != null) {
+                        showBottomOffer(0, contact);
+                    } else {
+                        showBottomOffer(1, null);
+                    }
+                }
+
+
+            }
+        });
         getAllCategories();
         getAllShopname();
 
@@ -343,7 +396,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 } else {
                     quantityPrices.add(new QuantityPrice(quantity.getText().toString(), quantityPrice.getText().toString()));
                 }
-                 priceAdapter.notifyData(quantityPrices);
+                priceAdapter.notifyData(quantityPrices);
                 mBottomSheetDialog.cancel();
             }
         });
@@ -372,7 +425,7 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
 
     private void registerUser() {
         String tag_string_req = "req_register";
-        pDialog.setMessage("Updateing ...");
+        pDialog.setMessage("Updating ...");
         showDialog();
         String url = PRODUCT_CREATE;
         if (contact != null) {
@@ -424,14 +477,25 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
                 localHashMap.put("model", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
                 localHashMap.put("strikeoutAmt", strikeoutAmt.getText().length()
-                        >0 ?strikeoutAmt.getText().toString() : "0");
+                        > 0 ? strikeoutAmt.getText().toString() : "0");
                 localHashMap.put("qtyPrice", new Gson().toJson(quantityPrices));
                 localHashMap.put("stock_update", stock_update.getText().toString());
+                localHashMap.put("time_periods",select_periods.getText().length()<=0?"":select_periods.getText().toString());
                 if (contact != null) {
                     localHashMap.put("id", studentId);
                 }
                 localHashMap.put("image", new Gson().toJson(samplesList));
                 localHashMap.put("description", description.getText().toString());
+
+                if (offerBtn.isChecked()) {
+                    localHashMap.put("offer", "1");
+                    localHashMap.put("offerPercent", offerPercentVal);
+                    localHashMap.put("offerImage", offerImageUrl);
+                } else {
+                    localHashMap.put("offer", "0");
+                    localHashMap.put("offerPercent", "0");
+                    localHashMap.put("offerImage", "NA");
+                }
                 return localHashMap;
             }
         };
@@ -597,12 +661,11 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         String storedPath = imageutils.createImage(file, filename, path, false);
         pDialog.setMessage("Uploading...");
         showDialog();
-        new UploadFileToServer().execute(Appconfig.compressImage(storedPath, ProductUpdate.this));
+        new UploadFileToServer().execute(Appconfig.compressImage(storedPath, ProductUpdate.this)+ "@" + from);
     }
 
     @Override
     public void onImageClick(int position) {
-
         Intent localIntent = new Intent(ProductUpdate.this, ActivityMediaOnline.class);
         localIntent.putExtra("filePath", samplesList.get(position));
         localIntent.putExtra("isImage", true);
@@ -725,9 +788,78 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
         AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
     }
 
+    //offer zone
+    private void showBottomOffer(int isUpdate, Product product) {
+        final RoundedBottomSheetDialog mBottomSheetDialog = new RoundedBottomSheetDialog(ProductUpdate.this);
+        LayoutInflater inflater = ProductUpdate.this.getLayoutInflater();
+        View dialogView = inflater.inflate(R.layout.bottom_offer_product, null);
+
+        offerPicImage = dialogView.findViewById(R.id.profiletImage);
+        offerPercent = dialogView.findViewById(R.id.offerPercent);
+        final MaterialButton submit = dialogView.findViewById(R.id.submit);
+        ImageView close = dialogView.findViewById(R.id.close);
+
+
+        offerPicImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageutils.imagepicker(2);
+            }
+        });
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mBottomSheetDialog.cancel();
+            }
+        });
+        if (isUpdate == 1) {
+            offerPercent.setText(product.getOfferPercent());
+            GlideApp.with(getApplicationContext())
+                    .load(product.offerImage)
+                    .dontAnimate()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .skipMemoryCache(false)
+                    .into(offerPicImage);
+        }
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (offerPercent.getText().length() <= 0) {
+                    offerPercent.setError("Enter valid offer percentage");
+                } else if (offerImageUrl == null || offerImageUrl.equalsIgnoreCase("")) {
+                    Toast.makeText(getApplicationContext(), "Select Offer Image", Toast.LENGTH_SHORT).show();
+                } else {
+                    offerPercentVal = offerPercent.getText().toString();
+                    mBottomSheetDialog.cancel();
+                }
+            }
+        });
+
+        mBottomSheetDialog.setContentView(dialogView);
+        mBottomSheetDialog.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
+        mBottomSheetDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(final DialogInterface dialog) {
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        RoundedBottomSheetDialog d = (RoundedBottomSheetDialog) dialog;
+                        FrameLayout bottomSheet = d.findViewById(R.id.design_bottom_sheet);
+                        BottomSheetBehavior bottomSheetBehavior = BottomSheetBehavior.from(bottomSheet);
+                        bottomSheetBehavior.setState(BottomSheetBehavior.STATE_EXPANDED);
+                    }
+                }, 0);
+            }
+        });
+        mBottomSheetDialog.show();
+
+    }
+
     private class UploadFileToServer extends AsyncTask<String, Integer, String> {
         public long totalSize = 0;
         String filepath;
+        String type;
 
         @Override
         protected void onPreExecute() {
@@ -744,7 +876,8 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
 
         @Override
         protected String doInBackground(String... params) {
-            filepath = params[0];
+            filepath = params[0].split("@")[0];
+            type = params[0].split("@")[1];
             return uploadFile();
         }
 
@@ -801,23 +934,34 @@ public class ProductUpdate extends AppCompatActivity implements Imageutils.Image
             Log.e("Response from server: ", result);
             try {
                 JSONObject jsonObject = new JSONObject(result);
-                if (!jsonObject.getBoolean("error")) {
-                    imageUrl = Appconfig.ip + "/images/" + imageutils.getfilename_from_path(filepath);
-                    samplesList.add(imageUrl);
-                    maddImageAdapter.notifyData(samplesList);
-                } else {
-                    imageUrl = null;
+                if (type.equalsIgnoreCase("1")) {
+                    if (!jsonObject.getBoolean("error")) {
+                        imageUrl = Appconfig.ip + "/images/" + imageutils.getfilename_from_path(filepath);
+                        samplesList.add(imageUrl);
+                        maddImageAdapter.notifyData(samplesList);
+                    } else {
+                        imageUrl = null;
+                    }
+                    Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
+                } else if (type.equalsIgnoreCase("2")) {
+                    if (!jsonObject.getBoolean("error")) {
+                        GlideApp.with(getApplicationContext())
+                                .load(filepath)
+                                .dontAnimate()
+                                .diskCacheStrategy(DiskCacheStrategy.ALL)
+                                .skipMemoryCache(false)
+                                .placeholder(R.drawable.nanjilmart)
+                                .into(offerPicImage);
+                        offerImageUrl = Appconfig.ip + "/images/" + imageutils.getfilename_from_path(filepath);
+                    } else {
+                        offerImageUrl = null;
+                    }
                 }
-                Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_SHORT).show();
 
             } catch (Error | Exception e) {
                 Toast.makeText(getApplicationContext(), "Image not uploaded", Toast.LENGTH_SHORT).show();
             }
             hideDialog();
-            // showing the server response in an alert dialog
-            //showAlert(result);
-
-
             super.onPostExecute(result);
         }
 

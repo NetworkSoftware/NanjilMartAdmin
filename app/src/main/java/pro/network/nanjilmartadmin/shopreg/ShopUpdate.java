@@ -18,6 +18,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -98,6 +99,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
     private ImageView profiletImage;
     private String imageUrl = "";
     private RecyclerView sizelist;
+    CheckBox isEnable;
 
 
     @Override
@@ -108,6 +110,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
         pDialog.setCancelable(false);
         imageutils = new Imageutils(this);
         profiletImage = findViewById(R.id.profiletImage);
+        isEnable = findViewById(R.id.isEnable);
         profiletImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,6 +204,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
             category.setText(contact.category);
             address.setText(contact.address);
             offerAmt.setText(contact.offerAmt);
+            isEnable.setChecked(contact.shop_enabled.equalsIgnoreCase("1"));
             studentId = contact.id;
             stock_update.setText(contact.stock_update);
             if (contact.getTime_schedule() == null || contact.getTime_schedule().equalsIgnoreCase("null")) {
@@ -340,7 +344,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
 
     private void registerUser() {
         String tag_string_req = "req_register";
-        pDialog.setMessage("Updateing ...");
+        pDialog.setMessage("Updating ...");
         showDialog();
         StringRequest strReq = new StringRequest(Request.Method.POST,
                 UPDATE_SHOP, new Response.Listener<String>() {
@@ -383,6 +387,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
                 localHashMap.put("stock_update", stock_update.getText().toString());
                 localHashMap.put("time_schedule", new Gson().toJson(times));
                 localHashMap.put("offerAmt", offerAmt.getText().length()>0?offerAmt.getText().toString():"0");
+                localHashMap.put("shop_enabled", isEnable.isChecked()?"1":"0");
                 localHashMap.put("id", studentId);
                 return localHashMap;
             }

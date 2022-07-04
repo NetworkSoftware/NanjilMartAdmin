@@ -128,7 +128,7 @@
         <activity
             android:name=".coupon.CouponRegister"
             android:label="Coupon Register"
-            android:theme="@style/AppThemeWhite" />
+            android:theme="@style/AppThemeMaterial" />
         <activity
             android:name="pro.network.nanjilmartadmin.banner.BannerRegister"
             android:label="Banner Upload"

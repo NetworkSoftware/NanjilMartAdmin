@@ -23,9 +23,40 @@
             android:layout_weight="1"
             android:fontFamily="@font/sans_bold"
             android:gravity="left"
-            android:visibility="visible"
             android:text="SubProduct Type"
-            android:textColor="@android:color/black" />
+            android:textColor="@android:color/black"
+            android:visibility="visible" />
+
+        <LinearLayout
+            android:id="@+id/couponLi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:visibility="gone"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:fontFamily="@font/sans_bold"
+                android:gravity="left"
+                android:text="Coupon Amount"
+                android:textColor="@android:color/black" />
+
+            <TextView
+                android:id="@+id/couponAmt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:fontFamily="@font/sans_bold"
+                android:gravity="left"
+                android:text="Rs.5000" />
+
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -72,6 +103,7 @@
                     android:gravity="left"
                     android:text="Amount"
                     android:textColor="@android:color/black" />
+
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -191,6 +223,7 @@
                     android:fontFamily="@font/sans_bold"
                     android:gravity="left"
                     android:text="COD" />
+
                 <TextView
                     android:id="@+id/gstAmt"
                     android:layout_width="match_parent"

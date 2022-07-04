@@ -1,6 +1,7 @@
 package pro.network.nanjilmartadmin.coupon;
 
 import static pro.network.nanjilmartadmin.app.Appconfig.COUPON;
+import static pro.network.nanjilmartadmin.app.Appconfig.DATA_FETCH_ALL_SHOP;
 import static pro.network.nanjilmartadmin.app.Appconfig.mypreference;
 
 import android.app.ProgressDialog;
@@ -26,17 +27,24 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
+import pro.network.nanjilmartadmin.banner.BannerRegister;
+import pro.network.nanjilmartadmin.shopreg.MainActivityShop;
+import pro.network.nanjilmartadmin.shopreg.Shop;
 
 
 public class CouponRegister extends AppCompatActivity {
@@ -45,18 +53,23 @@ public class CouponRegister extends AppCompatActivity {
     private final String[] STOCKUPDATE = new String[]{
             "0", "1",
     };
-    EditText coupon;
-    EditText amt;
-    EditText description;
+    TextInputEditText coupon;
+    TextInputEditText amt;
+    TextInputEditText description;
     MaterialBetterSpinner status;
     TextView submit;
-    EditText percentage,minimumOrder,maxNumbers;
+    TextInputEditText percentage,minimumOrder,maxNumbers;
+    TextInputLayout percentTxt;
     RadioButton rupeesBtn, percentBtn;
     private ProgressDialog pDialog;
     private CheckBox isNotify,isHidden;
     SharedPreferences sharedpreferences;
     String couponId = null;
     private CouponProduct couponProduct = null;
+    TextInputEditText shop_name;
+    String[] SHOPNAME = new String[]{"Loading"};
+    private Map<String, String> nameIdMap = new HashMap<>();
+    private Map<String, String> idNameMap = new HashMap<>();
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,9 +85,20 @@ public class CouponRegister extends AppCompatActivity {
 
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
-
+        percentTxt = findViewById(R.id.percentTxt);
         isNotify=findViewById(R.id.isNotify);
         isHidden=findViewById(R.id.isHidden);
+        shop_name = findViewById(R.id.shop_name);
+        shop_name.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View view, boolean b) {
+                if(b){
+                    Appconfig.multiSelectionModule(CouponRegister.this,
+                            "Select Shop Name", SHOPNAME, shop_name);
+                }
+
+            }
+        });
 
         amt = findViewById(R.id.amt);
         description = findViewById(R.id.description);
@@ -92,13 +116,13 @@ public class CouponRegister extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    percentage.setVisibility(View.GONE);
+                    percentTxt.setVisibility(View.GONE);
                     rupeesBtn.setChecked(true);
                     percentBtn.setChecked(false);
                 } else {
                     rupeesBtn.setChecked(false);
                     percentBtn.setChecked(true);
-                    percentage.setVisibility(View.VISIBLE);
+                    percentTxt.setVisibility(View.VISIBLE);
                 }
             }
         });
@@ -107,13 +131,13 @@ public class CouponRegister extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    percentage.setVisibility(View.VISIBLE);
+                    percentTxt.setVisibility(View.VISIBLE);
                     rupeesBtn.setChecked(false);
                     percentBtn.setChecked(true);
                 } else {
                     rupeesBtn.setChecked(true);
                     percentBtn.setChecked(false);
-                    percentage.setVisibility(View.GONE);
+                    percentTxt.setVisibility(View.GONE);
                 }
             }
         });
@@ -136,7 +160,7 @@ public class CouponRegister extends AppCompatActivity {
                     minimumOrder.setError("Enter the Minimum order value");
                 } else if (percentBtn.isChecked() && percentage.getText().toString().length() <= 0) {
                     percentage.setError("Enter the percentage");
-                } else {
+                }else {
 
                     registerUser();
                 }
@@ -161,6 +185,7 @@ public class CouponRegister extends AppCompatActivity {
             description.setText(couponProduct.description);
             status.setText(couponProduct.status);
             coupon.setText(couponProduct.coupon);
+            shop_name.setText(couponProduct.shopId);
             isHidden.setChecked(couponProduct.getHide() != null && couponProduct.getHide().equalsIgnoreCase("1"));
             description.setText(couponProduct.description);
             maxNumbers.setText(couponProduct.maxNumbers == null ? "1" : couponProduct.maxNumbers);
@@ -175,11 +200,65 @@ public class CouponRegister extends AppCompatActivity {
         } catch (Exception e) {
             Log.e("xxxxxxxxxxx", e.toString());
         }
+        fetchAllShop();
     }
+    private void fetchAllShop() {
+        StringRequest strReq = new StringRequest(Request.Method.POST,
+                DATA_FETCH_ALL_SHOP, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Log.d("Register Response: ", response);
+                hideDialog();
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    int success = jObj.getInt("success");
+                    if (success == 1) {
+                        JSONArray jsonArray = jObj.getJSONArray("data");
+                        SHOPNAME = new String[jsonArray.length()];
+                        nameIdMap = new HashMap<>();
+                        idNameMap=new HashMap<>();
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            JSONObject jsonObject = jsonArray.getJSONObject(i);
+                            nameIdMap.put(jsonObject.getString("shop_name"),
+                                    jsonObject.getString("id"));
+                            idNameMap.put(jsonObject.getString("id"),
+                                    jsonObject.getString("shop_name"));
+                            SHOPNAME[i] = jsonObject.getString("shop_name");
+                        }
 
+                        if(couponProduct!=null){
+                            shop_name.setText(idNameMap.get(couponProduct.shopId));
+                        }
+
+                    } else {
+                        Toast.makeText(CouponRegister.this, jObj.getString("message"), Toast.LENGTH_SHORT).show();
+                    }
+                } catch (JSONException e) {
+                    Toast.makeText(CouponRegister.this, "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();
+
+                }
+
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("Registration Error: ", error.getMessage());
+                Toast.makeText(CouponRegister.this,
+                        "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
+                return localHashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq);
+    }
     private void registerUser() {
         String tag_string_req = "req_register";
-        pDialog.setMessage("Createing ...");
+        pDialog.setMessage("Creating ...");
         showDialog();
         int method = Request.Method.POST;
         if (couponId != null) {
@@ -229,6 +308,7 @@ public class CouponRegister extends AppCompatActivity {
                 localHashMap.put("coupon", coupon.getText().toString());
                 localHashMap.put("miniorder", minimumOrder.getText().toString());
                 localHashMap.put("maxNumbers",maxNumbers.getText().toString());
+                localHashMap.put("shopId",shop_name.getText().length()<=0?"NA": nameIdMap.get(shop_name.getText().toString()));
                 return localHashMap;
             }
         };

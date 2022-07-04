@@ -1,5 +1,7 @@
 package pro.network.nanjilmartadmin.categories;
 
+import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -34,8 +36,6 @@ import java.util.Map;
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
-
-import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
 
 public class MainActivityCategories extends AppCompatActivity implements CategoriesClick {
     private static final String TAG = pro.network.nanjilmartadmin.categories.MainActivityCategories.class.getSimpleName();
@@ -104,6 +104,14 @@ public class MainActivityCategories extends AppCompatActivity implements Categor
                             categories.setTitle(jsonObject.getString("title"));
                             categories.setImage(jsonObject.getString("image"));
                             categories.setDeliveryCost(jsonObject.getString("deliveryCost"));
+                            if (jsonObject.has("category_enabled")) {
+                                categories.setCategory_enabled(jsonObject.getString("category_enabled"));
+                            }
+                            if (jsonObject.has("row")) {
+                                categories.setRow(jsonObject.getString("row"));
+                            }
+
+
                             categoriesList.add(categories);
                         }
                         mAdapter.notifyData(categoriesList);

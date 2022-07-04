@@ -1,5 +1,6 @@
 package pro.network.nanjilmartadmin.shopreg;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +27,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.MyViewHolder> 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private final LinearLayout linear;
         public ImageView  cancel,thumbnail;
+        TextView isDisable;
         public TextView shop_name,phone,stock_update,shop_open;
 
         public MyViewHolder(View view) {
@@ -34,6 +36,7 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.MyViewHolder> 
 
             thumbnail = view.findViewById(R.id.thumbnail);
             cancel = view.findViewById(R.id.cancel);
+            isDisable = view.findViewById(R.id.isDisable);
             shop_name = view.findViewById(R.id.shop_name);
             phone = view.findViewById(R.id.phone);
             stock_update = view.findViewById(R.id.stock_update);
@@ -56,16 +59,21 @@ public class ShopAdapter extends RecyclerView.Adapter<ShopAdapter.MyViewHolder> 
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
-        final Shop categories = categoriesList.get(position);
+    public void onBindViewHolder(MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
+        final Shop shop = categoriesList.get(position);
 
-        holder.shop_name.setText(categories.shop_name);
-        holder.phone.setText(categories.phone);
-        holder.stock_update.setText(categories.stock_update);
+        holder.shop_name.setText(shop.shop_name);
+        holder.phone.setText(shop.phone);
+        holder.stock_update.setText(shop.stock_update);
         GlideApp.with(context)
-                .load(Appconfig.getResizedImage(categories.getImage(), true))
+                .load(Appconfig.getResizedImage(shop.getImage(), true))
                 .placeholder(R.drawable.vivo)
                 .into(holder.thumbnail);
+        if("1".equalsIgnoreCase(shop.shop_enabled)){
+            holder.isDisable.setVisibility(View.GONE);
+        }else {
+            holder.isDisable.setVisibility(View.VISIBLE);
+        }
         holder.thumbnail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

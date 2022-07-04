@@ -167,6 +167,14 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 order.setAddress(jsonObject.getString("address"));
                                 order.setReson(jsonObject.getString("reason"));
                                 order.setLatlong(jsonObject.getString("latlong"));
+
+                                if(jsonObject.has("coupon")){
+                                    order.setCoupon(jsonObject.getString("coupon"));
+                                }
+                                if(jsonObject.has("couponCost")){
+                                    order.setCouponCost(jsonObject.getString("couponCost"));
+                                }
+
                                 order.setSubProduct(jsonObject.getString("subProduct"));
                                 order.setGstAmt(jsonObject.getString("gstAmt"));
                                 order.setPaymentMode(jsonObject.getString("paymentMode"));
@@ -494,7 +502,6 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
 
     @Override
     public void onCancelClick(final String id) {
-
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(MainActivityOrder.this);
         LayoutInflater inflater = MainActivityOrder.this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.alert_dialog, null);

@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -25,11 +26,11 @@ import pro.network.nanjilmartadmin.app.Appconfig;
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder>
         implements Filterable {
-    StatusListener statusListener;
     private final Context context;
+    private final ContactsAdapterListener listener;
+    StatusListener statusListener;
     private List<Order> orderList;
     private List<Order> orderListFiltered;
-    private final ContactsAdapterListener listener;
 
     public OrderAdapter(Context context, List<Order> orderList, ContactsAdapterListener listener, StatusListener statusListener) {
         this.context = context;
@@ -106,6 +107,13 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             holder.completed.setVisibility(View.GONE);
         }
 
+        holder.couponAmt.setText(order.getCouponCost());
+
+        if (order.couponCost.equalsIgnoreCase("₹0.0")) {
+            holder.couponLi.setVisibility(View.GONE);
+        } else {
+            holder.couponLi.setVisibility(View.VISIBLE);
+        }
 
         OrderListSubAdapter OrderListAdapter = new OrderListSubAdapter(context, order.productBeans);
         final LinearLayoutManager addManager1 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
@@ -117,7 +125,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             holder.subProduct.setText("");
         } else {
             holder.subProduct.setVisibility(View.VISIBLE);
-            holder.subProduct.setText("Sub Product Type : "+order.subProduct);
+            holder.subProduct.setText("Sub Product Type : " + order.subProduct);
         }
         holder.deliveredBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -224,16 +232,22 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, price, status, quantity, phone,gstAmt, orderedOn, address, dtime, reason, subProduct, order_id;
+        public TextView name, price, status, quantity, phone, gstAmt, orderedOn, address, dtime, reason, subProduct, order_id;
         public ImageView thumbnail;
         public RecyclerView cart_sub_list;
         Button deliveredBtn, whatsapp, call, cancalOrder,
                 assignDboy, trackOrder, assignShop, inprogress, completed, bill;
 
+        LinearLayout couponLi;
+        TextView couponAmt;
+
         public MyViewHolder(View view) {
             super(view);
             name = view.findViewById(R.id.name);
             orderedOn = view.findViewById(R.id.orderedOn);
+
+            couponLi = view.findViewById(R.id.couponLi);
+            couponAmt = view.findViewById(R.id.couponAmt);
 
             gstAmt = view.findViewById(R.id.gstAmt);
             price = view.findViewById(R.id.price);

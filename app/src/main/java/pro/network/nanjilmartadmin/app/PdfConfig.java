@@ -105,7 +105,7 @@ public class PdfConfig {
             }else {
                 subProduct = productListBean.getSubProduct();
             }
-            table3.addCell(createTextLeft("Rs."+productListBean.getPrice()+"/"+subProduct, catNormalFont, false));
+            table3.addCell(createTextLeft("Rs."+productListBean.getPrice()+(subProduct.length()>0?"/"+subProduct:""), catNormalFont, false));
 
         }
 
@@ -127,6 +127,11 @@ public class PdfConfig {
         table7.addCell(createTextLeft("", catNormalFont, false));
         table7.addCell(createTextRight("Delivery Fee", catNormalFont));
         table7.addCell(createTextLeft(mainbean.getDcharge(), catNormalFont, false));
+
+        table7.addCell(createTextLeft("", catNormalFont, false));
+        table7.addCell(createTextLeft("", catNormalFont, false));
+        table7.addCell(createTextRight("Coupon Cost", catNormalFont));
+        table7.addCell(createTextLeft(mainbean.getCouponCost(), catNormalFont, false));
 
         table7.addCell(createTextLeft("", catNormalFont, false));
         table7.addCell(createTextLeft("", catNormalFont, false));

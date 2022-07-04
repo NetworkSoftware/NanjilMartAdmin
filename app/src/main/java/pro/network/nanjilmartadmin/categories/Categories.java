@@ -11,14 +11,34 @@ public class Categories implements Serializable {
     String title;
     String image;
     String deliveryCost;
+    String row;
+    String category_enabled;
 
     public Categories() {
     }
 
-    public Categories(String title, String image,String deliveryCost) {
+    public Categories(String title, String image,String deliveryCost,String row,String category_enabled) {
         this.title = title;
         this.image = image;
         this.deliveryCost = deliveryCost;
+        this.row = row;
+        this.category_enabled = category_enabled;
+    }
+
+    public String getRow() {
+        return row;
+    }
+
+    public void setRow(String row) {
+        this.row = row;
+    }
+
+    public String getCategory_enabled() {
+        return category_enabled;
+    }
+
+    public void setCategory_enabled(String category_enabled) {
+        this.category_enabled = category_enabled;
     }
 
     public String getDeliveryCost() {

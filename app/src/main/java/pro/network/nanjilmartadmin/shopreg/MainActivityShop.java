@@ -64,7 +64,6 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
         final LinearLayoutManager addManager1 = new GridLayoutManager(MainActivityShop.this, 1);
         recyclerView.setLayoutManager(addManager1);
         recyclerView.setAdapter(mAdapter);
-
         whiteNotificationBar(recyclerView);
 
         FloatingActionButton addStock = findViewById(R.id.addbanner);
@@ -109,6 +108,9 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
                             if(!jsonObject.isNull("image")){
                                 categories.setImage(jsonObject.getString("image"));
                             }
+                            if(jsonObject.has("shop_enabled")){
+                                categories.setShop_enabled(jsonObject.getString("shop_enabled"));
+                            }
                             categoriesList.add(categories);
                         }
                         mAdapter.notifyData(categoriesList);
@@ -135,6 +137,7 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
         }) {
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
+                localHashMap.put("admin", "true");
                 return localHashMap;
             }
         };

@@ -14,6 +14,15 @@ public class CouponProduct implements Serializable {
     String minimumOrder;
     String maxNumbers;
     String hide;
+    String shopId;
+
+    public String getShopId() {
+        return shopId;
+    }
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
+    }
 
     public String getIsPercent() {
         return isPercent;

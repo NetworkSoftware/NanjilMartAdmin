@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -53,7 +54,8 @@ public class CategoriesRegister extends AppCompatActivity implements Imageutils.
 
         private ProgressDialog pDialog;
 
-        EditText description,deliveryCost;
+        EditText description,deliveryCost,row;
+        CheckBox isEnable;
 
         String studentId = null;
 
@@ -83,6 +85,8 @@ public class CategoriesRegister extends AppCompatActivity implements Imageutils.
             pDialog.setCancelable(false);
 
             deliveryCost = findViewById(R.id.deliveryCost);
+            row = findViewById(R.id.row);
+            isEnable = findViewById(R.id.isEnable);
             description=(EditText) findViewById(R.id.description);
             submit = (TextView) findViewById(R.id.submit);
 
@@ -93,6 +97,8 @@ public class CategoriesRegister extends AppCompatActivity implements Imageutils.
                         description.setError("Enter valid description");
                     }else if(deliveryCost.getText().length()<=0){
                         deliveryCost.setError("Enter valid deliveryCost");
+                    }else if(row.getText().length()<=0){
+                        row.setError("Enter valid category position");
                     }else {
                     registerUser();
                     }
@@ -139,6 +145,8 @@ public class CategoriesRegister extends AppCompatActivity implements Imageutils.
                     localHashMap.put("image", imageUrl);
                     localHashMap.put("title", description.getText().toString());
                     localHashMap.put("deliveryCost", deliveryCost.getText().toString());
+                    localHashMap.put("category_enabled",isEnable.isChecked()?"1":"0");
+                    localHashMap.put("row", row.getText().toString());
                     return localHashMap;
                 }
             };

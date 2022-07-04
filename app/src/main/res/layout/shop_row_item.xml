@@ -81,6 +81,17 @@
                 android:fontFamily="@font/sans"
                 android:text="Good Product"
                 android:textSize="18dp" />
+            <TextView
+                android:id="@+id/isDisable"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/sans_bold"
+                android:textColor="@color/red"
+                android:visibility="gone"
+                android:text="Shop Disabled"
+                android:textSize="18dp" />
 
         </LinearLayout>
 

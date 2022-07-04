@@ -1,5 +1,6 @@
 package pro.network.nanjilmartadmin.categories;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,12 +24,12 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.My
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         public ImageView thumbnail, cancel;
-        public TextView title;
+        public TextView title,position;
 
         public MyViewHolder(View view) {
             super(view);
 
-
+            position= view.findViewById(R.id.position);
             thumbnail = view.findViewById(R.id.thumbnail);
             cancel = view.findViewById(R.id.cancel);
             title = view.findViewById(R.id.title);
@@ -51,9 +52,10 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.My
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, final int position) {
+    public void onBindViewHolder(MyViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         final Categories categories = categoriesList.get(position);
 
+        holder.position.setText("Category Position: "+categories.row);
         holder.title.setText(categories.title);
         GlideApp.with(context)
                 .load(Appconfig.getResizedImage(categories.getImage(), true))

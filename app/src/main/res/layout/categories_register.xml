@@ -35,6 +35,8 @@
                     android:layout_marginTop="15.0dip"
                     android:visibility="gone" />
             </FrameLayout>
+
+
            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -75,6 +77,34 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="1">
+
+                <EditText
+                    android:id="@+id/row"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:backgroundTint="@color/gray"
+                    android:hint="Position"
+                    android:digits="0123456789"
+                    android:inputType="numberDecimal"
+                    android:textColorHint="#c6c6c6"
+                    android:textSize="@dimen/textsize" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+            <CheckBox
+                android:id="@+id/isEnable"
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:textSize="15dp"
+                android:layout_height="wrap_content"
+                android:text="Enable" />
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 

@@ -49,6 +49,16 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
+                <TextView
+                    android:id="@+id/time_periods"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans"
+                    android:text=""
+                    android:layout_marginLeft="10dp"
+                    android:gravity="left"
+                    android:textSize="13dp" />
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -246,6 +256,18 @@
                         android:textColor="@color/contact_name"
                         android:textSize="16dp" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/offerProduct"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toRightOf="@id/thumbnail"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/sans_bold"
+                    android:text=""
+                    android:gravity="right"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16dp" />
 
             </LinearLayout>
         </LinearLayout>

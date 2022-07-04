@@ -17,6 +17,7 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -87,6 +88,7 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
     private String imageUrl = "";
     private ProgressDialog pDialog;
     private RecyclerView sizelist;
+    CheckBox isEnable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,6 +105,7 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
         offerAmt = findViewById(R.id.offerAmt);
         category = findViewById(R.id.category);
         stock_update = findViewById(R.id.stock_update);
+        isEnable = findViewById(R.id.isEnable);
         ArrayAdapter<String> stockAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, STOCKUPDATE);
         stock_update.setAdapter(stockAdapter);
@@ -332,6 +335,7 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
                 localHashMap.put("latlong", latlong.getText().toString());
                 localHashMap.put("stock_update", stock_update.getText().toString());
                 localHashMap.put("time_schedule", new Gson().toJson(times));
+                localHashMap.put("shop_enabled",isEnable.isChecked()?"1":"0");
                 return localHashMap;
             }
         };

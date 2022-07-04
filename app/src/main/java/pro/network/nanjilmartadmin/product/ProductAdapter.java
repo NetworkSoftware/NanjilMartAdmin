@@ -64,6 +64,13 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         holder.id.setText("#"+product.id);
         holder.sub_category.setText(product.getSub_category());
         holder.stock_update.setText(product.getStock_update());
+        if(product.offer.equalsIgnoreCase("1")){
+            holder.offerProduct.setText("OFFER");
+        }else {
+            holder.offerProduct.setText("");
+        }
+        holder.time_periods.setText(product.getTime_periods().equalsIgnoreCase("NA")?"":
+                product.getTime_periods());
         try {
             ArrayList<String> urls = new Gson().fromJson(product.image, (Type) List.class);
             new ObjectMapper()
@@ -131,17 +138,19 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView model, price, id,brand, stock_update, description, sub_category, shopname;
+        public TextView model, price,time_periods, id,brand,offerProduct, stock_update, description, sub_category, shopname;
         public ImageView thumbnail;
 
         public MyViewHolder(View view) {
             super(view);
             model = view.findViewById(R.id.model);
+            time_periods = view.findViewById(R.id.time_periods);
             sub_category = view.findViewById(R.id.sub_category);
             shopname = view.findViewById(R.id.shopname);
             brand = view.findViewById(R.id.brand);
             price = view.findViewById(R.id.price);
             id = view.findViewById(R.id.id);
+            offerProduct = view.findViewById(R.id.offerProduct);
             stock_update = view.findViewById(R.id.stock_update_row);
             thumbnail = view.findViewById(R.id.thumbnail);
             description = view.findViewById(R.id.description);

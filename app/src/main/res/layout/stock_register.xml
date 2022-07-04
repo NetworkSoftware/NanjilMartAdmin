@@ -92,6 +92,48 @@
                         android:textSize="15dp"
                         android:visibility="gone"
                         app:met_floatingLabel="normal" />
+                    <LinearLayout
+                        android:id="@+id/timePeriodTxt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:visibility="gone">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:fontFamily="@font/sans_bold"
+                            android:text="Note : Day Periods with time*"/>
+                        <TextView
+                            android:id="@+id/periods_time"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_margin="5dp"
+                            android:textSize="12dp"
+                            android:fontFamily="@font/sans"
+                            android:text=""/>
+                        <com.google.android.material.textfield.TextInputLayout
+                            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp">
+
+                            <com.google.android.material.textfield.TextInputEditText
+                                android:id="@+id/select_periods"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                android:drawableEnd="@drawable/ic_baseline_arrow_drop_down_24"
+                                android:fontFamily="@font/sans"
+                                android:hint="Select time periods"
+                                android:inputType="text"
+                                android:textColor="@color/black"
+                                android:textSize="15dp" />
+
+                        </com.google.android.material.textfield.TextInputLayout>
+
+                    </LinearLayout>
 
 
                     <AutoCompleteTextView
@@ -247,6 +289,16 @@
                         android:textColorHint="#c6c6c6"
                         android:textSize="15dp"
                         app:met_floatingLabel="normal" />
+
+
+
+                    <CheckBox
+                        android:id="@+id/offerBtn"
+                        android:layout_width="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:textSize="15dp"
+                        android:layout_height="wrap_content"
+                        android:text="Enable Offer" />
 
                 </LinearLayout>
 

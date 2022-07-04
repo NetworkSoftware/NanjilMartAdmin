@@ -14,12 +14,13 @@ public class Shop implements Serializable {
     String time_schedule;
     String address,category,offerAmt;
     ArrayList<Time> times;
+    String shop_enabled;
 
     public Shop() {
     }
 
     public Shop(String shop_name, String phone,String stock_update,String latlong,
-                String image,String time_schedule,ArrayList<Time> times) {
+                String image,String time_schedule,ArrayList<Time> times,String shop_enabled) {
         this.shop_name = shop_name;
         this.phone = phone;
         this.stock_update = stock_update;
@@ -27,6 +28,15 @@ public class Shop implements Serializable {
         this.image=image;
         this.time_schedule=time_schedule;
         this.times=times;
+        this.shop_enabled=shop_enabled;
+    }
+
+    public String getShop_enabled() {
+        return shop_enabled;
+    }
+
+    public void setShop_enabled(String shop_enabled) {
+        this.shop_enabled = shop_enabled;
     }
 
     public String getId() {

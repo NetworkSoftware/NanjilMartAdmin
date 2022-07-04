@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,7 +52,8 @@ import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_UPDATE;
 
 public class CategoriesUpdate extends AppCompatActivity implements Imageutils.ImageAttachmentListener {
 
-    EditText description,deliveryCost;
+    EditText description,deliveryCost,row;
+    CheckBox isEnable;
     String studentId = null;
     TextView submit;
     Imageutils imageutils;
@@ -68,6 +70,8 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
 
         getSupportActionBar().setTitle("Categories Register");
 
+        row = findViewById(R.id.row);
+        isEnable = findViewById(R.id.isEnable);
         deliveryCost = findViewById(R.id.deliveryCost);
         profiletImage = findViewById(R.id.profiletImage);
         profiletImage.setOnClickListener(new View.OnClickListener() {
@@ -90,6 +94,8 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
                     description.setError("Enter valid description");
                 }else if(deliveryCost.getText().length()<=0){
                     deliveryCost.setError("Enter valid deliveryCost");
+                }else if(row.getText().length()<=0){
+                    row.setError("Enter valid category position");
                 }else {
                     registerUser();
                 }
@@ -102,6 +108,8 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
             deliveryCost.setText(categories.deliveryCost);
             studentId = categories.id;
             imageUrl=categories.image;
+            row.setText(categories.row);
+            isEnable.setChecked(categories.category_enabled.equalsIgnoreCase("1"));
             GlideApp.with(CategoriesUpdate.this).load(categories.image)
                     .placeholder(R.drawable.ic_add_a_photo_black_24dp)
                     .into(profiletImage);
@@ -150,6 +158,8 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
                 localHashMap.put("image", imageUrl);
                 localHashMap.put("title", description.getText().toString());
                 localHashMap.put("deliveryCost", deliveryCost.getText().toString());
+                localHashMap.put("category_enabled",isEnable.isChecked()?"1":"0");
+                localHashMap.put("row",row.getText().toString());
                 return localHashMap;
             }
         };

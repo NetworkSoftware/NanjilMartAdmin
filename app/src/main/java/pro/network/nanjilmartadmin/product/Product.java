@@ -22,9 +22,11 @@ public class Product implements Serializable {
     String userId;
     String sub_category;
     String dCost;
+    String offer,offerPercent,offerImage;
     public String shopname;
     public String shopid;
-    public String latlong,subProduct,strikeoutAmt;
+    public String latlong,subProduct,strikeoutAmt,
+            time_periods,category_enabled,shop_enabled;
 
 
     public Product() {
@@ -40,7 +42,9 @@ public class Product implements Serializable {
 
     public Product(String brand, String model, String price, String name,
                    String image, String description, String category,
-                   String sub_category,String shopname,String subProduct) {
+                   String sub_category,String shopname,String subProduct,
+                   String offer,String offerPercent,String offerImage,
+                   String time_periods,String category_enabled,String shop_enabled) {
         this.brand = brand;
         this.model = model;
         this.price = price;
@@ -51,6 +55,60 @@ public class Product implements Serializable {
         this.sub_category = sub_category;
         this.shopname = shopname;
         this.subProduct = subProduct;
+        this.offer = offer;
+        this.offerPercent = offerPercent;
+        this.offerImage = offerImage;
+        this.time_periods = time_periods;
+        this.category_enabled = category_enabled;
+        this.shop_enabled = shop_enabled;
+    }
+
+    public String getCategory_enabled() {
+        return category_enabled;
+    }
+
+    public void setCategory_enabled(String category_enabled) {
+        this.category_enabled = category_enabled;
+    }
+
+    public String getShop_enabled() {
+        return shop_enabled;
+    }
+
+    public void setShop_enabled(String shop_enabled) {
+        this.shop_enabled = shop_enabled;
+    }
+
+    public String getTime_periods() {
+        return time_periods;
+    }
+
+    public void setTime_periods(String time_periods) {
+        this.time_periods = time_periods;
+    }
+
+    public String getOffer() {
+        return offer;
+    }
+
+    public void setOffer(String offer) {
+        this.offer = offer;
+    }
+
+    public String getOfferPercent() {
+        return offerPercent;
+    }
+
+    public void setOfferPercent(String offerPercent) {
+        this.offerPercent = offerPercent;
+    }
+
+    public String getOfferImage() {
+        return offerImage;
+    }
+
+    public void setOfferImage(String offerImage) {
+        this.offerImage = offerImage;
     }
 
     public String getdCost() {
