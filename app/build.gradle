@@ -6,10 +6,10 @@ android {
         applicationId "pro.network.nanjilmartadmin"
         minSdkVersion 19
         targetSdkVersion 30
-        versionCode 17
+        versionCode 18
         useLibrary 'org.apache.http.legacy'
         multiDexEnabled true
-        versionName "1.1.7"
+        versionName "1.1.8"
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {

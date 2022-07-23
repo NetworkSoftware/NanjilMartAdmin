@@ -267,7 +267,6 @@ public class ProductUpdate extends AppCompatActivity implements
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 if (category.getText().toString().length() <= 0) {
                     category.setError("Select the Category");
                 } else if (brand.getText().toString().length() <= 0) {
@@ -281,7 +280,6 @@ public class ProductUpdate extends AppCompatActivity implements
                 } else if (samplesList.size() <= 0) {
                     Toast.makeText(getApplicationContext(), "Upload the Images!", Toast.LENGTH_SHORT).show();
                 } else {
-
                     registerUser();
                 }
             }
@@ -443,10 +441,11 @@ public class ProductUpdate extends AppCompatActivity implements
                     boolean success = jsonObject.getBoolean("success");
                     String msg = jsonObject.getString("message");
                     if (success) {
-                        final String shopname = model.getText().toString();
-                        sendNotification(brand.getText().toString() + " " + price.getText().toString()
-                                , shopname.length() > 30 ? shopname.substring(0, 29) + "..." :
-                                        shopname, description.getText().toString());
+                        finish();
+//                        final String shopname = model.getText().toString();
+//                        sendNotification(brand.getText().toString() + " " + price.getText().toString()
+//                                , shopname.length() > 30 ? shopname.substring(0, 29) + "..." :
+//                                        shopname, description.getText().toString());
                     }
 
 
