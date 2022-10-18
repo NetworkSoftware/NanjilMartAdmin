@@ -1,4 +1,7 @@
-package pro.network.nanjilmartadmin.shopreg;
+package pro.network.nanjilmartadmin.subcategory;
+
+import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_GET_ALL;
+import static pro.network.nanjilmartadmin.app.Appconfig.SUBCATEGORIE;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -34,20 +37,22 @@ import java.util.Map;
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
+import pro.network.nanjilmartadmin.categories.Categories;
+import pro.network.nanjilmartadmin.categories.CategoriesAdapter;
+import pro.network.nanjilmartadmin.categories.CategoriesClick;
+import pro.network.nanjilmartadmin.categories.CategoriesRegister;
+import pro.network.nanjilmartadmin.categories.CategoriesUpdate;
 
-import static pro.network.nanjilmartadmin.app.Appconfig.DATA_FETCH_ALL_SHOP;
-
-public class MainActivityShop extends AppCompatActivity implements ShopClick {
-    private static final String TAG = MainActivityShop.class.getSimpleName();
+public class MainActivitySubCate extends AppCompatActivity implements CategoriesClick {
     ProgressDialog progressDialog;
     private RecyclerView recyclerView;
-    private List<Shop> categoriesList;
-    private ShopAdapter mAdapter;
+    private List<SubCategory> subCategoryList;
+    private SubCateAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main_shop);
+        setContentView(R.layout.activity_main_subcate);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         progressDialog = new ProgressDialog(this);
@@ -55,77 +60,66 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
 
         // toolbar fancy stuff
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Shop Name");
+        getSupportActionBar().setTitle("Sub Categories");
 
 
         recyclerView = findViewById(R.id.recycler_view);
-        categoriesList = new ArrayList<>();
-        mAdapter = new ShopAdapter(this, categoriesList, this);
-        final LinearLayoutManager addManager1 = new GridLayoutManager(MainActivityShop.this, 1);
+        subCategoryList = new ArrayList<>();
+        mAdapter = new SubCateAdapter(this, subCategoryList, this);
+        final LinearLayoutManager addManager1 = new GridLayoutManager(MainActivitySubCate.this, 2);
         recyclerView.setLayoutManager(addManager1);
         recyclerView.setAdapter(mAdapter);
+
         whiteNotificationBar(recyclerView);
 
         FloatingActionButton addStock = findViewById(R.id.addbanner);
         addStock.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivityShop.this, ShopRegister.class);
+                Intent intent = new Intent(MainActivitySubCate.this, SubCateReg.class);
                 startActivity(intent);
             }
         });
     }
 
+    /**
+     * fetches json by making http calls
+     */
     private void fetchContacts() {
         String tag_string_req = "req_register";
         progressDialog.setMessage("Processing ...");
-      //  showDialog();
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                DATA_FETCH_ALL_SHOP, new Response.Listener<String>() {
+        showDialog();
+        StringRequest strReq = new StringRequest(Request.Method.GET,
+                SUBCATEGORIE, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("Register Response: ", response);
                 hideDialog();
                 try {
                     JSONObject jObj = new JSONObject(response);
-                    int success = jObj.getInt("success");
-                    if (success == 1) {
-                        JSONArray jsonArray = jObj.getJSONArray("data");
-                        categoriesList = new ArrayList<>();
+                    boolean success = jObj.getBoolean("success");
 
+                    if (success) {
+                        JSONArray jsonArray = jObj.getJSONArray("data");
+                        subCategoryList = new ArrayList<>();
                         for (int i = 0; i < jsonArray.length(); i++) {
                             JSONObject jsonObject = jsonArray.getJSONObject(i);
-                            Shop shop = new Shop();
-                            shop.setId(jsonObject.getString("id"));
-                            shop.setShop_name(jsonObject.getString("shop_name"));
-                            shop.setPhone(jsonObject.getString("phone"));
-                            shop.setLatlong(jsonObject.getString("latlong"));
-                            shop.setStock_update(jsonObject.getString("stock_update"));
-                            shop.setCategory(jsonObject.getString("category"));
-                            shop.setAddress(jsonObject.getString("address"));
-                            shop.setOfferAmt(jsonObject.getString("offerAmt"));
-                            shop.setFreeDelivery(jsonObject.getString("freeDelivery"));
-                            shop.setEstimateTime(jsonObject.getString("estimateTime"));
-                            shop.setRating(jsonObject.getString("rating"));
-                            shop.setTime_schedule(jsonObject.getString("time_schedule"));
-                            if(!jsonObject.isNull("image")){
-                                shop.setImage(jsonObject.getString("image"));
-                            }
-                            if(jsonObject.has("shop_enabled")){
-                                shop.setShop_enabled(jsonObject.getString("shop_enabled"));
-                            }
-                            categoriesList.add(shop);
+                            SubCategory subCategory = new SubCategory();
+                            subCategory.setId(jsonObject.getString("id"));
+                            subCategory.setName(jsonObject.getString("name"));
+                            subCategory.setImage(jsonObject.getString("image"));
+                            subCategory.setCreatedOn(jsonObject.getString("createdOn"));
+                            subCategoryList.add(subCategory);
                         }
-                        mAdapter.notifyData(categoriesList);
-                        getSupportActionBar().setSubtitle(categoriesList.size() + " Nos");
+                        mAdapter.notifyData(subCategoryList);
+                        getSupportActionBar().setSubtitle(subCategoryList.size() + " Nos");
 
                     } else {
-                        Toast.makeText(MainActivityShop.this, jObj.getString("message"), Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivitySubCate.this, jObj.getString("message"), Toast.LENGTH_SHORT).show();
                     }
                 } catch (JSONException e) {
                     Log.e("xxxxxxxxxxx", e.toString());
-                    Toast.makeText(MainActivityShop.this, "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(MainActivitySubCate.this, "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -134,13 +128,12 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Registration Error: ", error.getMessage());
-                Toast.makeText(MainActivityShop.this,
+                Toast.makeText(MainActivitySubCate.this,
                         "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
             }
         }) {
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
-                localHashMap.put("admin", "true");
                 return localHashMap;
             }
         };
@@ -161,14 +154,10 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finish();
         }
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             return true;
         }
@@ -201,8 +190,8 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
 
     @Override
     public void onItemClick(int position) {
-        Intent intent = new Intent(MainActivityShop.this, ShopUpdate.class);
-        intent.putExtra("data", categoriesList.get(position));
+        Intent intent = new Intent(MainActivitySubCate.this, SubCateReg.class);
+        intent.putExtra("data", subCategoryList.get(position));
         startActivity(intent);
     }
 
@@ -211,8 +200,8 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
         progressDialog.setMessage("Fetching ...");
         showDialog();
         // showDialog();
-        StringRequest strReq = new StringRequest(Request.Method.POST,
-                Appconfig.DELETE_SHOP, new Response.Listener<String>() {
+        StringRequest strReq = new StringRequest(Request.Method.DELETE,
+                SUBCATEGORIE+"?id="+subCategoryList.get(position).id, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 Log.d("Register Response: ", response);
@@ -220,14 +209,12 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
                 try {
                     JSONObject jObj = new JSONObject(response);
                     if (jObj.getBoolean("success")) {
-                        categoriesList.remove(position);
-                        mAdapter.notifyData(categoriesList);
+                        fetchContacts();
                     }
-                    Toast.makeText(MainActivityShop.this, jObj.getString("message"), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivitySubCate.this, jObj.getString("message"), Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     Log.e("xxxxxxxxxxx", e.toString());
-                    Toast.makeText(MainActivityShop.this, "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();
-
+                    Toast.makeText(MainActivitySubCate.this, "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();
                 }
 
             }
@@ -236,14 +223,13 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("Registration Error: ", error.getMessage());
-                Toast.makeText(MainActivityShop.this,
+                Toast.makeText(MainActivitySubCate.this,
                         "Some Network Error.Try after some time", Toast.LENGTH_LONG).show();
                 hideDialog();
             }
         }) {
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
-                localHashMap.put("id", categoriesList.get(position).id);
                 return localHashMap;
             }
         };

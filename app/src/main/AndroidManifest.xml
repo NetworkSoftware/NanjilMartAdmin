@@ -147,6 +147,7 @@
             android:name="pro.network.nanjilmartadmin.categories.CategoriesRegister"
             android:label="categories Register"
             android:theme="@style/AppThemeWhite" />
+
         <activity android:name=".app.ActivityMediaOnline" />
 
         <activity
@@ -157,6 +158,15 @@
             android:name="pro.network.nanjilmartadmin.categories.MainActivityCategories"
             android:label="categories Main"
             android:theme="@style/AppThemeSe.NoActionBar" />
+        <activity
+            android:name="pro.network.nanjilmartadmin.subcategory.SubCateReg"
+            android:label="Sub Categories Register"
+            android:theme="@style/AppThemeWhite" />
+        <activity
+            android:name="pro.network.nanjilmartadmin.subcategory.MainActivitySubCate"
+            android:label="Sub Category Main"
+            android:theme="@style/AppThemeSe.NoActionBar" />
+
         <activity
             android:name="pro.network.nanjilmartadmin.order.Order_TimelineActivity"
             android:label="Track Order"

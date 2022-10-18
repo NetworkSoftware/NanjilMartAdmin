@@ -16,13 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.Appconfig;
-
-/**
- * Created by ravi on 16/11/17.
- */
 
 public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder>
         implements Filterable {
@@ -52,7 +49,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         final Order order = orderListFiltered.get(position);
         holder.order_id.setText("#" + order.getId());
-        holder.price.setText(order.getPrice());
+        holder.price.setText("₹"+order.getPrice());
         holder.quantity.setText(order.getQuantity());
         holder.status.setText(order.getStatus());
         holder.phone.setText(order.getPhone());
@@ -62,7 +59,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         holder.reason.setText(order.getReson());
         holder.orderedOn.setText(Appconfig.convertTimeToLocal(order.createdOn));
 
-        holder.gstAmt.setText(order.getGstAmt());
+        holder.gstAmt.setText("₹"+order.getGstAmt());
         if (order.getStatus().equalsIgnoreCase("ordered")) {
             holder.assignDboy.setVisibility(View.VISIBLE);
             holder.cancalOrder.setVisibility(View.VISIBLE);
@@ -108,6 +105,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         }
 
         holder.couponAmt.setText(order.getCouponCost());
+        holder.paymode.setText(order.paymentMode.toUpperCase(Locale.ROOT));
 
         if (order.couponCost.equalsIgnoreCase("₹0.0")) {
             holder.couponLi.setVisibility(View.GONE);
@@ -119,6 +117,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
         final LinearLayoutManager addManager1 = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
         holder.cart_sub_list.setLayoutManager(addManager1);
         holder.cart_sub_list.setAdapter(OrderListAdapter);
+        holder.paymentProgress.setText(order.getPaymentProgress().toUpperCase(Locale.ROOT));
 
         if ("NA".equalsIgnoreCase(order.subProduct)) {
             holder.subProduct.setVisibility(View.GONE);
@@ -232,11 +231,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        public TextView name, price, status, quantity, phone, gstAmt, orderedOn, address, dtime, reason, subProduct, order_id;
+        public TextView name, price, status, quantity, phone, gstAmt,
+                orderedOn, address, dtime, reason, subProduct,paymentProgress, order_id, paymode;
         public ImageView thumbnail;
         public RecyclerView cart_sub_list;
         Button deliveredBtn, whatsapp, call, cancalOrder,
-                assignDboy, trackOrder, assignShop, inprogress, completed, bill;
+                assignDboy, trackOrder, inprogress, completed, bill;
 
         LinearLayout couponLi;
         TextView couponAmt;
@@ -245,9 +245,10 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.MyViewHolder
             super(view);
             name = view.findViewById(R.id.name);
             orderedOn = view.findViewById(R.id.orderedOn);
-
+            paymode = view.findViewById(R.id.paymode);
             couponLi = view.findViewById(R.id.couponLi);
             couponAmt = view.findViewById(R.id.couponAmt);
+            paymentProgress = view.findViewById(R.id.paymentProgress);
 
             gstAmt = view.findViewById(R.id.gstAmt);
             price = view.findViewById(R.id.price);

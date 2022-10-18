@@ -1,12 +1,16 @@
 package pro.network.nanjilmartadmin.order;
 
+import static pro.network.nanjilmartadmin.app.Appconfig.DELIVERY_GET_ALL;
+import static pro.network.nanjilmartadmin.app.Appconfig.ORDER_ASSIGN_DBOY;
+import static pro.network.nanjilmartadmin.app.Appconfig.ORDER_CHANGE_STATUS;
+import static pro.network.nanjilmartadmin.app.Appconfig.ORDER_GET_ALL;
+
 import android.app.ProgressDialog;
 import android.app.SearchManager;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -69,14 +73,8 @@ import pro.network.nanjilmartadmin.app.Appconfig;
 import pro.network.nanjilmartadmin.app.PdfConfig;
 import pro.network.nanjilmartadmin.product.Product;
 
-import static pro.network.nanjilmartadmin.app.Appconfig.DELIVERY_GET_ALL;
-import static pro.network.nanjilmartadmin.app.Appconfig.ORDER_ASSIGN_DBOY;
-import static pro.network.nanjilmartadmin.app.Appconfig.ORDER_CHANGE_STATUS;
-import static pro.network.nanjilmartadmin.app.Appconfig.ORDER_GET_ALL;
-
 public class MainActivityOrder extends AppCompatActivity implements OrderAdapter.ContactsAdapterListener, StatusListener {
-    private static final String TAG = MainActivityOrder.class.getSimpleName();
-    private final Set<String> time_Schedule = new HashSet<>();
+
     ProgressDialog progressDialog;
     Button loadMore;
     int offset = 0;
@@ -168,10 +166,10 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 order.setReson(jsonObject.getString("reason"));
                                 order.setLatlong(jsonObject.getString("latlong"));
 
-                                if(jsonObject.has("coupon")){
+                                if (jsonObject.has("coupon")) {
                                     order.setCoupon(jsonObject.getString("coupon"));
                                 }
-                                if(jsonObject.has("couponCost")){
+                                if (jsonObject.has("couponCost")) {
                                     order.setCouponCost(jsonObject.getString("couponCost"));
                                 }
 
@@ -183,35 +181,42 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
                                 if (!jsonObject.isNull("shopname")) {
                                     order.setShopname(jsonObject.getString("shopname"));
                                 }
-                                if(jsonObject.has("strikeoutAmt")){
+                                if (jsonObject.has("strikeoutAmt")) {
                                     order.setStrikeoutAmt(jsonObject.getString("strikeoutAmt"));
+                                }
+                                if (jsonObject.has("paymentProgress")) {
+                                    order.setPaymentProgress(jsonObject.getString("paymentProgress"));
                                 }
                                 order.setTotal(jsonObject.getString("total"));
                                 order.setDcharge(jsonObject.getString("dcharge"));
                                 order.setPincode(jsonObject.getString("pincode"));
                                 order.setDtime(jsonObject.getString("dtime"));
-                                            ObjectMapper mapper = new ObjectMapper();
-                                            Object listBeans = new Gson().fromJson(jsonObject.getString("items"),
-                                                    Object.class);
-                                            ArrayList<Product> accountList = mapper.convertValue(
-                                                    listBeans,
-                                                    new TypeReference<ArrayList<Product>>() {
-                                                    }
+                                ObjectMapper mapper = new ObjectMapper();
+                                Object listBeans = new Gson().fromJson(jsonObject.getString("items"),
+                                        Object.class);
+                                ArrayList<Product> accountList = mapper.convertValue(
+                                        listBeans,
+                                        new TypeReference<ArrayList<Product>>() {
+                                        }
                                 );
+                                for (int item = 0; item < accountList.size(); item++) {
+                                    order.setShopname(accountList.get(item).getShopname());
+                                }
                                 order.setProductBeans(accountList);
                                 if (order.getStatus().equalsIgnoreCase("ordered")) {
                                     orderList.add(order);
+                                    getSupportActionBar().setSubtitle("Orders - " + orderList.size());
                                 } else {
                                     deliveredList.add(order);
+                                    getSupportActionBar().setSubtitle("Orders - " + deliveredList.size());
                                 }
                             } catch (Exception e) {
-
-                                Log.e("order",e.toString());
+                                Log.e("order", e.toString());
                             }
                         }
                         mAdapter.notifyData(orderList);
                         deliverAdapter.notifyData(deliveredList);
-                        getSupportActionBar().setSubtitle("Orders - " + orderList.size());
+
 
                     } else {
                         Toast.makeText(getApplication(), jObj.getString("message"), Toast.LENGTH_SHORT).show();
@@ -559,7 +564,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
 
     @Override
     public void bill(Order position) {
-        printFunction(MainActivityOrder.this, position);
+        printFunction(position);
     }
 
 
@@ -617,7 +622,7 @@ public class MainActivityOrder extends AppCompatActivity implements OrderAdapter
             progressDialog.dismiss();
     }
 
-    public void printFunction(Context context, Order mainbean) {
+    public void printFunction(Order mainbean) {
 
         try {
 

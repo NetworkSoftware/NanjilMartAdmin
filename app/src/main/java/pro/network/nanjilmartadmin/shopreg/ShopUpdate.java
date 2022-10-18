@@ -1,7 +1,9 @@
 package pro.network.nanjilmartadmin.shopreg;
 
+import static pro.network.nanjilmartadmin.app.Appconfig.DELETE_SHOP;
+import static pro.network.nanjilmartadmin.app.Appconfig.UPDATE_SHOP;
+
 import android.app.ProgressDialog;
-import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -25,7 +27,6 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -62,7 +63,6 @@ import org.json.JSONObject;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -74,9 +74,6 @@ import pro.network.nanjilmartadmin.app.GlideApp;
 import pro.network.nanjilmartadmin.app.Imageutils;
 import pro.network.nanjilmartadmin.product.ImageClick;
 
-import static pro.network.nanjilmartadmin.app.Appconfig.DELETE_SHOP;
-import static pro.network.nanjilmartadmin.app.Appconfig.UPDATE_SHOP;
-
 /**
  * Created by user_1 on 11-07-2018.
  */
@@ -87,7 +84,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
             "In Stock", "Currently Unavailable",
     };
     public Button addSize;
-    EditText shop_name, phone, latlong,address,category,offerAmt;
+    EditText shop_name, phone, latlong, address, category, offerAmt, offerVal,estimateTime,rating;
     MaterialBetterSpinner stock_update;
     String studentId = null;
     TextView submit;
@@ -95,12 +92,11 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
     CardView itemsAdd;
     ArrayList<Time> times = new ArrayList<>();
     TimeAdapter timeAdapter;
+    CheckBox isEnable,freeDelivery;
     private ProgressDialog pDialog;
     private ImageView profiletImage;
     private String imageUrl = "";
     private RecyclerView sizelist;
-    CheckBox isEnable;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,6 +107,9 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
         imageutils = new Imageutils(this);
         profiletImage = findViewById(R.id.profiletImage);
         isEnable = findViewById(R.id.isEnable);
+        estimateTime = findViewById(R.id.estimateTime);
+        rating = findViewById(R.id.rating);
+        freeDelivery = findViewById(R.id.freeDelivery);
         profiletImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,6 +120,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
 
         shop_name = findViewById(R.id.shop_name);
         offerAmt = findViewById(R.id.offerAmt);
+        offerVal = findViewById(R.id.offerVal);
         address = findViewById(R.id.address);
         phone = findViewById(R.id.phone);
         category = findViewById(R.id.category);
@@ -180,11 +180,17 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
                     address.setError("Enter the correct  Address");
                 } else if (latlong.getText().toString().length() <= 0) {
                     latlong.setError("Enter the correct Location");
-                }  else if (category.getText().toString().length() <= 0) {
+                } else if (category.getText().toString().length() <= 0) {
                     category.setError("Enter the Category");
-                }else if (stock_update.getText().toString().length() <= 0) {
+                } else if (stock_update.getText().toString().length() <= 0) {
                     stock_update.setError("Select the Sold or Not");
-                } else {
+                } else if (offerVal.getText().toString().length() <= 0) {
+                    offerVal.setError("Enter valid offer value");
+                }  else if (estimateTime.getText().toString().length() <= 0) {
+                    estimateTime.setError("Enter valid Estimate Time");
+                }  else if (rating.getText().toString().length() <= 0) {
+                    rating.setError("Enter valid Rating");
+                }else {
                     registerUser();
                 }
             }
@@ -203,8 +209,18 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
             latlong.setText(contact.latlong);
             category.setText(contact.category);
             address.setText(contact.address);
-            offerAmt.setText(contact.offerAmt);
+            estimateTime.setText(contact.estimateTime);
+            rating.setText(contact.rating);
+
+            offerAmt.setText(contact.offerAmt.contains("-") ? contact.offerAmt.split("-")[0] : contact.offerAmt);
+
+            if(contact.offerAmt.contains("-")){
+                offerVal.setText(contact.offerAmt.split("-")[1]);
+            }else{
+                offerVal.setText("");
+            }
             isEnable.setChecked(contact.shop_enabled.equalsIgnoreCase("1"));
+            freeDelivery.setChecked(contact.freeDelivery.equalsIgnoreCase("1"));
             studentId = contact.id;
             stock_update.setText(contact.stock_update);
             if (contact.getTime_schedule() == null || contact.getTime_schedule().equalsIgnoreCase("null")) {
@@ -386,8 +402,11 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
                 localHashMap.put("latlong", latlong.getText().toString());
                 localHashMap.put("stock_update", stock_update.getText().toString());
                 localHashMap.put("time_schedule", new Gson().toJson(times));
-                localHashMap.put("offerAmt", offerAmt.getText().length()>0?offerAmt.getText().toString():"0");
-                localHashMap.put("shop_enabled", isEnable.isChecked()?"1":"0");
+                localHashMap.put("offerAmt", offerAmt.getText().length() > 0 ? offerAmt.getText().toString() + "-" + offerVal.getText().toString() : "0-0");
+                localHashMap.put("shop_enabled", isEnable.isChecked() ? "1" : "0");
+                localHashMap.put("freeDelivery", freeDelivery.isChecked() ? "1" : "0");
+                localHashMap.put("estimateTime", estimateTime.getText().toString());
+                localHashMap.put("rating", rating.getText().toString());
                 localHashMap.put("id", studentId);
                 return localHashMap;
             }

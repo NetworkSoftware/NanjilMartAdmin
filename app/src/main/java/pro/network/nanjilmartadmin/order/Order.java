@@ -26,6 +26,7 @@ public class Order implements Serializable {
     String total;
     String gstAmt;
     String dtime;
+    String paymentProgress;
     String shopname,latlong,paymentId,
             paymentMode,subProduct,strikeoutAmt,coupon,couponCost;
 
@@ -53,6 +54,13 @@ public class Order implements Serializable {
         this.couponCost = couponCost;
     }
 
+    public String getPaymentProgress() {
+        return paymentProgress;
+    }
+
+    public void setPaymentProgress(String paymentProgress) {
+        this.paymentProgress = paymentProgress;
+    }
 
     public String getCoupon() {
         return coupon;

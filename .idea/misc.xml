@@ -10,9 +10,13 @@
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/drawable/toggle_selector.xml" value="0.2546875" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_attachment_item.xml" value="0.23854166666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_main_banner.xml" value="0.23854166666666668" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_main_categories.xml" value="0.24635416666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_main_festival.xml" value="0.23854166666666668" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_main_subcate.xml" value="0.24635416666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_maincoupon.xml" value="0.13489583333333333" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_mainenquires.xml" value="0.13489583333333333" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_mainorder.xml" value="0.10572916666666667" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_mainstock.xml" value="0.125" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_navi.xml" value="0.23854166666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_view_wallet.xml" value="0.11979166666666667" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/alert_dialog.xml" value="0.25" />
@@ -24,10 +28,13 @@
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/categories_register.xml" value="0.1046875" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/categories_row_item.xml" value="0.25" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/content_mainbanner.xml" value="0.23854166666666668" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/content_maincategories.xml" value="0.24635416666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/content_maincoupon.xml" value="0.23854166666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/content_mainenquire.xml" value="0.13489583333333333" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/content_mainfestival.xml" value="0.23854166666666668" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/content_mainorder.xml" value="0.10572916666666667" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/content_mainstok.xml" value="0.23854166666666668" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/content_mainsubcate.xml" value="0.24635416666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/coupon_register.xml" value="0.23854166666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/coupon_row_item.xml" value="0.23854166666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/delivery_item.xml" value="0.4" />
@@ -38,10 +45,12 @@
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/order_row_item.xml" value="0.23487179487179488" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/per_price_row.xml" value="0.23854166666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/product_row_item.xml" value="0.11979166666666667" />
-        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/shop_reg.xml" value="0.23854166666666668" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/shop_reg.xml" value="0.264" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/shop_row_item.xml" value="0.16" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/status_filter.xml" value="0.23854166666666668" />
-        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/stock_register.xml" value="0.23854166666666668" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/stock_register.xml" value="0.24635416666666668" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/sub_cate_register.xml" value="0.24635416666666668" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/subcate_row_item.xml" value="0.24635416666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/wallet_row_item.xml" value="0.11979166666666667" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/menu/menu_main.xml" value="0.1046875" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/menu/menu_order.xml" value="0.13489583333333333" />

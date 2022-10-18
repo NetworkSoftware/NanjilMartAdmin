@@ -15,6 +15,7 @@ public class Shop implements Serializable {
     String address,category,offerAmt;
     ArrayList<Time> times;
     String shop_enabled;
+    String freeDelivery,estimateTime,rating;
 
     public Shop() {
     }
@@ -29,6 +30,30 @@ public class Shop implements Serializable {
         this.time_schedule=time_schedule;
         this.times=times;
         this.shop_enabled=shop_enabled;
+    }
+
+    public String getFreeDelivery() {
+        return freeDelivery;
+    }
+
+    public void setFreeDelivery(String freeDelivery) {
+        this.freeDelivery = freeDelivery;
+    }
+
+    public String getEstimateTime() {
+        return estimateTime;
+    }
+
+    public void setEstimateTime(String estimateTime) {
+        this.estimateTime = estimateTime;
+    }
+
+    public String getRating() {
+        return rating;
+    }
+
+    public void setRating(String rating) {
+        this.rating = rating;
     }
 
     public String getShop_enabled() {

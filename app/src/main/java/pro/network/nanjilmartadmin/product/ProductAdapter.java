@@ -62,7 +62,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.MyViewHo
         }
 
         holder.id.setText("#"+product.id);
-        holder.sub_category.setText(product.getSub_category());
+        holder.sub_category.setText(product.getSubCate());
         holder.stock_update.setText(product.getStock_update());
         if(product.offer.equalsIgnoreCase("1")){
             holder.offerProduct.setText("OFFER");

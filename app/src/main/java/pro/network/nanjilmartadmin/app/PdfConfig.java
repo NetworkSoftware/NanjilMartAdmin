@@ -94,7 +94,7 @@ public class PdfConfig {
             if("NA".equalsIgnoreCase(productListBean.shopname)){
                 shop = "";
             }else {
-                shop = "Shop-"+productListBean.shopname;
+                shop = "Shop - "+productListBean.shopname;
             }
             table3.addCell(createTextLeft(productListBean.getBrand() + "_" + productListBean.getModel()
                     +"\n"+shop, catNormalFont, false));
@@ -141,7 +141,7 @@ public class PdfConfig {
         table7.addCell(createTextLeft("", catNormalFont, false));
         table7.addCell(createTextLeft("", catNormalFont, false));
         table7.addCell(createTextRight("Packing Charges", catNormalFont));
-        table7.addCell(createTextLeft("₹20.00", catNormalFont, false));
+        table7.addCell(createTextLeft("₹10.00", catNormalFont, false));
 
         table7.addCell(createTextLeft("", catNormalFont, false));
         table7.addCell(createTextLeft("", catNormalFont, false));

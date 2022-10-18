@@ -47,7 +47,7 @@ public class MediaUtility {
             boolean parentCreationResult = storageDir.mkdirs();
             image = File.createTempFile(
                     imageFileName,  /* prefix */
-                    ".jpg",         /* suffix */
+                    ".png",         /* suffix */
                     storageDir      /* directory */
             );
 
@@ -56,7 +56,7 @@ public class MediaUtility {
             File storageDir = mContext.getFilesDir();
             image = File.createTempFile(
                     imageFileName,  /* prefix */
-                    ".jpg",         /* suffix */
+                    ".png",         /* suffix */
                     storageDir      /* directory */
             );
 

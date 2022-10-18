@@ -39,8 +39,8 @@ public class Appconfig {
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
 
- //  public static final String ip = "http://192.168.1.204:8098/prisma/nanjilmart";
-  //  public static final String ip = "http://192.168.43.217:8098/prisma/nanjilmart";
+   //public static final String ip = "http://192.168.1.204:8098/prisma/nanjilmart";
+  // public static final String ip = "http://192.168.43.217:8098/prisma/nanjilmart";
     public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
   // public static final String ip = "http://192.168.131.27:8098/prisma/nanjilmart";
     public static final String PRODUCT_CREATE = ip + "/create_stock.php";
@@ -89,6 +89,7 @@ public class Appconfig {
     public static String BANNER_CREATE = ip + "/fileFeed.php";
     public static String BANNER_GET_ALL = ip + "/get_all_feed.php";
     public static String BANNER_DELETE = ip + "/fileDelete.php";
+    public static final String SUBCATEGORIE = ip + "/subcategories";
     public static Glide locationMap;
     public static Map<String, String[]> stringMap = new HashMap<String, String[]>() {{
         put("Fashion", new String[]{});
@@ -107,7 +108,9 @@ public class Appconfig {
     public static String[] SHOPNAME = new String[]{
             "Eye Liner", "Lipstic", "All Makeup Kits",
     };
-
+    public static String[] SUBCATE = new String[]{
+            "Loading",
+    };
     public static String getResizedImage(String path, boolean isResized) {
         if (isResized) {
             return IMAGE_URL + "small/" + path.substring(path.lastIndexOf("/") + 1);
@@ -306,7 +309,7 @@ public class Appconfig {
         if (!file.exists()) {
             file.mkdirs();
         }
-        String uriSting = (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".jpg");
+        String uriSting = (file.getAbsolutePath() + "/" + System.currentTimeMillis() + ".png");
         return uriSting;
 
     }

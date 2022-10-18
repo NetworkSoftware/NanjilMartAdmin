@@ -20,7 +20,8 @@ public class Product implements Serializable {
     String qty;
     String stock_update;
     String userId;
-    String sub_category;
+    String subCate;
+    String subCateID;
     String dCost;
     String offer,offerPercent,offerImage;
     public String shopname;
@@ -42,7 +43,7 @@ public class Product implements Serializable {
 
     public Product(String brand, String model, String price, String name,
                    String image, String description, String category,
-                   String sub_category,String shopname,String subProduct,
+                   String subCate,String subCateID,String shopname,String subProduct,
                    String offer,String offerPercent,String offerImage,
                    String time_periods,String category_enabled,String shop_enabled) {
         this.brand = brand;
@@ -52,7 +53,8 @@ public class Product implements Serializable {
         this.image = image;
         this.description = description;
         this.category = category;
-        this.sub_category = sub_category;
+        this.subCate = subCate;
+        this.subCateID=subCateID;
         this.shopname = shopname;
         this.subProduct = subProduct;
         this.offer = offer;
@@ -202,12 +204,20 @@ public class Product implements Serializable {
         this.stock_update = stock_update;
     }
 
-    public String getSub_category() {
-        return sub_category;
+    public String getSubCate() {
+        return subCate;
     }
 
-    public void setSub_category(String sub_category) {
-        this.sub_category = sub_category;
+    public void setSubCate(String subCate) {
+        this.subCate = subCate;
+    }
+
+    public String getSubCateID() {
+        return subCateID;
+    }
+
+    public void setSubCateID(String subCateID) {
+        this.subCateID = subCateID;
     }
 
     public String getShopname() {

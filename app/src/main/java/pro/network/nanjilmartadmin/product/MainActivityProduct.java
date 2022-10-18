@@ -179,23 +179,29 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
                             if (!jsonObject.isNull("qtyPrice")) {
                                 product.setQtyPrice(jsonObject.getString("qtyPrice"));
                             }
-                            product.setSub_category(jsonObject.getString("sub_category"));
+                            product.setSubCateID(jsonObject.getString("sub_category"));
 
                             if(jsonObject.has("strikeoutAmt")){
                                 product.setStrikeoutAmt(jsonObject.getString("strikeoutAmt"));
                             }
-                            product.setShopname(jsonObject.getString("shopname"));
                             product.setStock_update(jsonObject.getString("stock_update"));
                             product.setDescription(jsonObject.getString("description"));
                             product.setPrice(jsonObject.getString("price"));
                             product.setModel(jsonObject.getString("model"));
                             product.setImage(jsonObject.getString("image"));
-
+                            product.setShopname(jsonObject.getString("shopname"));
+                            product.setSubCate(jsonObject.getString("sub_category"));
                             try {
                                 JSONObject shopObject = jsonObject.getJSONObject("shop");
                                 product.setShopid(shopObject.getString("id"));
                                 product.setShopname(shopObject.getString("shop_name"));
                                 product.setLatlong(shopObject.getString("latlong"));
+                            } catch (Exception e) {
+                                Log.e("xxxxxxxxx", e.toString());
+                            }
+                            try {
+                                JSONObject shopObject = jsonObject.getJSONObject("subCate");
+                                product.setSubCate(shopObject.getString("name"));
                             } catch (Exception e) {
                                 Log.e("xxxxxxxxx", e.toString());
                             }
@@ -357,14 +363,10 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
         if (id == android.R.id.home) {
             finish();
         }
-        //noinspection SimplifiableIfStatement
         if (id == R.id.action_search) {
             return true;
         }
@@ -374,7 +376,6 @@ public class MainActivityProduct extends AppCompatActivity implements ProductAda
 
     @Override
     public void onBackPressed() {
-        // close search view on back button pressed
         if (!searchView.isIconified()) {
             searchView.setIconified(true);
             return;

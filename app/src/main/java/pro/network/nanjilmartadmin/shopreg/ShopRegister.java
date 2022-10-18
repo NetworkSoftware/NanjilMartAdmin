@@ -78,17 +78,17 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
             "Available", "Currently Unavailable",
     };
     public Button addSize;
-    EditText shop_name, phone, latlong, address, category,offerAmt;
+    EditText shop_name, phone, latlong, address, category, offerAmt, offerVal,estimateTime,rating;
     MaterialBetterSpinner stock_update;
     Imageutils imageutils;
     TextView submit;
     ArrayList<Time> times = new ArrayList<>();
     TimeAdapter timeAdapter;
+    CheckBox isEnable,freeDelivery;
     private ImageView profiletImage;
     private String imageUrl = "";
     private ProgressDialog pDialog;
     private RecyclerView sizelist;
-    CheckBox isEnable;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,9 +103,13 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
         phone = findViewById(R.id.phone);
         address = findViewById(R.id.address);
         offerAmt = findViewById(R.id.offerAmt);
+        estimateTime = findViewById(R.id.estimateTime);
+        rating = findViewById(R.id.rating);
+        offerVal = findViewById(R.id.offerVal);
         category = findViewById(R.id.category);
         stock_update = findViewById(R.id.stock_update);
         isEnable = findViewById(R.id.isEnable);
+        freeDelivery = findViewById(R.id.freeDelivery);
         ArrayAdapter<String> stockAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, STOCKUPDATE);
         stock_update.setAdapter(stockAdapter);
@@ -172,6 +176,12 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
                     category.setError("Enter the Category");
                 } else if (times.size() <= 0) {
                     Toast.makeText(getApplicationContext(), "Upload the Time Schedule!", Toast.LENGTH_SHORT).show();
+                }else if (offerVal.getText().toString().length() <= 0) {
+                    offerVal.setError("Enter valid offer value");
+                }  else if (estimateTime.getText().toString().length() <= 0) {
+                    estimateTime.setError("Enter valid Estimate Time");
+                }  else if (rating.getText().toString().length() <= 0) {
+                    rating.setError("Enter valid Rating");
                 } else {
                     registerUser();
                 }
@@ -331,11 +341,14 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
                 localHashMap.put("image", imageUrl);
                 localHashMap.put("category", category.getText().toString());
                 localHashMap.put("phone", phone.getText().toString());
-                localHashMap.put("offerAmt", offerAmt.getText().length()>0?offerAmt.getText().toString():"0");
+                localHashMap.put("offerAmt", offerAmt.getText().length() > 0 ? offerAmt.getText().toString() + "-" + offerVal.getText().toString() : "0-0");
                 localHashMap.put("latlong", latlong.getText().toString());
                 localHashMap.put("stock_update", stock_update.getText().toString());
                 localHashMap.put("time_schedule", new Gson().toJson(times));
-                localHashMap.put("shop_enabled",isEnable.isChecked()?"1":"0");
+                localHashMap.put("freeDelivery", freeDelivery.isChecked() ? "1" : "0");
+                localHashMap.put("shop_enabled", isEnable.isChecked() ? "1" : "0");
+                localHashMap.put("estimateTime", estimateTime.getText().toString());
+                localHashMap.put("rating", rating.getText().toString());
                 return localHashMap;
             }
         };

@@ -28,6 +28,7 @@ import pro.network.nanjilmartadmin.news.NewsRegister;
 import pro.network.nanjilmartadmin.order.MainActivityOrder;
 import pro.network.nanjilmartadmin.product.MainActivityProduct;
 import pro.network.nanjilmartadmin.shopreg.MainActivityShop;
+import pro.network.nanjilmartadmin.subcategory.MainActivitySubCate;
 import pro.network.nanjilmartadmin.videos.MainActivityVideo;
 
 public class NaviActivity extends AppCompatActivity {
@@ -76,6 +77,14 @@ public class NaviActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent io = new Intent(NaviActivity.this, MainActivityCategories.class);
+                startActivity(io);
+            }
+        });
+        CardView subCate =  findViewById(R.id.subCate);
+        subCate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent io = new Intent(NaviActivity.this, MainActivitySubCate.class);
                 startActivity(io);
             }
         });
@@ -131,6 +140,13 @@ public class NaviActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 navOrderPage("ordered");
+            }
+        });
+        CardView progress = findViewById(R.id.progress);
+        progress.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                navOrderPage("progress");
             }
         });
         CardView returned = findViewById(R.id.returned);

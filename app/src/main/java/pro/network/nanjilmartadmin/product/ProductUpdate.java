@@ -7,6 +7,8 @@ import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_CREATE;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_DELETE;
 import static pro.network.nanjilmartadmin.app.Appconfig.PRODUCT_UPDATE;
 import static pro.network.nanjilmartadmin.app.Appconfig.SHOPNAME;
+import static pro.network.nanjilmartadmin.app.Appconfig.SUBCATE;
+import static pro.network.nanjilmartadmin.app.Appconfig.SUBCATEGORIE;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -31,7 +33,6 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -43,11 +44,9 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.deishelon.roundedbottomsheet.RoundedBottomSheetDialog;
@@ -56,7 +55,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.gson.Gson;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
@@ -87,7 +85,6 @@ import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
 import pro.network.nanjilmartadmin.app.GlideApp;
 import pro.network.nanjilmartadmin.app.Imageutils;
-import pro.network.nanjilmartadmin.banner.BannerRegister;
 import pro.network.nanjilmartadmin.priceQty.PriceAdapter;
 import pro.network.nanjilmartadmin.priceQty.QuantityPrice;
 
@@ -108,13 +105,14 @@ public class ProductUpdate extends AppCompatActivity implements
     EditText description;
     AddImageAdapter maddImageAdapter;
     MaterialBetterSpinner category;
-    MaterialBetterSpinner shopname;
+    MaterialBetterSpinner shopnameVal,subcategory;
     MaterialBetterSpinner stock_update;
     String studentId = null;
     TextView submit;
     Imageutils imageutils;
     CardView itemsAdd;
     Map<String, String> shopIdName = new HashMap<>();
+    Map<String, String> subCateIdName = new HashMap<>();
     ArrayList<QuantityPrice> quantityPrices = new ArrayList<>();
     PriceAdapter priceAdapter;
     ImageView offerPicImage;
@@ -177,19 +175,25 @@ public class ProductUpdate extends AppCompatActivity implements
         model = findViewById(R.id.model);
         price = findViewById(R.id.price);
         description = findViewById(R.id.description);
-        shopname = findViewById(R.id.shopname);
+        shopnameVal = findViewById(R.id.shopname);
         ArrayAdapter<String> shopAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, SHOPNAME);
-        shopname.setAdapter(shopAdapter);
-        shopname.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        shopnameVal.setAdapter(shopAdapter);
+        shopnameVal.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(ProductUpdate.this,
                         android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(SHOPNAME[position]));
-                shopname.setAdapter(brandAdapter);
-                shopname.setThreshold(1);
+                shopnameVal.setAdapter(brandAdapter);
+                shopnameVal.setThreshold(1);
             }
         });
+
+        subcategory = findViewById(R.id.subcategory);
+        ArrayAdapter<String> subCateAdapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_dropdown_item_1line, SUBCATE);
+        subcategory.setAdapter(subCateAdapter);
+
 
         stock_update = findViewById(R.id.stock_update);
 
@@ -208,7 +212,8 @@ public class ProductUpdate extends AppCompatActivity implements
         category.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                shopname.setVisibility(View.GONE);
+                shopnameVal.setVisibility(View.GONE);
+                subcategory.setVisibility(View.GONE);
                 timePeriodTxt.setVisibility(View.GONE);
                 ArrayAdapter<String> brandAdapter = new ArrayAdapter<String>(ProductUpdate.this,
                         android.R.layout.simple_dropdown_item_1line, new String[0]);
@@ -216,7 +221,8 @@ public class ProductUpdate extends AppCompatActivity implements
                     brandAdapter = new ArrayAdapter<String>(ProductUpdate.this,
                             android.R.layout.simple_dropdown_item_1line, Appconfig.getSubCatFromCat(CATEGORY[i]));
                 } else if (category.getText().toString().equalsIgnoreCase(("FOOD"))) {
-                    shopname.setVisibility(View.VISIBLE);
+                    shopnameVal.setVisibility(View.VISIBLE);
+                    subcategory.setVisibility(View.VISIBLE);
                     timePeriodTxt.setVisibility(View.VISIBLE);
                 }
                 brand.setAdapter(brandAdapter);
@@ -295,7 +301,8 @@ public class ProductUpdate extends AppCompatActivity implements
             description.setText(contact.description);
             studentId = contact.id;
             stock_update.setText(contact.stock_update);
-            shopname.setText(contact.shopname);
+            shopnameVal.setText(contact.shopname);
+            subcategory.setText(contact.subCate);
             imageUrl = contact.image;
             strikeoutAmt.setText(contact.strikeoutAmt);
             select_periods.setText(contact.getTime_periods());
@@ -304,10 +311,12 @@ public class ProductUpdate extends AppCompatActivity implements
             offerPercentVal = contact.offerPercent;
 
             if (category.getText().toString().equalsIgnoreCase(("FOOD"))) {
-                shopname.setVisibility(View.VISIBLE);
+                shopnameVal.setVisibility(View.VISIBLE);
+                subcategory.setVisibility(View.VISIBLE);
                 timePeriodTxt.setVisibility(View.VISIBLE);
             } else {
-                shopname.setVisibility(View.GONE);
+                shopnameVal.setVisibility(View.GONE);
+                subcategory.setVisibility(View.GONE);
                 timePeriodTxt.setVisibility(View.GONE);
             }
 
@@ -351,9 +360,9 @@ public class ProductUpdate extends AppCompatActivity implements
             public void onClick(View v) {
                 if(offerBtn.isChecked()){
                     if (contact != null) {
-                        showBottomOffer(0, contact);
+                        showBottomOffer(1, contact);
                     } else {
-                        showBottomOffer(1, null);
+                        showBottomOffer(0, null);
                     }
                 }
 
@@ -362,6 +371,7 @@ public class ProductUpdate extends AppCompatActivity implements
         });
         getAllCategories();
         getAllShopname();
+        getAllSubCate();
 
     }
 
@@ -442,10 +452,6 @@ public class ProductUpdate extends AppCompatActivity implements
                     String msg = jsonObject.getString("message");
                     if (success) {
                         finish();
-//                        final String shopname = model.getText().toString();
-//                        sendNotification(brand.getText().toString() + " " + price.getText().toString()
-//                                , shopname.length() > 30 ? shopname.substring(0, 29) + "..." :
-//                                        shopname, description.getText().toString());
                     }
 
 
@@ -469,9 +475,10 @@ public class ProductUpdate extends AppCompatActivity implements
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
                 localHashMap.put("category", category.getText().toString());
-                localHashMap.put("sub_category", "sub_category");
-                localHashMap.put("shopname", shopIdName.containsKey(shopname.getText().toString()) ?
-                        shopIdName.get(shopname.getText().toString()) : shopname.getText().toString());
+                localHashMap.put("sub_category", subCateIdName.containsKey(subcategory.getText().toString()) ?
+                        subCateIdName.get(subcategory.getText().toString()) : subcategory.getText().toString());
+                localHashMap.put("shopname", shopIdName.containsKey(shopnameVal.getText().toString()) ?
+                        shopIdName.get(shopnameVal.getText().toString()) : shopnameVal.getText().toString());
                 localHashMap.put("brand", brand.getText().toString());
                 localHashMap.put("model", model.getText().toString());
                 localHashMap.put("price", price.getText().toString());
@@ -584,52 +591,6 @@ public class ProductUpdate extends AppCompatActivity implements
         AppController.getInstance().addToRequestQueue(strReq);
     }
 
-    private void sendNotification(String s, String title, String description) {
-        String tag_string_req = "req_register";
-        showDialog();
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("to", "/topics/allDevices");
-            jsonObject.put("priority", "high");
-            JSONObject dataObject = new JSONObject();
-            dataObject.put("title", title);
-            dataObject.put("message", description);
-            jsonObject.put("data", dataObject);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        JsonObjectRequest strReq = new JsonObjectRequest(Request.Method.POST,
-                "https://fcm.googleapis.com/fcm/send", jsonObject, new Response.Listener<JSONObject>() {
-            @Override
-            public void onResponse(JSONObject response) {
-                Log.d("Register Response: ", response.toString());
-                hideDialog();
-                finish();
-            }
-        }, new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                finish();
-                hideDialog();
-            }
-        }) {
-            protected Map<String, String> getParams() {
-                HashMap localHashMap = new HashMap();
-                return localHashMap;
-            }
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap hashMap = new HashMap();
-                hashMap.put("Content-Type", "application/json");
-                hashMap.put("Authorization", "key=AAAAbHOKlYE:APA91bHduvDJpa5uS6oEtFH5y4-1Q2CK_3O0w4sJpaTRV4ALn2EAOpcKublZMKY1Qq7e-8M1hfM5rT0pJRErmg5790bjS82WGdXS_5rtBHZCbwQ-YLvMRPBjqn6LTL168tTjx6skLII_");
-                return hashMap;
-            }
-        };
-        strReq.setRetryPolicy(Appconfig.getPolicy());
-        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
-    }
 
     private void showDialog() {
         if (!pDialog.isShowing())
@@ -768,7 +729,48 @@ public class ProductUpdate extends AppCompatActivity implements
                         }
                         ArrayAdapter<String> shopAdapter = new ArrayAdapter<String>(ProductUpdate.this,
                                 android.R.layout.simple_dropdown_item_1line, SHOPNAME);
-                        shopname.setAdapter(shopAdapter);
+                        shopnameVal.setAdapter(shopAdapter);
+                    }
+                } catch (JSONException e) {
+                }
+            }
+        }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                return new HashMap();
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private void getAllSubCate() {
+        String tag_string_req = "req_register";
+        StringRequest strReq = new StringRequest(Request.Method.GET,
+                SUBCATEGORIE, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject jObj = new JSONObject(response);
+                    boolean success = jObj.getBoolean("success");
+
+                    if (success) {
+                        JSONArray jsonArray = jObj.getJSONArray("data");
+                        SUBCATE = new String[jsonArray.length()];
+                        subCateIdName = new HashMap<>();
+
+                        for (int i = 0; i < jsonArray.length(); i++) {
+                            SUBCATE[i] = jsonArray.getJSONObject(i).getString("name");
+                            subCateIdName.put(jsonArray.getJSONObject(i).getString("name"),
+                                    jsonArray.getJSONObject(i).getString("id"));
+                        }
+                        ArrayAdapter<String> subCateAdapter = new ArrayAdapter<String>(ProductUpdate.this,
+                                android.R.layout.simple_dropdown_item_1line, SUBCATE);
+                        subcategory.setAdapter(subCateAdapter);
                     }
                 } catch (JSONException e) {
                 }

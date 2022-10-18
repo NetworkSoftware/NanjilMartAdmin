@@ -75,26 +75,99 @@
 
             </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputLayout
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_margin="5dp"
-                android:layout_weight="1">
+                android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/offerAmt"
+                <com.google.android.material.textfield.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:backgroundTint="@color/gray"
-                    android:hint="Offer Amount"
-                    android:inputType="numberDecimal"
-                    android:textColorHint="#c6c6c6"
-                    android:textSize="@dimen/textsize" />
+                    android:layout_margin="5dp"
+                    android:layout_weight="1">
 
-            </com.google.android.material.textfield.TextInputLayout>
+                    <EditText
+                        android:id="@+id/offerAmt"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/gray"
+                        android:hint="Offer Percentage"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="#c6c6c6"
+                        android:textSize="@dimen/textsize" />
 
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/offerVal"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/gray"
+                        android:hint="Value"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="#c6c6c6"
+                        android:textSize="@dimen/textsize" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/estimateTime"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/gray"
+                        android:hint="Estimate Time"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="#c6c6c6"
+                        android:textSize="@dimen/textsize" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1">
+
+                    <EditText
+                        android:id="@+id/rating"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:backgroundTint="@color/gray"
+                        android:hint="Rating"
+                        android:inputType="numberDecimal"
+                        android:textColorHint="#c6c6c6"
+                        android:textSize="@dimen/textsize" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
@@ -210,6 +283,15 @@
                 android:textSize="15dp"
                 android:layout_height="wrap_content"
                 android:text="Enable" />
+
+
+            <CheckBox
+                android:id="@+id/freeDelivery"
+                android:layout_width="match_parent"
+                android:layout_margin="5dp"
+                android:textSize="15dp"
+                android:layout_height="wrap_content"
+                android:text="Free Delivery" />
 
             <TextView
                 android:id="@+id/submit"
