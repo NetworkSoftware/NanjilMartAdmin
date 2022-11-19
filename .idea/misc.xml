@@ -9,6 +9,7 @@
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/drawable/ic_baseline_edit_24.xml" value="0.2546875" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/drawable/toggle_selector.xml" value="0.2546875" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_attachment_item.xml" value="0.23854166666666668" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_main_background.xml" value="0.25" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_main_banner.xml" value="0.23854166666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_main_categories.xml" value="0.24635416666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/activity_main_festival.xml" value="0.23854166666666668" />
@@ -42,6 +43,7 @@
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/enquire_list.xml" value="0.13489583333333333" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/festival_register.xml" value="0.4" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/festivval_row.xml" value="0.2" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/image_list_row.xml" value="0.25" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/order_row_item.xml" value="0.23487179487179488" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/per_price_row.xml" value="0.23854166666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/product_row_item.xml" value="0.11979166666666667" />

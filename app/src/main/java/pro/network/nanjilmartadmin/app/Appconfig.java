@@ -39,10 +39,10 @@ public class Appconfig {
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
 
-   //public static final String ip = "http://192.168.1.204:8098/prisma/nanjilmart";
-  // public static final String ip = "http://192.168.43.217:8098/prisma/nanjilmart";
-    public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
-  // public static final String ip = "http://192.168.131.27:8098/prisma/nanjilmart";
+    // public static final String ip = "http://192.168.1.204:8098/prisma/nanjilmart";
+    // public static final String ip = "http://192.168.43.217:8098/prisma/nanjilmart";
+       public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
+    // public static final String ip = "http://192.168.131.27:8098/prisma/nanjilmart";
     public static final String PRODUCT_CREATE = ip + "/create_stock.php";
     public static final String PRODUCT_UPDATE = ip + "/update_stock.php";
     public static final String PRODUCT_GET_ALL = ip + "/dataFetchAll.php";
@@ -85,11 +85,11 @@ public class Appconfig {
     public static final String DELETE_DELIVERYBOY = ip + "/delete_deliveryboy.php";
     public static final String DELIVERY_BOY_CHANGE_STATUS = ip + "/delivery_boy_change_status.php";
     public static final String IMAGE_URL = ip + "/images/";
+    public static final String SUBCATEGORIE = ip + "/subcategories";
     public static String URL_IMAGE_UPLOAD = ip + "/fileUpload.php";
     public static String BANNER_CREATE = ip + "/fileFeed.php";
     public static String BANNER_GET_ALL = ip + "/get_all_feed.php";
     public static String BANNER_DELETE = ip + "/fileDelete.php";
-    public static final String SUBCATEGORIE = ip + "/subcategories";
     public static Glide locationMap;
     public static Map<String, String[]> stringMap = new HashMap<String, String[]>() {{
         put("Fashion", new String[]{});
@@ -111,6 +111,7 @@ public class Appconfig {
     public static String[] SUBCATE = new String[]{
             "Loading",
     };
+
     public static String getResizedImage(String path, boolean isResized) {
         if (isResized) {
             return IMAGE_URL + "small/" + path.substring(path.lastIndexOf("/") + 1);

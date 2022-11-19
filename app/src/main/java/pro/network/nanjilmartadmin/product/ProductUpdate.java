@@ -237,7 +237,6 @@ public class ProductUpdate extends AppCompatActivity implements
 
 
         //
-
         addSize = findViewById(R.id.addSize);
         sizelist = findViewById(R.id.sizelist);
         addSize.setOnClickListener(new View.OnClickListener() {
