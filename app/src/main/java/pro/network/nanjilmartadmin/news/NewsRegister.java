@@ -1,5 +1,7 @@
 package pro.network.nanjilmartadmin.news;
 
+import static pro.network.nanjilmartadmin.app.Appconfig.NEWS_CREATE;
+
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,8 +28,6 @@ import java.util.Map;
 import pro.network.nanjilmartadmin.R;
 import pro.network.nanjilmartadmin.app.AppController;
 import pro.network.nanjilmartadmin.app.Appconfig;
-
-import static pro.network.nanjilmartadmin.app.Appconfig.NEWS_CREATE;
 
 public class NewsRegister extends AppCompatActivity {
 
@@ -78,11 +78,12 @@ public class NewsRegister extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(response);
                     int success = jsonObject.getInt("success");
                     String msg = jsonObject.getString("message");
-                    if (success==1) {
-                        studentId=jsonObject.getString("id");
+                    if (success == 1) {
+                        studentId = jsonObject.getString("id");
                         enableNews.setChecked(jsonObject.getString("enabled").equalsIgnoreCase("1"));
                         title.setText(jsonObject.getString("title"));
                         description.setText(jsonObject.getString("description"));
+
                     }
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
@@ -124,8 +125,8 @@ public class NewsRegister extends AppCompatActivity {
                     boolean success = jsonObject.getBoolean("success");
                     String msg = jsonObject.getString("message");
                     if (success) {
-                        finish();
-                    }
+                        Appconfig.sendNotification(title.getText().toString(), description.getText().toString(), pDialog, NewsRegister.this);
+                   }
                     Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
                 } catch (JSONException e) {
                     Toast.makeText(getApplicationContext(), "Some Network Error.Try after some time", Toast.LENGTH_SHORT).show();

@@ -1,6 +1,7 @@
 package pro.network.nanjilmartadmin.app;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
@@ -19,8 +20,18 @@ import android.view.Gravity;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -234,7 +245,64 @@ public class Appconfig {
         return filename;
 
     }
+    public static void sendNotification(String title, String description,
+                                        final ProgressDialog pDialog, final AppCompatActivity context) {
+        String tag_string_req = "req_register";
+        pDialog.setMessage("Processing");
+        showDialog(pDialog);
+        JSONObject jsonObject = new JSONObject();
+        try {
+            jsonObject.put("to", "/topics/allDevices");
+            jsonObject.put("priority", "high");
+            JSONObject dataObject = new JSONObject();
+            dataObject.put("title", title);
+            dataObject.put("message", description);
+            jsonObject.put("data", dataObject);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        JsonObjectRequest strReq = new JsonObjectRequest(Request.Method.POST,
+                "https://fcm.googleapis.com/fcm/send", jsonObject, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                Log.d("Register Response: ", response.toString());
+                hideDialog(pDialog);
+                context.finish();
+            }
+        }, new Response.ErrorListener() {
 
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                context.finish();
+                hideDialog(pDialog);
+            }
+        }) {
+            protected Map<String, String> getParams() {
+                HashMap localHashMap = new HashMap();
+                return localHashMap;
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap hashMap = new HashMap();
+                hashMap.put("Content-Type", "application/json");
+                hashMap.put("Authorization", "key=AAAAbHOKlYE:APA91bHduvDJpa5uS6oEtFH5y4-1Q2CK_3O0w4sJpaTRV4ALn2EAOpcKublZMKY1Qq7e-8M1hfM5rT0pJRErmg5790bjS82WGdXS_5rtBHZCbwQ-YLvMRPBjqn6LTL168tTjx6skLII_");
+                return hashMap;
+            }
+        };
+        strReq.setRetryPolicy(Appconfig.getPolicy());
+        AppController.getInstance().addToRequestQueue(strReq, tag_string_req);
+    }
+
+    private static void showDialog(ProgressDialog pDialog) {
+        if (!pDialog.isShowing())
+            pDialog.show();
+    }
+
+    private static void hideDialog(ProgressDialog pDialog) {
+        if (pDialog.isShowing())
+            pDialog.dismiss();
+    }
     public static void multiSelectionModule(final Context context, String title,
                                             final String[] items, final EditText editText) {
         final ArrayList seletedItems = new ArrayList();
