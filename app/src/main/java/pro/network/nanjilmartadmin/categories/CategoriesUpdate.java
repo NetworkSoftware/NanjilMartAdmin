@@ -1,12 +1,13 @@
 package pro.network.nanjilmartadmin.categories;
 
+import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_UPDATE;
+
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
@@ -24,6 +25,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.google.android.material.textfield.TextInputLayout;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -48,11 +50,10 @@ import pro.network.nanjilmartadmin.app.Appconfig;
 import pro.network.nanjilmartadmin.app.GlideApp;
 import pro.network.nanjilmartadmin.app.Imageutils;
 
-import static pro.network.nanjilmartadmin.app.Appconfig.CATEGORIES_UPDATE;
-
 public class CategoriesUpdate extends AppCompatActivity implements Imageutils.ImageAttachmentListener {
 
-    EditText description,deliveryCost,row;
+    EditText description, deliveryCost, row, latLong, nextOpen;
+    TextInputLayout nextOpenTxt;
     CheckBox isEnable;
     String studentId = null;
     TextView submit;
@@ -71,8 +72,11 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
         getSupportActionBar().setTitle("Categories Register");
 
         row = findViewById(R.id.row);
+        latLong = findViewById(R.id.latLong);
         isEnable = findViewById(R.id.isEnable);
         deliveryCost = findViewById(R.id.deliveryCost);
+        nextOpen = findViewById(R.id.nextOpen);
+        nextOpenTxt = findViewById(R.id.nextOpenTxt);
         profiletImage = findViewById(R.id.profiletImage);
         profiletImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,17 +90,37 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
 
         description = findViewById(R.id.description);
         submit = findViewById(R.id.submit);
-
+        isEnable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!isEnable.isChecked()) {
+                    nextOpenTxt.setVisibility(View.VISIBLE);
+                } else {
+                    nextOpenTxt.setVisibility(View.GONE);
+                }
+            }
+        });
+        if (!isEnable.isChecked()) {
+            nextOpenTxt.setVisibility(View.VISIBLE);
+        } else {
+            nextOpenTxt.setVisibility(View.GONE);
+        }
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(description.getText().length()<=0){
+                if (description.getText().length() <= 0) {
                     description.setError("Enter valid description");
-                }else if(deliveryCost.getText().length()<=0){
-                    deliveryCost.setError("Enter valid deliveryCost");
-                }else if(row.getText().length()<=0){
+                }
+//                else if (deliveryCost.getText().length() <= 0) {
+//                    deliveryCost.setError("Enter valid deliveryCost");
+//                }
+                else if (row.getText().length() <= 0) {
                     row.setError("Enter valid category position");
-                }else {
+                } else if (latLong.getText().length() <= 0) {
+                    latLong.setError("Enter valid lat long");
+                } else if (!isEnable.isChecked() && nextOpen.getText().length() <= 0) {
+                    nextOpen.setError("Enter valid Next open");
+                } else {
                     registerUser();
                 }
             }
@@ -107,9 +131,16 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
             description.setText(categories.title);
             deliveryCost.setText(categories.deliveryCost);
             studentId = categories.id;
-            imageUrl=categories.image;
+            imageUrl = categories.image;
             row.setText(categories.row);
+            latLong.setText(categories.latlong);
+            nextOpen.setText(categories.getNextOpen());
             isEnable.setChecked(categories.category_enabled.equalsIgnoreCase("1"));
+            if (!isEnable.isChecked()) {
+                nextOpenTxt.setVisibility(View.VISIBLE);
+            } else {
+                nextOpenTxt.setVisibility(View.GONE);
+            }
             GlideApp.with(CategoriesUpdate.this).load(categories.image)
                     .placeholder(R.drawable.ic_add_a_photo_black_24dp)
                     .into(profiletImage);
@@ -154,12 +185,16 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
         }) {
             protected Map<String, String> getParams() {
                 HashMap localHashMap = new HashMap();
-                localHashMap.put("id",studentId);
+                localHashMap.put("id", studentId);
                 localHashMap.put("image", imageUrl);
                 localHashMap.put("title", description.getText().toString());
                 localHashMap.put("deliveryCost", deliveryCost.getText().toString());
-                localHashMap.put("category_enabled",isEnable.isChecked()?"1":"0");
-                localHashMap.put("row",row.getText().toString());
+                localHashMap.put("category_enabled", isEnable.isChecked() ? "1" : "0");
+                localHashMap.put("row", row.getText().toString());
+                localHashMap.put("latlong", latLong.getText().toString());
+                if (!isEnable.isChecked()) {
+                    localHashMap.put("nextOpen", nextOpen.getText().toString());
+                }
                 return localHashMap;
             }
         };
@@ -194,10 +229,10 @@ public class CategoriesUpdate extends AppCompatActivity implements Imageutils.Im
     public void image_attachment(int from, String filename, Bitmap file, Uri uri) {
         String path = getCacheDir().getPath() + File.separator + "ImageAttach" + File.separator;
         imageutils.createImage(file, filename, path, false);
-        String storedPath=imageutils.createImage(file, filename, path, false);
+        String storedPath = imageutils.createImage(file, filename, path, false);
         pDialog.setMessage("Uploading...");
         showDialog();
-        new UploadFileToServer().execute(Appconfig.compressImage(storedPath,CategoriesUpdate.this));
+        new UploadFileToServer().execute(Appconfig.compressImage(storedPath, CategoriesUpdate.this));
     }
 
     @Override

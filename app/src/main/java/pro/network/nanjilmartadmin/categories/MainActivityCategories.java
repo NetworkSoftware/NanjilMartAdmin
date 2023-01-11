@@ -107,6 +107,12 @@ public class MainActivityCategories extends AppCompatActivity implements Categor
                             if (jsonObject.has("category_enabled")) {
                                 categories.setCategory_enabled(jsonObject.getString("category_enabled"));
                             }
+                            if (jsonObject.has("nextOpen")) {
+                                categories.setNextOpen(jsonObject.getString("nextOpen"));
+                            }
+                            if (jsonObject.has("latlong")) {
+                                categories.setLatlong(jsonObject.getString("latlong"));
+                            }
                             if (jsonObject.has("row")) {
                                 categories.setRow(jsonObject.getString("row"));
                             }

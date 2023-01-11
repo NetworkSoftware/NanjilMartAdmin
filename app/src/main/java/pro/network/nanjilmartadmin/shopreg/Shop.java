@@ -15,13 +15,15 @@ public class Shop implements Serializable {
     String address,category,offerAmt;
     ArrayList<Time> times;
     String shop_enabled;
+    String area;
     String freeDelivery,estimateTime,rating;
 
     public Shop() {
     }
 
     public Shop(String shop_name, String phone,String stock_update,String latlong,
-                String image,String time_schedule,ArrayList<Time> times,String shop_enabled) {
+                String image,String time_schedule,ArrayList<Time> times,
+                String shop_enabled,String area) {
         this.shop_name = shop_name;
         this.phone = phone;
         this.stock_update = stock_update;
@@ -30,6 +32,15 @@ public class Shop implements Serializable {
         this.time_schedule=time_schedule;
         this.times=times;
         this.shop_enabled=shop_enabled;
+        this.area = area;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     public String getFreeDelivery() {

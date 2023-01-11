@@ -111,6 +111,9 @@ public class MainActivityShop extends AppCompatActivity implements ShopClick {
                             if(!jsonObject.isNull("image")){
                                 shop.setImage(jsonObject.getString("image"));
                             }
+                            if(!jsonObject.isNull("area")){
+                                shop.setArea(jsonObject.getString("area"));
+                            }
                             if(jsonObject.has("shop_enabled")){
                                 shop.setShop_enabled(jsonObject.getString("shop_enabled"));
                             }

@@ -49,10 +49,9 @@ public class Appconfig {
     //Key values
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
-
-    // public static final String ip = "http://192.168.1.204:8098/prisma/nanjilmart";
+    //public static final String ip = "http://192.168.1.204:8098/prisma/nanjilmart";
     // public static final String ip = "http://192.168.43.217:8098/prisma/nanjilmart";
-       public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
+    public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
     // public static final String ip = "http://192.168.131.27:8098/prisma/nanjilmart";
     public static final String PRODUCT_CREATE = ip + "/create_stock.php";
     public static final String PRODUCT_UPDATE = ip + "/update_stock.php";
@@ -241,10 +240,9 @@ public class Appconfig {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-
         return filename;
-
     }
+
     public static void sendNotification(String title, String description,
                                         final ProgressDialog pDialog, final AppCompatActivity context) {
         String tag_string_req = "req_register";
@@ -303,6 +301,7 @@ public class Appconfig {
         if (pDialog.isShowing())
             pDialog.dismiss();
     }
+
     public static void multiSelectionModule(final Context context, String title,
                                             final String[] items, final EditText editText) {
         final ArrayList seletedItems = new ArrayList();

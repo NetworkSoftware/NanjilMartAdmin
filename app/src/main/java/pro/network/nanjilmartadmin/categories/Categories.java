@@ -1,10 +1,5 @@
 package pro.network.nanjilmartadmin.categories;
-
 import java.io.Serializable;
-
-/**
- * Created by ravi on 16/11/17.
- */
 
 public class Categories implements Serializable {
     String id;
@@ -12,17 +7,38 @@ public class Categories implements Serializable {
     String image;
     String deliveryCost;
     String row;
+    String latlong;
+    String nextOpen;
     String category_enabled;
 
     public Categories() {
     }
 
-    public Categories(String title, String image,String deliveryCost,String row,String category_enabled) {
+    public Categories(String title, String image,String deliveryCost,
+                      String row,String category_enabled,String latlong,String nextOpen) {
         this.title = title;
         this.image = image;
         this.deliveryCost = deliveryCost;
         this.row = row;
         this.category_enabled = category_enabled;
+        this.latlong = latlong;
+        this.nextOpen = nextOpen;
+    }
+
+    public String getNextOpen() {
+        return nextOpen;
+    }
+
+    public void setNextOpen(String nextOpen) {
+        this.nextOpen = nextOpen;
+    }
+
+    public String getLatlong() {
+        return latlong;
+    }
+
+    public void setLatlong(String latlong) {
+        this.latlong = latlong;
     }
 
     public String getRow() {

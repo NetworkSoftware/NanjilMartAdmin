@@ -26,7 +26,7 @@
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/bottom_assign_dboy.xml" value="0.23425925925925925" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/bottom_offer_product.xml" value="0.25" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/bottom_quantityprice.xml" value="0.23854166666666668" />
-        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/categories_register.xml" value="0.1046875" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/categories_register.xml" value="0.2" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/categories_row_item.xml" value="0.25" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/content_mainbanner.xml" value="0.23854166666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/content_maincategories.xml" value="0.24635416666666668" />
@@ -47,6 +47,7 @@
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/order_row_item.xml" value="0.23487179487179488" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/per_price_row.xml" value="0.23854166666666668" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/product_row_item.xml" value="0.11979166666666667" />
+        <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/shop_item.xml" value="0.20260416666666667" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/shop_reg.xml" value="0.264" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/shop_row_item.xml" value="0.16" />
         <entry key="..\:/StudioProjects/NanjilMartAdmin/app/src/main/res/layout/status_filter.xml" value="0.23854166666666668" />
@@ -59,7 +60,7 @@
       </map>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" project-jdk-name="1.8" project-jdk-type="JavaSDK">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/build/classes" />
   </component>
   <component name="ProjectType">

@@ -84,7 +84,8 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
             "In Stock", "Currently Unavailable",
     };
     public Button addSize;
-    EditText shop_name, phone, latlong, address, category, offerAmt, offerVal,estimateTime,rating;
+    EditText shop_name, phone, latlong, address,
+            category, offerAmt, offerVal, estimateTime, rating, area;
     MaterialBetterSpinner stock_update;
     String studentId = null;
     TextView submit;
@@ -92,7 +93,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
     CardView itemsAdd;
     ArrayList<Time> times = new ArrayList<>();
     TimeAdapter timeAdapter;
-    CheckBox isEnable,freeDelivery;
+    CheckBox isEnable, freeDelivery;
     private ProgressDialog pDialog;
     private ImageView profiletImage;
     private String imageUrl = "";
@@ -106,6 +107,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
         pDialog.setCancelable(false);
         imageutils = new Imageutils(this);
         profiletImage = findViewById(R.id.profiletImage);
+        area = findViewById(R.id.area);
         isEnable = findViewById(R.id.isEnable);
         estimateTime = findViewById(R.id.estimateTime);
         rating = findViewById(R.id.rating);
@@ -186,13 +188,17 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
                     stock_update.setError("Select the Sold or Not");
                 } else if (offerVal.getText().toString().length() <= 0) {
                     offerVal.setError("Enter valid offer value");
-                }  else if (estimateTime.getText().toString().length() <= 0) {
+                } else if (estimateTime.getText().toString().length() <= 0) {
                     estimateTime.setError("Enter valid Estimate Time");
-                }  else if (rating.getText().toString().length() <= 0) {
+                } else if (rating.getText().toString().length() <= 0) {
                     rating.setError("Enter valid Rating");
-                }else {
+                } else if (area.getText().toString().length() <= 0) {
+                    area.setError("Enter valid area");
+                } else {
                     registerUser();
                 }
+
+
             }
         });
 
@@ -214,9 +220,9 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
 
             offerAmt.setText(contact.offerAmt.contains("-") ? contact.offerAmt.split("-")[0] : contact.offerAmt);
 
-            if(contact.offerAmt.contains("-")){
+            if (contact.offerAmt.contains("-")) {
                 offerVal.setText(contact.offerAmt.split("-")[1]);
-            }else{
+            } else {
                 offerVal.setText("");
             }
             isEnable.setChecked(contact.shop_enabled.equalsIgnoreCase("1"));
@@ -407,6 +413,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
                 localHashMap.put("freeDelivery", freeDelivery.isChecked() ? "1" : "0");
                 localHashMap.put("estimateTime", estimateTime.getText().toString());
                 localHashMap.put("rating", rating.getText().toString());
+                localHashMap.put("area", area.getText().toString());
                 localHashMap.put("id", studentId);
                 return localHashMap;
             }

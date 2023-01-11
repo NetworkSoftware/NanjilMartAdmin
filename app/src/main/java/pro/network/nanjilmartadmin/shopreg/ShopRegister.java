@@ -78,13 +78,13 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
             "Available", "Currently Unavailable",
     };
     public Button addSize;
-    EditText shop_name, phone, latlong, address, category, offerAmt, offerVal,estimateTime,rating;
+    EditText shop_name, phone, latlong, address, category, offerAmt, offerVal, estimateTime, rating, area;
     MaterialBetterSpinner stock_update;
     Imageutils imageutils;
     TextView submit;
     ArrayList<Time> times = new ArrayList<>();
     TimeAdapter timeAdapter;
-    CheckBox isEnable,freeDelivery;
+    CheckBox isEnable, freeDelivery;
     private ImageView profiletImage;
     private String imageUrl = "";
     private ProgressDialog pDialog;
@@ -99,6 +99,7 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
         pDialog = new ProgressDialog(this);
         pDialog.setCancelable(false);
         latlong = findViewById(R.id.latlong);
+        area = findViewById(R.id.area);
         shop_name = findViewById(R.id.shop_name);
         phone = findViewById(R.id.phone);
         address = findViewById(R.id.address);
@@ -176,12 +177,14 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
                     category.setError("Enter the Category");
                 } else if (times.size() <= 0) {
                     Toast.makeText(getApplicationContext(), "Upload the Time Schedule!", Toast.LENGTH_SHORT).show();
-                }else if (offerVal.getText().toString().length() <= 0) {
+                } else if (offerVal.getText().toString().length() <= 0) {
                     offerVal.setError("Enter valid offer value");
-                }  else if (estimateTime.getText().toString().length() <= 0) {
+                } else if (estimateTime.getText().toString().length() <= 0) {
                     estimateTime.setError("Enter valid Estimate Time");
-                }  else if (rating.getText().toString().length() <= 0) {
+                } else if (rating.getText().toString().length() <= 0) {
                     rating.setError("Enter valid Rating");
+                } else if (area.getText().toString().length() <= 0) {
+                    area.setError("Enter valid Area");
                 } else {
                     registerUser();
                 }
@@ -349,6 +352,7 @@ public class ShopRegister extends AppCompatActivity implements Imageutils.ImageA
                 localHashMap.put("shop_enabled", isEnable.isChecked() ? "1" : "0");
                 localHashMap.put("estimateTime", estimateTime.getText().toString());
                 localHashMap.put("rating", rating.getText().toString());
+                localHashMap.put("area", area.getText().toString());
                 return localHashMap;
             }
         };
