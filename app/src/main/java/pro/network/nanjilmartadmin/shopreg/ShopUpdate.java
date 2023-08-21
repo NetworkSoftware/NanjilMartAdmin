@@ -217,6 +217,7 @@ public class ShopUpdate extends AppCompatActivity implements Imageutils.ImageAtt
             address.setText(contact.address);
             estimateTime.setText(contact.estimateTime);
             rating.setText(contact.rating);
+            area.setText(contact.area);
 
             offerAmt.setText(contact.offerAmt.contains("-") ? contact.offerAmt.split("-")[0] : contact.offerAmt);
 

@@ -27,10 +27,34 @@ public class Product implements Serializable {
     public String shopname;
     public String shopid;
     public String latlong,subProduct,strikeoutAmt,
-            time_periods,category_enabled,shop_enabled;
+            time_periods,category_enabled,shop_enabled,cate_latlong,gifurl,nextOpen;
 
 
     public Product() {
+    }
+
+    public String getNextOpen() {
+        return nextOpen;
+    }
+
+    public void setNextOpen(String nextOpen) {
+        this.nextOpen = nextOpen;
+    }
+
+    public String getGifurl() {
+        return gifurl;
+    }
+
+    public void setGifurl(String gifurl) {
+        this.gifurl = gifurl;
+    }
+
+    public String getCate_latlong() {
+        return cate_latlong;
+    }
+
+    public void setCate_latlong(String cate_latlong) {
+        this.cate_latlong = cate_latlong;
     }
 
     public String getUserId() {

@@ -50,7 +50,7 @@ public class Appconfig {
     public static final String shopIdKey = "shopIdKey";
     public static final String mypreference = "mypref";
     //public static final String ip = "http://192.168.1.204:8098/prisma/nanjilmart";
-    // public static final String ip = "http://192.168.43.217:8098/prisma/nanjilmart";
+    //public static final String ip = "http://192.168.43.217:8098/prisma/nanjilmart";
     public static final String ip = "http://thestockbazaar.com/prisma/nanjilmart";
     // public static final String ip = "http://192.168.131.27:8098/prisma/nanjilmart";
     public static final String PRODUCT_CREATE = ip + "/create_stock.php";

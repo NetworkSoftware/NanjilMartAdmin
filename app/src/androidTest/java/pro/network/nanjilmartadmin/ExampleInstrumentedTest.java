@@ -21,8 +21,8 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
 
-        Context appContext = InstrumentationRegistry.getTargetContext();
-
+//        Context appContext = InstrumentationRegistry.getTargetContext();
+        Context appContext = InstrumentationRegistry.getInstrumentation().getTargetContext();
         assertEquals("customer.smart.support", appContext.getPackageName());
     }
 }
