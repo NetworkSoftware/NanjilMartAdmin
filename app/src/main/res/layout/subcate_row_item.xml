@@ -75,7 +75,7 @@
                     android:layout_height="40dp"
                     android:layout_gravity="top"
                     android:padding="5dp"
-                    android:src="@drawable/places_ic_clear"
+                    android:src="@drawable/ic_delete_black_24dp"
                     app:tint="@color/black" />
 
 

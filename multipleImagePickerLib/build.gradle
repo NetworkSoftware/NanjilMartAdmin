@@ -27,12 +27,11 @@ apply plugin: 'com.android.library'
 //}
 
 android {
-    compileSdkVersion 28
-    buildToolsVersion "28.0.1"
+    compileSdkVersion 33
 
     defaultConfig {
         minSdkVersion 17
-        targetSdkVersion 28
+        targetSdkVersion 33
     }
 
     buildTypes {
@@ -59,8 +58,9 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:2.0.2"
 //    implementation "com.github.hotchemi:permissionsdispatcher:2.4.0"
 //    annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:2.4.0"
-    implementation "com.tbruyelle.rxpermissions2:rxpermissions:0.9.4@aar"
-    implementation 'com.isseiaoki:simplecropview:1.1.8'
+//    implementation "com.tbruyelle.rxpermissions2:rxpermissions:0.12"
+//    implementation 'com.isseiaoki:simplecropview:1.1.8'
+//    implementation project(':multipleImagePickerLib')
     implementation 'com.github.vansikrishna:Multimager:1.0.8'
 
 

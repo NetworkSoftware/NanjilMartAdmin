@@ -6,7 +6,7 @@
     android:orientation="vertical"
     >
 
-  <com.isseiaoki.simplecropview.CropImageView
+  <simplecropview.CropImageView
       android:id="@+id/cropImageView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

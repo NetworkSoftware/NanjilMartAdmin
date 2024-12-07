@@ -25,12 +25,12 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.isseiaoki.simplecropview.CropImageView;
-import com.isseiaoki.simplecropview.callback.CropCallback;
-import com.isseiaoki.simplecropview.callback.LoadCallback;
-import com.isseiaoki.simplecropview.callback.SaveCallback;
-import com.isseiaoki.simplecropview.util.Logger;
-import com.isseiaoki.simplecropview.util.Utils;
+import simplecropview.CropImageView;
+import simplecropview.callback.CropCallback;
+import simplecropview.callback.LoadCallback;
+import simplecropview.callback.SaveCallback;
+import simplecropview.util.Logger;
+import simplecropview.util.Utils;
 import com.rahul.media.R;
 
 import java.io.File;
